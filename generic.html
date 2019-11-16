@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Github Page</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								<header id="header">
+									<a href="index.html" class="logo"><strong>Hugo Fromont</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+							<!-- Content -->
+								<section>
+									<header class="main">
+										<h1>Mémo Pyhton</h1>
+									</header>
+
+									<span class="image main"><img src="images/logo_python.png" alt="" /></span>
+					
+
+							<!-- Partie 1 Python -->
+								<hr class="major" />
+								<h1>Collecte de données avec python</h1>
+									
+								<h2>Importer un ficher CSV</h2>
+								<p>Pour importer un fichier csv, nous utilisons la commande read_csv de la library Pandas</p>
+								<pre><code class="{python} language-{python}">import pandas as pd<br>pd.read_csv("chemin/data.csv")</code></pre>
+								<p>Grâce à la fonction précédante nous avons stocké notre CSV dans un DataFrame. Nous verrons plus loin comment manipuler les données d'un DataFrame</p>
+
+								<h2>Importer un fichier hdf5</h2>
+								<p>Avec la même librairie il est possible d'importer des fichier hdf5</p>
+								<pre><code class="{python} language-{python}">df = pd.read_hdf('chemin/data.hdf5')</code></pre>
+
+								<h2>Importer un fichier dbf</h2>
+								<p>pour importer un fichier dbf, nous utilisons la librarie dbf</p>
+								<pre><code class="{python} language-{python}">import dbf<br>table = dbf.Table('chemin.dbf')</code></pre>
+								<p>nous pouvons ensuite naviguer dans la table à l'aide du code suivant</p>
+								<pre><code class="{python} language-{python}">table.open()<br>for ligne in table:<br>    print(ligne.variable1,ligne.variable2)<br>table.close()</code></pre>
+
+								<h2>Connection à une DataBase MySQL</h2>
+								<p>Avec python, il est possible d'établir une connection avec une base de données MySQL, et d'effectuer tout type d'opération (Create Table, Insert into, SELECT ...). Pour cela,  nous devons d'abord connecter python à une DatBase de MySQL.</p>
+								<pre><code class="{python} language-{python}">import mysql.connector<br>conn = mysql.connector.connect(<br>  host="localhost",<br>  user="root",<br>  passwd="#########",<br>  database="DataBase_Name"<br>)<br>cursor = conn.cursor()</code></pre>
+								<p>Nous pouvons maintenant éxécuter des requètes SQL.<br>Par exemple pour créer une Table dans notre DataBase, nous pouvons utiliser la commande suivante :</p>
+								<pre><code class="{python} language-{python}">cursor.execute("""<br><br>    CREATE TABLE IF NOT EXISTS nom_table (<br>        id_user int(5) NOT NULL AUTO_INCREMENT,<br>        user_name varchar(40) NOT NULL,<br>        user_age int(3) DEFAULT NULL,<br>        PRIMARY KEY(id_user)<br>    );<br>    """)</code></pre>
+								<p>Nous pouvons ensuite insérer des données dans la Table. <br>Voici une fonction qui permet d'insérer des données dans la table créée au dessus. Cette fonction utilise la fonction try afin de savoir si l'opération à été correctement éxécutée.</p>
+								<pre><code class="{python} language-{python}">def insert_users(data):<br>    query = 'INSERT INTO nom_table(user_name,user_age) '\<br>    'VALUES(%s,"%i");'%(data)<br>    try:<br>        cursor.execute(query)<br>        conn.commit()<br>        print('successful insertion')<br>    except :<br>        print('failled insertion')<br><br>insert_users(('Hugo',22))</code></pre>
+								<p>Enfin nous pouvons bien évidement récupérer les informations stockées dans la base de données. Voici comment réaliser cette opération  </p>
+								<pre><code class="{python} language-{python}">cursor.execute("""SELECT * from nom_table""")<br>rows = cursor.fetchall()<br>print(rows)</code></pre>
+								
+								<hr class="major" />
+
+
+								</section>
+
+						</div>
+					</div>
+<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li>
+											<span class="opener">Mémo</span>
+											<ul>
+												<li><a href="generic.html">Python</a></li>
+												<li><a href="#">R</a></li>
+												<li><a href="#">SAS</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">Projet</span>
+											<ul>
+												<li><a href="#">Réseaux à convolution</a></li>
+												<li><a href="#">Détection d'anomalie</a></li>
+												<li><a href="#">Recommandation</a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<p>texte texte texte texte texte </p>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon solid fa-phone">06 13 3147 14</li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+									</ul>
+								</section>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
