@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+<!--
+	Editorial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Github Page</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Github Page</h1>
+
+							
+
+
+
+							<!-- Content -->
+								
+									<header id="header">
+										<h1>Classification d'image</h1>
+									</header>
+<section>
+									<span class="image main"><img src="images/CNN_mnist.png" alt="" /></span>
+									
+																	
+
+
+
+<p>Nous allons créer un réseau de neurones convolutif sur le célèbre jeu de données MNIST. 
+Pour ce faire, nous avons créé un notebook python sur Google Colab. Les données sont disponibles sur Kaggle, elles ont été importées via l'API de Kaggle.</p>
+<hr class="major" />
+
+<h2 id="importationdeslibrairies">Importation des librairies</h2>
+
+<pre><code class="{python} language-{python}">import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+import os
+from PIL import Image
+</code></pre>
+
+<h2 id="importationdesdonnes">Importation des données</h2>
+
+<p>Pour importer les données, nous utilisons l'API de Kaggle.</p>
+
+<pre><code class="{python} language-{python}">!pip install kaggle
+!mkdir .kaggle
+
+import json
+token = {"username":"#######","key":"############"}
+with open('/content/.kaggle/kaggle.json', 'w') as file:
+    json.dump(token, file)
+
+!chmod 600 /content/.kaggle/kaggle.json
+!cp /content/.kaggle/kaggle.json ~/.kaggle/kaggle.json
+!cp /content/.kaggle/kaggle.json ~/root/.kaggle/kaggle.json
+!kaggle config set -n path -v{/content}
+
+!mkdir data
+
+!kaggle competitions download -c digit-recognizer -p /content/data/
+</code></pre>
+
+<h2 id="recodagedesdonnes">Recodage des données</h2>
+
+<p>Les valeurs des pixels ainsi que les labels des images sont stockés dans un fichier CSV.
+Nous allons dans un premier temps séparer les labels et les valeures de pixels. Nous allons ensuite transformer les labels en vecteur de taille 10.
+Puis les images seront redimentionnées en (28×28×1) puis stockées dans un vecteur</p>
+
+<pre><code class="{python} language-{python}">df = pd.read_csv('/content/data/train.csv')
+
+targets = np.array(df['label'])
+
+onehot_encoder = OneHotEncoder(sparse=False)
+targets = onehot_encoder.fit_transform(targets.reshape(len(targets), 1))
+
+features = []
+for i in range(0,len(df)):
+  features.append(np.array(df.iloc[i,1:]).reshape(28,28,1))
+
+features = np.array(features)
+
+print("Taille des features =",features.shape)
+print("Taille des targets =",targets.shape)
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/55072584-cce8dd00-508b-11e9-86f0-5b0212ea85f6.png"></p>
+
+<h2 id="echantillonnage">Echantillonnage</h2>
+
+<pre><code class="{python} language-{python}">from sklearn.model_selection import train_test_split
+
+x_train, x_valid, y_train, y_valid = train_test_split(features, targets, test_size=0.1, random_state=123)
+
+print("x_train =",x_train.shape,"  |  y_train =",y_train.shape)
+print("x_valid =",x_valid.shape,"  |  y_valid =",y_valid.shape)
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/55072634-e7bb5180-508b-11e9-9d44-25e89d440698.png"></p>
+
+<h2 id="visualisation">Visualisation</h2>
+
+<pre><code class="{python} language-{python}">index = np.arange(len(features))
+np.random.shuffle(index)
+features = features[index]
+targets = targets[index]
+
+fig = plt.figure(figsize=(10,10))
+plt.gcf().subplots_adjust( wspace = 0, hspace = 0.2)
+for i in range(1,401):
+    plt.subplot(20, 20, i)
+    img = plt.imshow(features[i].reshape(28,28))
+    img.axes.get_xaxis().set_visible(False)
+    img.axes.get_yaxis().set_visible(False)
+plt.show()
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/55074721-59e26500-5091-11e9-81fe-f349724d43fd.png"></p>
+
+<h2 id="crationdumodle">Création du modèle</h2>
+
+<p>Nous utilisons la librairie Keras pour créer notre modèle convolutif</p>
+
+<pre><code class="{python} language-{python}">from keras.models import Sequential
+from keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, Activation, BatchNormalization
+from keras import optimizers
+
+model = Sequential()
+
+model.add(Conv2D(64, (3, 3),padding = 'same', activation='relu', input_shape=(28, 28, 1)))
+model.add(BatchNormalization())
+model.add(Conv2D(64, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(128, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(128, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(256, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(256, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(512, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(512, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(512, (3, 3),padding = 'same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.5))
+
+
+model.add(Flatten())
+model.add(Dense(256, activation='relu'))
+model.add(BatchNormalization())
+model.add(Dropout(0.70))
+
+model.add(Dense(10, activation='softmax'))
+
+optimiser = optimizers.RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0)
+model.compile(loss='categorical_crossentropy', optimizer=optimiser, metrics=['accuracy'])
+
+model.summary()
+</code></pre>
+
+<pre><code class="{python} language-{python}">_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_16 (Conv2D)           (None, 28, 28, 64)        640       
+_________________________________________________________________
+batch_normalization_19 (Batc (None, 28, 28, 64)        256       
+_________________________________________________________________
+conv2d_17 (Conv2D)           (None, 28, 28, 64)        36928     
+_________________________________________________________________
+batch_normalization_20 (Batc (None, 28, 28, 64)        256       
+_________________________________________________________________
+max_pooling2d_12 (MaxPooling (None, 14, 14, 64)        0         
+_________________________________________________________________
+dropout_14 (Dropout)         (None, 14, 14, 64)        0         
+_________________________________________________________________
+conv2d_18 (Conv2D)           (None, 14, 14, 128)       73856     
+_________________________________________________________________
+batch_normalization_21 (Batc (None, 14, 14, 128)       512       
+_________________________________________________________________
+conv2d_19 (Conv2D)           (None, 14, 14, 128)       147584    
+_________________________________________________________________
+batch_normalization_22 (Batc (None, 14, 14, 128)       512       
+_________________________________________________________________
+max_pooling2d_13 (MaxPooling (None, 7, 7, 128)         0         
+_________________________________________________________________
+dropout_15 (Dropout)         (None, 7, 7, 128)         0         
+_________________________________________________________________
+conv2d_20 (Conv2D)           (None, 7, 7, 256)         295168    
+_________________________________________________________________
+batch_normalization_23 (Batc (None, 7, 7, 256)         1024      
+_________________________________________________________________
+conv2d_21 (Conv2D)           (None, 7, 7, 256)         590080    
+_________________________________________________________________
+batch_normalization_24 (Batc (None, 7, 7, 256)         1024      
+_________________________________________________________________
+max_pooling2d_14 (MaxPooling (None, 3, 3, 256)         0         
+_________________________________________________________________
+dropout_16 (Dropout)         (None, 3, 3, 256)         0         
+_________________________________________________________________
+conv2d_22 (Conv2D)           (None, 3, 3, 512)         1180160   
+_________________________________________________________________
+batch_normalization_25 (Batc (None, 3, 3, 512)         2048      
+_________________________________________________________________
+conv2d_23 (Conv2D)           (None, 3, 3, 512)         2359808   
+_________________________________________________________________
+batch_normalization_26 (Batc (None, 3, 3, 512)         2048      
+_________________________________________________________________
+conv2d_24 (Conv2D)           (None, 3, 3, 512)         2359808   
+_________________________________________________________________
+batch_normalization_27 (Batc (None, 3, 3, 512)         2048      
+_________________________________________________________________
+max_pooling2d_15 (MaxPooling (None, 1, 1, 512)         0         
+_________________________________________________________________
+dropout_17 (Dropout)         (None, 1, 1, 512)         0         
+_________________________________________________________________
+flatten_4 (Flatten)          (None, 512)               0         
+_________________________________________________________________
+dense_7 (Dense)              (None, 256)               131328    
+_________________________________________________________________
+batch_normalization_28 (Batc (None, 256)               1024      
+_________________________________________________________________
+dropout_18 (Dropout)         (None, 256)               0         
+_________________________________________________________________
+dense_8 (Dense)              (None, 10)                2570      
+=================================================================
+Total params: 7,188,682
+Trainable params: 7,183,306
+Non-trainable params: 5,376
+_________________________________________________________________
+</code></pre>
+
+<h2 id="entranementdumodle">Entraînement du modèle</h2>
+
+<p>Nous allons maintenant entraîner notre modèle</p>
+
+<pre><code class="{python} language-{python}">model.fit(x=x_train,
+          y=y_train,
+          batch_size=200,
+          epochs=100,
+          verbose=1,
+          validation_data=(x_valid,y_valid),
+          shuffle=True)
+</code></pre>
+
+<h2 id="visualisationdesrsultatssurlchantillondevalidation">Visualisation des résultats sur l'échantillon de validation</h2>
+
+<p>Nous allons maintenant vérifier les erreurs que fait notre réseau de convolution sur l'échantillon de validation. Pour cela nous allons extraire les erreurs puis les afficher.</p>
+
+<pre><code class="{python} language-{python}">predict = model.predict(x_valid)
+
+predict = np.argmax(predict,1)
+label = np.argmax(y_valid,1)
+
+acc = np.equal(predict,label)
+acc = acc.astype(float)
+
+result = []
+
+for i in range(0,len(predict)):
+  result.append([predict[i],label[i],acc[i],i])
+
+df_result = pd.DataFrame(result)
+df_result.columns=["predict","label","as_predict","id_img"]
+
+is_False = x_valid[np.array(df_result.loc[df_result["as_predict"]==0,['id_img']])]
+predict = np.array(df_result.loc[df_result["as_predict"]==0,['predict']])
+label = np.array(df_result.loc[df_result["as_predict"]==0,['label']])
+
+fig = plt.figure(figsize=(15,15))
+plt.gcf().subplots_adjust(hspace = 0.3)
+
+for i in range(0,len(is_False)):
+    plt.subplot(int(round(np.sqrt(len(is_False)))+1), int(round(np.sqrt(len(is_False)))), i+1)
+    img = plt.imshow(is_False[i].reshape(28,28))
+    img.axes.get_xaxis().set_visible(False)
+    img.axes.get_yaxis().set_visible(False)
+    plt.title(("predict = " + str(predict[i][0]) + "  |  label = " + str(label[i][0])))
+plt.show()
+</code></pre>
+
+<p><img src="https://user-images.githubusercontent.com/44996564/55083749-4db3d300-50a4-11e9-8364-89eb9b8fe296.png"></p>
+
+<h2 id="applicationsurlchantillondetest">Application sur l'échantillon de test</h2>
+
+<p>Nous allons maintenant appliquer le modèle sur l'échantillon de test et faire une soumission sur Kaggle.
+Nous allons d'abord importer le fichier csv contenant les valeurs de pixels, puis nous allons les redimensionner pour les stocker dans un vecteur.</p>
+
+<pre><code class="{python} language-{python}">df = pd.read_csv('/content/data/test.csv')
+
+features = []
+for i in range(0,len(df)):
+  features.append(np.array(df.iloc[i,:]).reshape(28,28,1))
+
+features = np.array(features)
+print("Taille de l'enchantillon de validation =",features.shape)
+</code></pre>
+
+<p><img src="https://user-images.githubusercontent.com/44996564/55081990-260f3b80-50a1-11e9-9230-66ff8b90c6a5.png"></p>
+
+<p>Nous allons maintenant appliquer le modèle à notre vecteur features. Et mettre en forme la table de soumission.</p>
+
+<pre><code class="{python} language-{python}">predict = model.predict(features)
+
+result = []
+
+for i in range(0,len(predict)):
+  result.append([i+1,str(np.argmax(predict,1)[i])])
+
+df = pd.DataFrame(result)
+df.column = ["ImageId","Label"]
+
+df.head()
+</code></pre>
+
+<p><img src="https://user-images.githubusercontent.com/44996564/55082929-d7fb3780-50a2-11e9-8c12-eec73f74f69e.png"></p>
+
+<p>Nous avons ensuite soumis notre prédiction sur Kaggle.</p>
+
+<p><img src="images/CNN_mnist_score.JPG"></p>									
+									
+									
+									
+									
+									
+								</section>	
+									
+									
+									
+									
+									
+									
+									
+
+
+
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="generic.html">Collecte des données</a></li>
+												<li><a href="#">Manipuation de données</a></li>
+												<li><a href="#">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="generic.html">Collecte des données</a></li>
+												<li><a href="#">Manipuation de données</a></li>
+												<li><a href="#">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="generic.html">Réseaux à convolution</a></li>
+												<li><a href="#">Détection d'anomalie</a></li>
+												<li><a href="#">Recommandation</a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon solid fa-phone">06 13 3147 14</li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
