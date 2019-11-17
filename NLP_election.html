@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>NLP - Election Présidentielle</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+							</header>
+
+							
+
+
+
+							<!-- Content -->
+							<section>
+							<h1>Analyse du language</h1>
+							<span class="image main"><img src="images/election.jpg" alt="" /></span>
+							
+<p>Avec plus de 500 millions de tweets publiés chaque jours dans le monde, Le contenus des reseaux sociaux c'est transformer en un terrain de jeux pour l'analyse des données. De plus, l'accès à ces données est devenu très accessible grace au API que les principaux réseaux sociaux mettent à disposition. L'objectif de ce projet est de ce familiarisé avec les méthodes de traitement du language (NLP) en les appliquant sur les tweets publiés par les candidats à l'election présidentielle 2017 lors de la campagne.</p>
+<hr class="major" />
+
+<h2>Le Jeux de données</h2>
+<p>Le jeux de données de ce projet est mise à disposition par ORTOLANG, il rassemble l'enssemble des tweets publiés par les candidats lors de la campagne pour l'election presidentielle.
+<p><a href="https://www.kaggle.com/c/dogs-vs-cats">Lien vers les données</a></p>
+
+<h2>Importation des données</h2
+<p>Le jeux de données est au format xml. Il est composé de deux parties, une première qui recenssent pour chaque candidats un identifant, nom et prenom. Un deuxième qui est composé des tweets et diverses informations</p>
+<p>Les balises "person" correspondent à des candidat</p>
+<p><img src = "images/candidat_xml.jpg"></p>
+<p>Les balises "post" correspondent à des tweets</p>
+<p><img src = "images/tweets_xml.jpg"></p>		
+<p>Grace à la library "ElementTree" nous allons extraire les données des balises qui nous interesses</p>
+<pre><code class="{python} language-{python}">data = et.parse("data/cmr-presidentielle2017-tei-v1.xml")
+root = data.getroot()
+</code></pre>
+On creér une fonction permettant d'extraire les informations d'une balise "person".
+<pre><code class="{python} language-{python}">def user_extract(user):
+  id_user = ""
+  name = ""
+  
+  id_user = user.attrib
+  id_user = list(id_user.values())[0]
+  name = user[0][0].text
+  
+  return([id_user,name])
+</code></pre>
+<p>Ensuite on utilise la fonction pour stocker les informations dans un dictionnaire</p>
+<pre><code class="{python} language-{python}">all_user = {}
+
+for user in root[0][0][4][0]:
+  all_user[user_extract(user)[0]] = user_extract(user)[1]
+</code></pre>
+<p>On obtient le dictionnaire suivant :</p>
+<p><img src = "images/candidat_dico.JPG"></p>
+On réalise la même opération pour les tweets
+<pre><code class="{python} language-{python}">def tweet_extract(tweet):
+    
+  id_tweet = ""
+  user = ""
+  date = ""
+  langue = ""
+  tweet = ""
+  medium = ""
+  favoritecount = "0"
+  retweetcount = "0"
+  isretweet = "false"
+  
+  tweet_paramettre = post.attrib
+  list_parametre = list(tweet_paramettre.values())
+  id_tweet = list_parametre[0]
+  user = list_parametre[1]
+  date = list_parametre[2]
+  langue = list_parametre[3]
+  
+  tweet = "".join(post[0].itertext())
+  
+  for i in post[1][0]:
+    if i.attrib['name']=="medium":
+      medium = i[0].text
+    if i.attrib['name']=="favoritecount":
+      favoritecount = i[0].attrib['value']
+    if i.attrib['name']=="retweetcount":
+      retweetcount = i[0].attrib['value']    
+    if i.attrib['name']=="isRetweet":
+      isretweet = i[0].attrib['value']
+  return([id_tweet,user,date,langue,tweet,medium,favoritecount,retweetcount,isretweet])
+</code></pre>
+On utilise la fonction pour obtenir le DataFrame suivant 
+<pre><code class="{python} language-{python}">All_tweet = []
+
+for post in root[1][0][:]:
+  All_tweet.append(tweet_extract(post))
+
+All_tweet = pd.DataFrame(All_tweet)
+All_tweet.columns = ['id','user','date','langue','tweet','app','favorite','retweet_count','is_retweet']
+
+All_tweet.head()
+</code></pre>			
+<p><img src = "images/tweet_dataframe.JPG"></p>
+
+<h2>Extraction d'informations</h2>
+<p>En observant les tweets, nous avons remarqué que beaucoup de tweets faisait réferance à des articles ou des pages internet grace à des lien url. Avant de commancer à netoyer les tweets, nous avons décidé d'extraire les liens dans une variable, et de créer une variable Flag_lien pour identifié la présence ou non d'un lien url dans le tweet.</p>
+<pre><code class="{python} language-{python}">#Extraction des liens
+def extract_url(tweet):
+  return(re.findall(r"http\S+",tweet))
+
+All_tweet["url_in_tweet"] = All_tweet.tweet.apply(extract_url)
+
+# Création de la variable Flag_url
+def flag_url(extract_url):
+  if len(extract_url)>0:
+    return("true")
+  else:
+    return("false")
+
+All_tweet["flag_url"] = All_tweet.url_in_tweet.apply(flag_url)
+
+All_tweet[["tweet","url_in_tweet","flag_url"]].head()
+ </code></pre>
+<p><img src = "images/extract_url.JPG"></p>
+<h2>Netoyage des tweets</h2>
+<p>Lors d'un traitement NLP, trois étapes sont souvent réalisé afin de rendre les données exploitable.
+<li>La Tokenization permet de décomposer chaque tweet en liste de mots</li>
+<li>La suppression des stopword permet de supprimer les mots n'ayant pas de sens particulier dans une pharse ("le","un",...)</li>
+<li>La lemmatisation ou la grammatisation sont deux techniques differentes permettant de regrouper des mots ayant a peu près le même sens en même mots. Par exemple écrir et écrivons.</li><br/>
+Il existe plusieur librairies permettant de réaliser la plupard de ces étapes (nltk, spacy, Torchtext, sklearn...).
+Pour ce projet, nous allons utiliser spacy et nltk pour réaliser ces trois étapes. Voici comment nous avons procédé<br/>
+</p>
+<pre><code class="{python} language-{python}">
+def normalisation(tweet):
+  doc = nlp(tweet)
+  tokens = []
+  for token in doc:
+    if token.is_stop==False and token.lemma_ not in chara_supp:
+      tokens.append(token.lemma_)
+  return(tokens)
+
+All_tweet["tweet_normalize"] = All_tweet.tweet_netoye.apply(normalisation)
+
+All_tweet["tweet_normalize"].head()
+</code></pre>
+<p><img src = "images/tweet_token.JPG"></p>
+A noté qu'avant de réaliser ces étapes nous avons réaliser plusieurs transformations (Suppression des accents, Supression des liens URL, Suppression des #, Suppression des @, Suppression des "RT" au debut des retweets, Passage des tweets en minuscule, Supression des charactère spréciaux (chiffre, symbole...).
+<br/><br/>A noté aussi qu'après l'étapes de lémmatisation, nous avons lister grace à la librairie nltk les principeux bi-grams et tri-grams. Afin de regrouper dans un même mots un grope de mots ayant un sens significatif dans un tweet.</p>
+ 
+
+
+								</section>	
+									
+									
+									
+									
+									
+									
+									
+
+
+
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="Python_collecte.html">Collecte des données</a></li>
+												<li><a href="Python_manipulation.html">Manipuation de données</a></li>
+												<li><a href="Python_visualisation.html">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="R_collecte.html">Collecte des données</a></li>
+												<li><a href="R_manipulation.html">Manipuation de données</a></li>
+												<li><a href="R_visualisation.html">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="CNN_chien_chat.html">CNN - Classification chiens chats </a></li>
+												<li><a href="CNN_MNIST.html">CNN - MNIST </a></li>
+												<li><a href="#">NLP - Election présidentielle</a></li>
+												<li><a href="CNN_Cancer_detection.html">CNN - Detection du cancer </a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
