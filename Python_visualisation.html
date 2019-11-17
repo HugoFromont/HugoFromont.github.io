@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Accueil</title>
+		<title>Python - visualisation</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -24,95 +24,82 @@
 										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
 									</ul>
 								</header>
+
 							
-							
-							<!-- Banner -->
-								<section id="banner">
-									<div class="content">
-										<header>
-											<h2>Présentation</h2>
-										</header>
-										<p>Cette page à pour objectif de mettre en avant les diffrents projets effectués durant mon parcour scolaire.</p>
-									</div>
-									<span class="image object">
-										<img src="images/presentation.jpg" alt="" />
-									</span>
-								</section>
-							
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Ressources</h2>
-									</header>
-									<div class="features">
-										<article>
-											<span class="icon brands fa-python"></span>
-											<div class="content">
-												<h3>Language Python</h3>
-												<p>Un Mémo pyhton pour le traitement de la data</p>
-											<ul class="actions">
-												<li><a href="Python_collecte.html" class="button">Accès au Mémo</a></li>
-											</ul>
-											</div>
-										</article>
-										<article>
-											<span class="icon brands fa-r-project"></span>
-											<div class="content">
-												<h3>Language R</h3>
-												<p>Un Mémo R pour le traitement de la data</p>
-											<ul class="actions">
-												<li><a href="R_collecte.html" class="button">Accès au Mémo</a></li>
-											</ul>	
-											
-											</div>
-										</article>
-									</div>
-								</section>
 
 
 
+							<!-- Content -->
+								
 
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Projets</h2>
-									</header>
-									<div class="posts">
-										<article>
-											<a href="CNN_chien_chat.html" class="image"><img src="images/chien_chat.jpg" alt="" /></a>
-											<h3>Classification d'image</h3>
-											<p>Création d'un Réseau à convolution pour classification des images de chien et chat</p>
-											<ul class="actions">
-												<li><a href="CNN_chien_chat.html" class="button">More</a></li>
-											</ul>
-										</article>
-										<article>
-											<a href="CNN_MNIST.html" class="image"><img src="images/mnist.png" alt="" /></a>
-											<h3>Reconnaissance de chiffre</h3>
-											<p>Création d'un réseau à convolution pour reconnaitre des chiffres</p>
-											<ul class="actions">
-												<li><a href="CNN_MNIST.html" class="button">More</a></li>
-											</ul>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/election.png" alt="" /></a>
-											<h3>Traitement du langage</h3>
-											<p>Traitement NLP sur les tweets des candidats à la dernière élection présidentielle</p>
-											<ul class="actions">
-												<li><a href="#" class="button">More</a></li>
-											</ul>
-										</article>
-										<article>
-											<a href="CNN_Cancer_detection.html" class="image"><img src="images/cellule.png" alt="" /></a>
-											<h3>Détection de cancer</h3>
-											<p>Classifier des photos de cellules au microscope pour la detection du cancer métastatique</p>
-											<ul class="actions">
-												<li><a href="CNN_Cancer_detection.html" class="button">More</a></li>
-											</ul>
-										</article>
+<section>
 
-									</div>
-								</section>
+
+
+<h1 id="crationdegraphiquesavecmatplotlib">Python - Visualisation de données</h1>
+
+<h3 id="diagrammeenbar">Diagramme en bar</h3>
+
+<pre><code class="{python} language-{python}">df['variable_quali'].value_counts().plot.bar()
+</code></pre>
+
+<h3 id="histogramme">histogramme</h3>
+
+<pre><code class="{python} language-{python}">df['variable_quanti'].plot.hist()
+</code></pre>
+
+<h3 id="nuagedepoints">Nuage de points</h3>
+
+<h3 id="histogramme-1">Histogramme</h3>
+
+<h3 id="boxplot">Boxplot</h3>
+
+<p>Pour afficher des boxplots les uns à côté des autres :</p>
+
+<pre><code class="{python} language-{python}">var = ['Axe1','Axe2','Axe3','Axe4','Axe5']
+graph=1
+fig = plt.figure(figsize=(20,5))
+for axe in var:
+    plt.subplot(1, 5, graph)
+    plt.boxplot(df[axe])
+    graph += 1
+plt.show()
+</code></pre>
+
+<p>pour afficher un boxplot par catégorie :</p>
+
+<pre><code class="{python} language-{python}">fig = plt.figure(figsize=(20,5))
+var = ['Axe1','Axe2','Axe3','Axe4','Axe5']
+i=1
+for axe in var:
+    plt.subplot(1, 5, i)
+    plt.boxplot([
+    df[df['Cluster']=='1'][axe],
+    df[df['Cluster']=='2'][axe],
+    df[df['Cluster']=='3'][axe],
+    df[df['Cluster']=='4'][axe],
+    df[df['Cluster']=='5'][axe],
+    df[df['Cluster']=='6'][axe]])
+    i +=1
+plt.show()
+</code></pre>
+
+<h3 id="afficherplusieursgraphiques">Afficher plusieurs graphiques</h3>
+									
+									
+									
+									
+									
+								</section>	
+									
+									
+									
+									
+									
+									
+									
+
+
 
 						</div>
 					</div>

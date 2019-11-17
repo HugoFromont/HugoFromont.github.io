@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Python - manipulation</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+							
+
+
+
+							<!-- Content -->
+								
+
+<section>
+<h1 id="partie2manipulationdesdonnesavecpython">Manipulation des données avec python</h1>
+
+<h2 id="manipulationdesdataframesavecpandas">Manipulation des DataFrames avec Pandas</h2>
+
+<h3 id="crationdundataframe">Création d'un DataFrame</h3>
+
+<p>La manipulation de DataFrames sur python s'effectue grâce à la librarie Pandas. Pour pouvoir reproduire les commandes utilisées, il est nécessaire d'installer le Package Pandas et de l'importer dans le script python</p>
+
+<pre><code class="{python} language-{python}">import pandas as pd
+</code></pre>
+
+<p>Il est maintenant possible de créer un DataFrame avec la commande suivante </p>
+
+<pre><code class="{python} language-{python}">df = pd.DataFrame({'Prenom': ["Prenom1", "Prenom2", "Prenom3",], 'Age': [19,25,53]}, columns = ['Prenom', 'Age'])
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57060846-23fd5580-6cbb-11e9-9747-8d1aa6467bd8.png"></p>
+
+<p>Mais nous pouvons aussi transformer des objets déja créés en DataFrame</p>
+
+<pre><code class="{python} language-{python}"># Transformation d'une liste en DataFrame
+ma_list = [["Prenom1",19],["Prenom2",25],["Prenom3",53]]
+df = pd.DataFrame(ma_list,columns = ['Prenom', 'Age'])
+
+# Transformation d'un vecteur en DataFrame
+mon_vecteur = np.array([['Prenom1', '19'],['Prenom2', '25'],['Prenom3', '53']])
+df = pd.DataFrame(mon_vecteur,columns = ['Prenom', 'Age'])
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57060846-23fd5580-6cbb-11e9-9747-8d1aa6467bd8.png"></p>
+
+<h3 id="informationsurledataframe">Information sur le DataFrame</h3>
+
+<p>Il existe plusieurs fonctions permettant d'avoir des informations sur un DataFrame. Voici quelques fonctions couramment utilisées.</p>
+
+<pre><code class="{python} language-{python}"># Taille du DataFrame
+df.shape
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57061445-1e087400-6cbd-11e9-8afe-383872ad9d72.png"></p>
+
+<pre><code class="{python} language-{python}"># Apercut des 2 premières lignes
+df.head(2)
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57061505-5f991f00-6cbd-11e9-938d-34cd2615a161.png"></p>
+
+<pre><code class="{python} language-{python}"># Afficher la liste des variables
+df.columns
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57061551-91aa8100-6cbd-11e9-9f76-23b165972507.png"></p>
+
+<p>Il existe de nombreuses autres fonctions, et beaucoup de documentations diponibles sur internet, en voici un exemple <a href="https://pandas.pydata.org/pandas-docs/stable/">(Lien vers documentation)</a></p>
+
+<h3 id="slectionnerdesdonnes">Sélectionner des données</h3>
+
+<p>Voici les 3 princpales méthodes qui permettent de sélectionner des données dans un DataFrame</p>
+
+<p>Voici 3 commandes qui permmettent de sélectionner une variable</p>
+
+<pre><code class="{python} language-{python}">df.Prenom
+df['Prenom']
+df.loc[:, 'Prenom']
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57061757-5c526300-6cbe-11e9-8840-b7cb4d8d016c.png"></p>
+
+<p>Voici 3 commandes permmettant de sélectionner des individus</p>
+
+<pre><code class="{python} language-{python}">df.Prenom[:2]
+df['Prenom'][:2]
+df.loc[:1, 'Prenom']
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57061941-092ce000-6cbf-11e9-9950-78ba0653006c.png"></p>
+
+<p>Voici une dernière fonction permettant de sélectionner des données dans un DataFrame</p>
+
+<pre><code class="{python} language-{python}">df.iloc[0:2,1]
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57062036-4f823f00-6cbf-11e9-8d17-60f7ca862bfc.png"></p>
+
+<p>Pour effectuer des filtres sur les données, nous pouvons utiliser les mêmes fonctions</p>
+
+<pre><code class="{python} language-{python}">df[df['Age']&gt;20]
+df[df.Age&gt;20]
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57062259-f1099080-6cbf-11e9-80cf-44217b2695dc.png"></p>
+
+<pre><code class="{python} language-{python}">df[df['Prenom']=="Prenom1"]
+df[df.Prenom=="Prenom1"]
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57062335-1f876b80-6cc0-11e9-9d05-8b7d898cb16c.png"></p>
+
+<h3 id="formatdevariables">Format de variables</h3>
+
+<p>Pour visualiser le format des variables d'un DataFrame</p>
+
+<pre><code class="{python} language-{python}">df.dtypes
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57062501-a3415800-6cc0-11e9-9f88-4029001969c7.png"></p>
+
+<p>Pour modifier le type de variables</p>
+
+<pre><code class="{python} language-{python}">df.Age = df.Age.astype(str)
+df.dtypes
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57062846-c4567880-6cc1-11e9-9ace-7ccae91d4b29.png"></p>
+
+<pre><code class="{python} language-{python}">df.Age = df.Age.astype(float)
+df.dtypes
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/57062501-a3415800-6cc0-11e9-9f88-4029001969c7.png"></p>
+
+<p>Autres Fonctions utiles :</p>
+
+<pre><code class="{python} language-{python}"># Transformer un nombre de seconde en datetime :
+pd.to_datetime(nb_seconde, unit='s')
+</code></pre>
+
+<h4 id="gestiondesvaleursmanquantes">Gestion des valeurs manquantes</h4>
+
+<p>Voici quelques techniques permettant de traiter les valeurs manquantes.</p>
+
+<p>La première méthode un peu drastique, consiste à supprimer les lignes qui possèdent des valeurs manquantes. 
+Nous pouvons supprimer l'ensemble des lignes qui possèdent au moins une valeur manquante.</p>
+
+<pre><code class="{python} language-{python}">df = df.dropna()
+</code></pre>
+
+<p>Si nous voulons supprimer les valeurs manqantes pour une seule variable, nous pouvons procéder ainsi</p>
+
+<pre><code class="{python} language-{python}">df = df[df['variable'].isna()==False]
+</code></pre>
+
+<p>Dans la majeure partie des cas, nous allons recoder ces valeurs manquantes grâce à diverses techniques.</p>
+
+<p>remplacement d'une valeur manquante par 0</p>
+
+<pre><code class="{python} language-{python}">df['variable'][np.isnan(df['variable'])] = 0
+df['variable'][np.isnan(df['variable'])]="MQT"
+</code></pre>
+
+<p>remplacement d'une valeur manquante par la moyenne</p>
+
+<pre><code class="{python} language-{python}">df['variable'][np.isnan(df['variable'])] = np.mean(df.variable)
+</code></pre>
+
+<h3 id="statistiquedescriptive">Statistique descriptive</h3>
+
+<pre><code class="{python} language-{python}">df['variable'].describe()
+df['variable'].count()
+df['variable'].max()
+df['variable'].min()
+df['variable'].mean()
+df['variable'].std()
+</code></pre>
+
+<h3 id="autresfocntions">Autres focntions</h3>
+
+<p>Voici d'autres fonctions utiles</p>
+
+<pre><code class="{python} language-{python}"># Transformer un effectif en fréquence
+df.value_counts(normalize = True)
+# Renommer les variables
+df.columns = ['var1', 'var2']
+# Trier un DataFrame
+df.sort_values(by = ['var1', 'var2'])
+# Croisement de deux variables
+pd.crosstab(df.variable1,df.variable1)
+# Tester l'égalité de deux DataFrames
+print(pd.DataFrame.equals(df1, df2))
+</code></pre>
+
+<h2 id="manipulationdesdonnesavecdplython">Manipulation des données avec dplython</h2>
+
+<p>Pour manipuler des données sur python, on peut aussi utiliser le package dplython, à condition d'importer le package et de transformer votre dataframe en un objet "DplyFrame"</p>
+
+<pre><code class="{python} language-{python}">from dplython import (DplyFrame, X, select, sift, arrange, mutate, group_by, summarize) 
+data = DplyFrame(data)
+</code></pre>
+
+<p>Il est maintenant possible d'effectuer les opérations suivantes</p>
+
+<pre><code class="{python} language-{python}"># Sélection
+new_data = data &gt;&gt; select(X.variable1,X.variable2,X.variable3)
+# Filtres
+new_data = data &gt;&gt; sift(X.variable1 &gt; valeur1 , X.variable1 &lt; valeur2)
+# Trier
+new_data = data &gt;&gt; arrange(X.variable1, X.variable2)
+# Ajouter une nouvelle variable
+new_data = data &gt;&gt; mutate(new_feature = X.feature1-100, new_feature2 = X.feature1/X.feature2)
+# Agrégation
+new_data = data &gt;&gt; group_by(X.variable1) &gt;&gt; summarize(new_feature = X.variable2.mean())
+# Jointure
+inner_join_data = inner_join(data1, data2, on = "ID")
+left_join_data = left_join(data1, data2, on = "ID")
+</code></pre>
+
+<h2 id="echantillonnagedesdonnes">Echantillonnage des données</h2>
+
+<p>Dans le cadre d'un projet de Machine learning, nous divisons notre base de données en 2 échantillons (Apprentissage et test), Voici la commande</p>
+
+<pre><code class="{python} language-{python}">from sklearn.model_selection import train_test_split
+
+x_train, x_valid, y_train, y_valid = train_test_split(features, targets, test_size=0.3, random_state=123)
+
+print("x_train =",x_train.shape,"  |  y_train =",y_train.shape)
+print("x_valid =",x_valid.shape,"  |  y_valid =",y_valid.shape)
+</code></pre>														
+
+				
+									
+									
+									
+									
+									
+								</section>	
+									
+									
+									
+									
+									
+									
+									
+
+
+
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="Python_collecte.html">Collecte des données</a></li>
+												<li><a href="Python_manipulation.html">Manipuation de données</a></li>
+												<li><a href="Python_visualisation.html">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="R_collecte.html">Collecte des données</a></li>
+												<li><a href="R_manipulation.html">Manipuation de données</a></li>
+												<li><a href="R_visualisation.html">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="CNN_chien_chat.html">CNN - Classification chiens chats </a></li>
+												<li><a href="CNN_MNIST.html">CNN - MNIST </a></li>
+												<li><a href="#">NLP - Election présidentielle</a></li>
+												<li><a href="CNN_Cancer_detection.html">CNN - Detection du cancer </a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

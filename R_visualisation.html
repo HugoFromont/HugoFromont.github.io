@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>R - Visualisation</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+							
+
+
+
+							<!-- Content -->
+								
+
+<section>
+
+<h1 id="partie3crationdegraphiquesavecr">R - Visualisation</h1>
+
+<h2 id="graphiqueavecggplot2">Graphique avec ggplot2</h2>
+
+<p>ggplot2 est une librairie très utilisée pour la création de graphiques. Voici ci dessous quelques exemples de graphiques.
+Une documentation très complète est disponible <a href="https://thinkr.fr/pdf/ggplot2-french-cheatsheet.pdf">ici</a> pour voir un aperçu des graphiques qu'il est possible de réaliser</p>
+
+<p>Nous allons voir comment créer des graphiques avce ggplot2.
+Afin d'illustrer les exemples ci dessous, j'ai créer un jeux de données aléatoire composé d'une variable qualitative et de deux variables quantitatives</p>
+
+<pre><code class="{r} language-{r}">data &lt;- data.frame(
+  sexe = c("M","F","M","F","M","F","M","F","M","F","M","F","M","F","M","F"),
+  age = c(10,15,26,45,78,46,85,5,12,18,64,59,34,28,47,7),
+  taille = c(136,158,165,155,160,176,168,124,159,163,162,164,184,191,174,135)
+)
+</code></pre>
+
+<h3 id="basedeggplot2">Base de ggplot2</h3>
+
+<p>Pour créer un graphique avec ggplot2, vous devez d'abord initialiser uun graphique avec la focntion suivante</p>
+
+<pre><code>ggplot(data,aes(x = age, y = taille))
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/58937074-aae99600-8771-11e9-9892-f94639dfdf22.png">
+Vous remarquerez que rien apparait, ce qui est tout à fait normal, puisque nous n'avons pas spécifié ce que nous voulions afficher</p>
+
+<p>Nous allons maintenant spécifier le type de graphqiue que nous voulons. Par exemple si nous voulons un nuage de point nous allons écrir ceci</p>
+
+<pre><code class="{r} language-{r}">ggplot(data,aes(x = age, y = taille)) +
+  geom_point()
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/58937101-c2c11a00-8771-11e9-892e-026bcca27631.png"></p>
+
+<p>Celon les graphiques que vous souhaitez réaliser il existe de nombreuses possibilitées (geom<em>bar(),geom</em>boxplot()...).
+Pour voir les possibilités que vous offre ggplot2, je vous conseil de consulter <a href="https://thinkr.fr/pdf/ggplot2-french-cheatsheet.pdf">ce document</a> qui récapitule bien les differentes focntions.</p>
+
+<p>Au sein d'un même graphqiue, nous pouvons superposer les elements visuelles. Par exemple dans le graphique suivant nous allons supperposer un nuage de point et une courbe</p>
+
+<pre><code class="{r} language-{r}">ggplot(data,aes(x = age, y = taille)) +
+  geom_point() +
+  geom_line()
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/58937127-ce144580-8771-11e9-93ad-68ab400d6bbf.png"></p>
+
+<p>Nous pouvons aussi différencier 2 types de données par exemple les femmes et les hommes en rajoutant le parametre color</p>
+
+<pre><code class="{r} language-{r}">ggplot(data,aes(x = age, y = taille, color=sexe)) +
+  geom_point() +
+  geom_line()
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/58937141-dc626180-8771-11e9-8dd3-7536878060aa.png"></p>
+
+<p>Avant de voir comment comment il est possible de personnaliser le visuelle des graphqiues, je vais vous présenter quelques exemples de graphique qu'il est possible de réaliser avec notre jeux de données initiale</p>
+
+<pre><code class="{r} language-{r}">ggplot(data,aes(x = sexe, y = taille,color = sexe)) +
+  geom_boxplot() +
+  geom_point()
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/58937160-e71cf680-8771-11e9-9802-4f81e199be87.png"></p>
+
+<pre><code class="{r} language-{r}">data_graph &lt;- data %&gt;% group_by(sexe) %&gt;% summarise(Age_mean = mean(age), Taille_mean = mean(taille))
+ggplot(data_graph,aes(x = sexe,y = Age_mean)) + geom_bar(stat = "identity")
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/58937635-492a2b80-8773-11e9-9bbf-bd76d1108a07.png"></p>
+
+<h2 id="personaliserungraphiqueggplot">Personaliser un graphique ggplot</h2>
+
+<p>Ajouter ligne vertical</p>
+
+<pre><code class="{r} language-{r}">geom_vline(xintercept = 3, linetype="dotted", color = "blue", size=1.5)
+</code></pre>
+
+<p>Ajouter une ligne horizontale</p>
+
+<pre><code class="{r} language-{r}">geom_hline(yintercept=20, linetype="dashed", color = "red", size=2)
+</code></pre>
+
+<p>Ajouter une droite de regression</p>
+
+<pre><code class="{r} language-{r}">geom_abline(intercept = 37, slope = -5)
+</code></pre>
+
+<p>Ajouter un segment </p>
+
+<pre><code class="{r} language-{r}">geom_segment(aes(x = 4, y = 15, xend = 4, yend = 27))
+</code></pre>
+
+<h3 id="titreetaxes">Titre et axes</h3>
+
+<p>Ajout du titre d'un graph et du titre des axes</p>
+
+<pre><code class="{r} language-{r}">graph + labs(title="Titre", x ="Axe X", y = "Axe Y", fill = "Légende")
+</code></pre>
+
+<p>Modification des limites d'axe</p>
+
+<pre><code class="{r} language-{r}">graph + xlim(0, 10) + ylim(0, 20)
+graph + expand_limits(x=c(0,10), y=c(0, 20))
+</code></pre>
+
+<p>Personalisation dans la fonction theme</p>
+
+<pre><code class="{r} language-{r}">graph + theme(
+    plot.title = element_text(face = "bold", colour = 'black', size = 10, hjust = 0.5, vjust = 0.5, angle = 0),
+    axis.title.x = element_text(face = "bold", colour = 'black', size = 10, hjust = 0.5, vjust = 0.5, angle = 0),
+    axis.title.y = element_text(face = "bold", colour = 'black', size = 10, hjust = 0.5, vjust = 0.5, angle = 90),
+    # pour les chioffre de graduation
+    axis.text.y = element_text(face = "bold"),
+    # pour les tirets de graduation
+    axis.ticks.y = element_blank(),
+  )
+</code></pre>
+
+<p>Pour masquer les titre et titre d'axes </p>
+
+<pre><code class="{r} language-{r}">theme(
+  plot.title = element_blank(),
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  #graduation
+  axis.text.y =element_blank(),
+  # pour les tirets de graduation
+  axis.ticks.y = element_blank()
+)
+</code></pre>
+
+<p>modification du fond du graphique</p>
+
+<pre><code class="{r} language-{r}">theme(panel.background = element_rect(fill = 'white', colour = "gray", size = 1, linetype="solid"))
+</code></pre>
+
+<p>fill = couleur de remplissage de la partie graphque
+colour = Couleur de bordure de la partie graphque
+size taille de la bordure
+linetype = type de bordure (blank, solid, dashed, dotted, dotdash, longdash, twodash)</p>
+
+<p>modification des quadriage</p>
+
+<pre><code class="{r} language-{r}">theme(
+panel.grid.major = element_line(colour = 'gray', size = 1 , linetype = "solid"),
+panel.grid.minor = element_line(colour = 'gray', size = 1 , linetype = "solid")
+)
+</code></pre>
+
+<p>fond du graph</p>
+
+<pre><code class="{r} language-{r}">plot.background = element_rect(fill = "gray")
+</code></pre>
+
+<pre><code class="{r} language-{r}">theme_gray
+function (base_size = 11, base_family = "") 
+{
+ half_line &lt;- base_size/2
+theme(
+  line = element_line(colour = "black", size = 0.5, 
+                      linetype = 1, lineend = "butt"), 
+  rect = element_rect(fill = "white", colour = "black",
+                      size = 0.5, linetype = 1),
+  text = element_text(family = base_family, face = "plain",
+                      colour = "black", size = base_size,
+                      lineheight = 0.9,  hjust = 0.5,
+                      vjust = 0.5, angle = 0, 
+                      margin = margin(), debug = FALSE), 
+
+  axis.line = element_blank(), 
+  axis.text = element_text(size = rel(0.8), colour = "grey30"),
+  axis.text.x = element_text(margin = margin(t = 0.8*half_line/2), 
+                             vjust = 1), 
+  axis.text.y = element_text(margin = margin(r = 0.8*half_line/2),
+                             hjust = 1),
+  axis.ticks = element_line(colour = "grey20"), 
+  axis.ticks.length = unit(half_line/2, "pt"), 
+  axis.title.x = element_text(margin = margin(t = 0.8 * half_line,
+                                          b = 0.8 * half_line/2)),
+  axis.title.y = element_text(angle = 90, 
+                              margin = margin(r = 0.8 * half_line,
+                                          l = 0.8 * half_line/2)),
+
+  legend.background = element_rect(colour = NA), 
+  legend.margin = unit(0.2, "cm"), 
+  legend.key = element_rect(fill = "grey95", colour = "white"),
+  legend.key.size = unit(1.2, "lines"), 
+  legend.key.height = NULL,
+  legend.key.width = NULL, 
+  legend.text = element_text(size = rel(0.8)),
+  legend.text.align = NULL,
+  legend.title = element_text(hjust = 0), 
+  legend.title.align = NULL, 
+  legend.position = "right", 
+  legend.direction = NULL,
+  legend.justification = "center", 
+  legend.box = NULL, 
+
+  panel.background = element_rect(fill = "grey92", colour = NA),
+  panel.border = element_blank(), 
+  panel.grid.major = element_line(colour = "white"), 
+  panel.grid.minor = element_line(colour = "white", size = 0.25), 
+  panel.margin = unit(half_line, "pt"), panel.margin.x = NULL, 
+  panel.margin.y = NULL, panel.ontop = FALSE, 
+
+  strip.background = element_rect(fill = "grey85", colour = NA),
+  strip.text = element_text(colour = "grey10", size = rel(0.8)),
+  strip.text.x = element_text(margin = margin(t = half_line,
+                                              b = half_line)), 
+  strip.text.y = element_text(angle = -90, 
+                              margin = margin(l = half_line, 
+                                              r = half_line)),
+  strip.switch.pad.grid = unit(0.1, "cm"),
+  strip.switch.pad.wrap = unit(0.1, "cm"), 
+
+  plot.background = element_rect(colour = "white"), 
+  plot.title = element_text(size = rel(1.2), 
+                            margin = margin(b = half_line * 1.2)),
+  plot.margin = margin(half_line, half_line, half_line, half_line),
+  complete = TRUE)
+}
+</code></pre>
+
+<h3 id="graphiquesinteractifs">Graphiques interactifs</h3>
+
+<p>Il est possible de rendre un graphique ggplot interactif grace au package plotly</p>
+
+<pre><code class="{r} language-{r}">library(plotly)
+ggplotly(g)
+</code></pre>
+
+<p>ou g est un graphique créé avec ggplot2</p>
+
+<h2 id="graphiqueavecramcharts">Graphique avec rAmCharts</h2>
+
+<p>La librairie rAmCharts est une librairie permettant de créer des graphiques interactifs. Elle utilise du code JavaScript et nécessite une licence.</p>
+
+<h3 id="graphiqueencourbe">Graphique en courbe</h3>
+
+<pre><code class="{r} language-{r}">data_graph &lt;- data.frame(
+  Annee = as.character(data$Annee),
+  Temperature = data$Temperature_annuelle_moyenne)
+
+amSerialChart(dataProvider = data_graph, categoryField = "Annee") %&gt;%
+  addGraph(valueField = "Temperature", lineColor = "brown",
+     balloonText = "[[value]] degré") %&gt;%
+  addTitle(text = "Teméerature moyenne") %&gt;%
+  addValueAxis(title = "Température moyenne") %&gt;%
+  setChartCursor()
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/56196656-8c033900-6037-11e9-8736-a3308ee7d9d6.png"></p>
+
+<h3 id="graphiqueenbarre">Graphique en barre</h3>
+
+<pre><code class="{r} language-{r}">data_graph &lt;- data.frame(
+  Annee = as.character(data$Annee),
+  Precipitations = data$Quantite_totale_precipitations)
+
+amSerialChart(dataProvider = data_graph, categoryField = "Annee") %&gt;%
+  addGraph(valueField = "Précipitations", type = "column", 
+               fillAlphas = 1,
+               lineColor = "#DD1C1A", fillColors = "#DD1C1A",
+               balloonText = "[[category]] : [[value]] mm") %&gt;%
+  addTitle(text = "Précipitations annuelles moyennes", 
+               size = 12, color = "#68838B") %&gt;%
+  setCategoryAxis(autoGridCount = FALSE, gridCount = dim(data_graph)[1], 
+                      labelRotation = 90, fontSize = 8) %&gt;%
+  setExport(enabled = TRUE)
+</code></pre>
+
+<p><img src = "https://user-images.githubusercontent.com/44996564/56199948-2c5c5c00-603e-11e9-931f-6b1d060b637b.png"></p>					
+									
+									
+									
+								</section>	
+									
+									
+									
+									
+									
+									
+									
+
+
+
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="generic.html">Collecte des données</a></li>
+												<li><a href="#">Manipuation de données</a></li>
+												<li><a href="#">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="generic.html">Collecte des données</a></li>
+												<li><a href="#">Manipuation de données</a></li>
+												<li><a href="#">Visualisation</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="CNN_chien_chat.html">CNN - Classification chiens chats </a></li>
+												<li><a href="CNN_MNIST.html">CNN - MNIST </a></li>
+												<li><a href="#">NLP - Election présidentielle</a></li>
+												<li><a href="CNN_Cancer_detection.html">CNN - Detection du cancer </a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon solid fa-phone">06 13 3147 14</li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
