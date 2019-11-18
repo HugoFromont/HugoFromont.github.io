@@ -43,7 +43,7 @@
 
 <h2>Importation des données</h2
 <p>Le jeux de données est au format xml. Il est composé de deux parties, une première qui recenssent pour chaque candidats un identifant, nom et prenom. Un deuxième qui est composé des tweets et diverses informations</p>
-<p>Les balises "person" correspondent à des candidat</p>
+<p>Les balises "person" correspondent à des candidats</p>
 <p><img src = "images/candidat_xml.jpg"></p>
 <p>Les balises "post" correspondent à des tweets</p>
 <p><img src = "images/tweets_xml.jpg"></p>		
@@ -117,7 +117,7 @@ All_tweet.head()
 <p><img src = "images/tweet_dataframe.JPG"></p>
 
 <h2>Extraction d'informations</h2>
-<p>En observant les tweets, nous avons remarqué que beaucoup de tweets faisait réferance à des articles ou des pages internet grace à des lien url. Avant de commancer à netoyer les tweets, nous avons décidé d'extraire les liens dans une variable, et de créer une variable Flag_lien pour identifié la présence ou non d'un lien url dans le tweet.</p>
+<p>En observant les tweets, nous avons remarqué que beaucoup de tweets faisaient réferances à des articles ou des pages internet grace à des liens url. Avant de commancer à netoyer les tweets, nous avons décidé d'extraire les liens dans une variable, et de créer une variable Flag_lien pour identifier la présence ou non d'un lien url dans le tweet.</p>
 <pre><code class="{python} language-{python}">#Extraction des liens
 def extract_url(tweet):
   return(re.findall(r"http\S+",tweet))
@@ -137,15 +137,14 @@ All_tweet[["tweet","url_in_tweet","flag_url"]].head()
  </code></pre>
 <p><img src = "images/extract_url.JPG"></p>
 <h2>Netoyage des tweets</h2>
-<p>Lors d'un traitement NLP, trois étapes sont souvent réalisé afin de rendre les données exploitable.
+<p>Lors d'un traitement NLP, trois étapes sont souvent réalisées afin de rendre les données exploitables.
 <li>La Tokenization permet de décomposer chaque tweet en liste de mots</li>
 <li>La suppression des stopword permet de supprimer les mots n'ayant pas de sens particulier dans une pharse ("le","un",...)</li>
-<li>La lemmatisation ou la grammatisation sont deux techniques differentes permettant de regrouper des mots ayant a peu près le même sens en même mots. Par exemple écrir et écrivons.</li><br/>
-Il existe plusieur librairies permettant de réaliser la plupard de ces étapes (nltk, spacy, Torchtext, sklearn...).
+<li>La lemmatisation ou la racinisation sont deux techniques differentes permettant de regrouper des mots ayant a peu près le même sens. Par exemple "écrir" et "écrivons" devienderont tout les deux "ecrir".</li><br/>
+Il existe plusieurs librairies permettant de réaliser la plupard de ces étapes (nltk, spacy, Torchtext, sklearn...).
 Pour ce projet, nous allons utiliser spacy et nltk pour réaliser ces trois étapes. Voici comment nous avons procédé<br/>
 </p>
-<pre><code class="{python} language-{python}">
-def normalisation(tweet):
+<pre><code class="{python} language-{python}">def normalisation(tweet):
   doc = nlp(tweet)
   tokens = []
   for token in doc:
@@ -159,8 +158,43 @@ All_tweet["tweet_normalize"].head()
 </code></pre>
 <p><img src = "images/tweet_token.JPG"></p>
 A noté qu'avant de réaliser ces étapes nous avons réaliser plusieurs transformations (Suppression des accents, Supression des liens URL, Suppression des #, Suppression des @, Suppression des "RT" au debut des retweets, Passage des tweets en minuscule, Supression des charactère spréciaux (chiffre, symbole...).
-<br/><br/>A noté aussi qu'après l'étapes de lémmatisation, nous avons lister grace à la librairie nltk les principeux bi-grams et tri-grams. Afin de regrouper dans un même mots un grope de mots ayant un sens significatif dans un tweet.</p>
- 
+<br/><br/>A noté aussi qu'après l'étapes de lemmatisation, nous avons lister grace à la librairie nltk les principeux bi-grams et tri-grams. Afin de regrouper dans un même mot un groupe de mots ayant un sens significatif dans un tweet.</p>
+
+<h2>Topic Modeling</h2>
+<p>Maintenant que le tweets sont exploitables, nous allons appliquer une démarche de topic modeling. Pour ce faire nous avons besoin de transformer nos tweet en vecteur. Nous allons réaliser cet opération en grace à la fonction  TfidfVectorizer de  la librairie sklearn. cette fonction permet de transformer les tweets en vecteurs, mais aussi d'accorder un score de pertinence aux mots en fonction de la frequence d'un mot dans une phrase et de la fréquence du mots dans le corpus. Voici la formule qui permet de calculer ce score :
+</p>
+<p><img src = "images/formule_tfidf.JPG"></p>
+Voici comment appliquer cette méthode avec la fonction de sklearn
+<pre><code class="{python} language-{python}">from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import NMF
+
+tfidf_vectorizer = TfidfVectorizer()
+tfidf = tfidf_vectorizer.fit_transform(tweet_sk)
+</code></pre>
+La fonction TfidfVectorizer permet aussi de supprimer les stopword. Cependant, il permet de suprimer uniquement les stopword anglais. Or les tweets de ce projet sont en anglais, de plus nous avons déjà réalisé cet étape plus tôt.
+
+Nous obtenons donc une matrice de taille nombre de tweets * nombre de mots
+<pre><code class="{python} language-{python}">tfidf.shape
+</code></pre>
+<p><img src = "images/shape_tfidf.JPG"></p>
+<p>Pour extraire une liste de topic, il suffit maintenant d'appliqué une méthode de réduction dimensionnelle sur notre matrice.
+Nous avons appliqué une factorisation par matrice non negatives (NMF). Appliquer une NMF sur une matrice X de taille x * y consiste à décomposer la matrice en deux nouvelles matrice W et H de taille (x,nb_component) et (nb_component,y) telle que le produits des deux nouvelles matrices aproche au mieux la matrice d'origine.
+Voici comment appliquer une NMF</p>
+<pre><code class="{python} language-{python}">nmf = NMF(n_components=5, random_state=1).fit(tfidf)
+W = nmf.transform(tfidf)
+</code></pre>
+<p>Nous avons fixé le nombre de composentes arbitrairement à cinq pour cet exemple, mais nous aurions pu le determiner d'une manière plus mathématique.</p>
+Voici les deux matrice que nous obtenons
+<pre><code class="{python} language-{python}">print("W : ",W.shape)
+print("H : ",nmf.components_.shape)
+</code></pre>
+<p><img src = "images/taille_nmf.JPG"></p>
+Les 5 Topic que nous obtenons correspondent donc au 5 dimentions de nos nos matrice en sortie de la NMF. Grace à la première matrice nous pouvons identifier les tweets qui représentent le plus chaque topic. Grace à la deuxième matrice nous pouvons sortir la liste des mots qui contribuent le plus à chaque topic.</p>
+<p><img src = "images/topic.JPG"></p>
+
+<h2>Conclusion</h2>
+Les techniques que nous venons d'utiliser, sont un bon moyen de faire de la recherche de topic dans un coprus. Il existe de nombreuse autres possibilités. Par exemple ont peut remplacer la NMF par une LDA, on peut utiliser une racinisation à la lace de la lemmatisation...
+
 
 
 								</section>	
