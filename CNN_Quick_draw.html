@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Python - visualisation</title>
+		<title>Accueil</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -34,57 +34,12 @@
 
 <section>
 
+										<h1>Classification d'image</h1>
+			
+									<span class="image main"><img src="images/quick_draw_cover_2.png" alt="" /></span>
+									
+																	
 
-
-<h1 id="crationdegraphiquesavecmatplotlib">Python - Visualisation de données</h1>
-
-<h3 id="diagrammeenbar">Diagramme en bar</h3>
-
-<pre><code class="{python} language-{python}">df['variable_quali'].value_counts().plot.bar()
-</code></pre>
-
-<h3 id="histogramme">histogramme</h3>
-
-<pre><code class="{python} language-{python}">df['variable_quanti'].plot.hist()
-</code></pre>
-
-<h3 id="nuagedepoints">Nuage de points</h3>
-
-<h3 id="histogramme-1">Histogramme</h3>
-
-<h3 id="boxplot">Boxplot</h3>
-
-<p>Pour afficher des boxplots les uns à côté des autres :</p>
-
-<pre><code class="{python} language-{python}">var = ['Axe1','Axe2','Axe3','Axe4','Axe5']
-graph=1
-fig = plt.figure(figsize=(20,5))
-for axe in var:
-    plt.subplot(1, 5, graph)
-    plt.boxplot(df[axe])
-    graph += 1
-plt.show()
-</code></pre>
-
-<p>pour afficher un boxplot par catégorie :</p>
-
-<pre><code class="{python} language-{python}">fig = plt.figure(figsize=(20,5))
-var = ['Axe1','Axe2','Axe3','Axe4','Axe5']
-i=1
-for axe in var:
-    plt.subplot(1, 5, i)
-    plt.boxplot([
-    df[df['Cluster']=='1'][axe],
-    df[df['Cluster']=='2'][axe],
-    df[df['Cluster']=='3'][axe],
-    df[df['Cluster']=='4'][axe],
-    df[df['Cluster']=='5'][axe],
-    df[df['Cluster']=='6'][axe]])
-    i +=1
-plt.show()
-</code></pre>
-
-<h3 id="afficherplusieursgraphiques">Afficher plusieurs graphiques</h3>
 									
 									
 									
