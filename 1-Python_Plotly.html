@@ -1,0 +1,369 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-PNJTS2L');</script>
+		<!-- End Google Tag Manager -->
+		
+	
+		<title>Accueil</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154786126-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'UA-154786126-1');
+		</script>
+	</head>
+	
+	
+	
+	<body class="is-preload">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNJTS2L"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+
+
+
+							<!-- Content -->
+								<section>
+									<h1>Visualisation de données avec Plotly</h1>
+									<span class="image main"><img src="images/1-Python_Intro_Plotly.png" alt="" /></span>
+
+<h1 id="guide-plotly">Guide Plotly</h1>
+<p>A travesr ce guide, nous verons quelques focntion de la librairies plotly. <br>
+Plotly est une librarie permettant de développer des graphiques interactifs très élaboré.</p>
+<pre><code class="lang-python"><span class="hljs-comment"># Pour l'affichage des graphque sur un notebook</span>
+<span class="hljs-keyword">from</span> plotly.offline <span class="hljs-keyword">import</span> init_notebook_mode
+init_notebook_mode(connected=<span class="hljs-keyword">True</span>)
+</code></pre>
+<pre><code class="lang-python"><span class="hljs-title">from</span> plotly.offline <span class="hljs-keyword">import</span> iplot
+<span class="hljs-keyword">import</span> plotly.graph_objects <span class="hljs-keyword">as</span> go
+<span class="hljs-keyword">import</span> cufflinks <span class="hljs-keyword">as</span> cf
+</code></pre>
+<p>Afin de d&#39;illustrer les exemples, nous allons reprendre le jeux de données que nous avons exporté à la fin du guide sur pandas</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-class"><span class="hljs-keyword">data</span> = pd.read_csv('<span class="hljs-title">data_clean</span>.<span class="hljs-title">csv'</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span>.head()</span>
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>tx_cholesterol</th>
+      <th>maladie_cardiaque</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>Homme</td>
+      <td>233</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>Homme</td>
+      <td>250</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>Femme</td>
+      <td>204</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>Homme</td>
+      <td>236</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>Femme</td>
+      <td>354</td>
+      <td>présence</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h1 id="graphique-de-base">Graphique de base</h1>
+<p>Il y a deux manières de faire un graphique avec plotly soit avec plotly express ou plotly graph_objects.</p>
+<p>Plotly Express est une librérie basé sur plotly.graph_objects pour l&#39;exploration rapide des données et la génération de figures.</p>
+<p>ici nous alons présenter quelques graphique de base avec plotly graph_object, en ajoutant quelques paramettres qui permetteront de personnalisé rapidement un graphique.</p>
+<h2 id="histograme">Histograme</h2>
+<pre><code class="lang-python"><span class="hljs-comment"># Création de l'object graphique</span>
+<span class="hljs-attr">fig</span> = go.Figure()
+
+<span class="hljs-comment"># Ajout des traces</span>
+fig.add_trace(go.Histogram(
+    <span class="hljs-attr">x=data['tx_cholesterol'],</span>
+    <span class="hljs-attr">nbinsx=50</span>
+))
+
+<span class="hljs-comment"># Personalisation de l'affichage</span>
+fig.update_layout(
+    <span class="hljs-comment"># Personnalisation du Titre</span>
+    <span class="hljs-attr">title_text</span> = <span class="hljs-string">"Répartition du taux de cholesterol"</span>,
+    <span class="hljs-attr">title_font</span> = dict(<span class="hljs-attr">size</span> = <span class="hljs-number">20</span>, <span class="hljs-attr">color</span> = <span class="hljs-string">"grey"</span>),
+    <span class="hljs-attr">title_x</span> = <span class="hljs-number">0.5</span>,
+
+    <span class="hljs-comment"># Personnalisation de l'axe x</span>
+    <span class="hljs-attr">xaxis_title_text</span> = 'Taux de cholesterol',
+    <span class="hljs-attr">xaxis_title_font</span> = dict(<span class="hljs-attr">size=18,</span> <span class="hljs-attr">color='grey'),</span>
+    <span class="hljs-attr">xaxis=dict(showgrid=False,</span> <span class="hljs-attr">zeroline=False),</span>
+
+    <span class="hljs-comment"># Personnalisation de l'axe y</span>
+    <span class="hljs-attr">yaxis_title_text</span> = 'Nombre de patients',
+    <span class="hljs-attr">yaxis_title_font</span> = dict(<span class="hljs-attr">size</span> = <span class="hljs-number">18</span>, <span class="hljs-attr">color</span> = <span class="hljs-string">"grey"</span>),
+    <span class="hljs-attr">yaxis=dict(showgrid=True,</span> <span class="hljs-attr">zeroline=False,</span>
+               <span class="hljs-attr">ticks="outside",</span> <span class="hljs-attr">tickcolor='#67001F',</span> <span class="hljs-attr">tickwidth=2),</span>
+
+    <span class="hljs-comment"># Couleur de font</span>
+    <span class="hljs-attr">paper_bgcolor</span> = 'rgb(<span class="hljs-number">232</span>,<span class="hljs-number">232</span>,<span class="hljs-number">232</span>)',
+    <span class="hljs-attr">plot_bgcolor</span> = 'rgb(<span class="hljs-number">225</span>,<span class="hljs-number">225</span>,<span class="hljs-number">225</span>)'
+)
+
+
+<span class="hljs-comment"># Modification de toute les traces (même si il y en a qu'une ici)</span>
+fig.update_traces(<span class="hljs-attr">marker_color='#67001F',</span>
+                  <span class="hljs-attr">opacity=0.75)</span>
+
+fig.show()
+</code></pre>
+<h2 id="diagramme-circulaire">Diagramme Circulaire</h2>
+<pre><code class="lang-python"><span class="hljs-attr">label</span> = data[<span class="hljs-string">"sex"</span>].value_counts().keys().tolist() 
+<span class="hljs-attr">valeurs</span> = data[<span class="hljs-string">"sex"</span>].value_counts().values.tolist()
+<span class="hljs-attr">colors</span> = ['<span class="hljs-comment">#67001F','#F4A582']</span>
+
+<span class="hljs-comment"># Création de l'object graphique</span>
+<span class="hljs-attr">fig</span> = go.Figure()
+
+<span class="hljs-comment"># Ajout d'une trace</span>
+fig.add_trace(go.Pie(
+    <span class="hljs-attr">labels</span> = label,
+    <span class="hljs-attr">values</span> = valeurs,
+    <span class="hljs-attr">pull=[0,</span> <span class="hljs-number">0.2</span>] <span class="hljs-comment">#Pour mettre en avant un label </span>
+))
+
+fig.update_layout(
+    <span class="hljs-attr">title_text='Répartition</span> Homme/Femme',
+    <span class="hljs-attr">title_font</span> = dict(<span class="hljs-attr">size</span> = <span class="hljs-number">20</span>, <span class="hljs-attr">color</span> = <span class="hljs-string">"grey"</span>),
+    <span class="hljs-attr">title_x</span> = <span class="hljs-number">0.5</span>,
+)
+
+fig.update_traces(
+    <span class="hljs-attr">hoverinfo='label+percent',</span> <span class="hljs-comment"># Affichage du label et de la fréquence au moment du passage de la souris</span>
+    <span class="hljs-attr">textinfo='value',</span>  <span class="hljs-comment">#  Affichage du la valeur des tranches</span>
+    <span class="hljs-attr">textfont_size=20,</span> <span class="hljs-comment"># Taille du textinfo</span>
+    <span class="hljs-attr">marker=dict(colors=colors)</span> <span class="hljs-comment"># Couleur des label</span>
+)
+
+fig.show()
+</code></pre>
+<h2 id="nuage-de-points">Nuage de points</h2>
+<pre><code class="lang-python"><span class="hljs-attr">colors</span> = ['<span class="hljs-comment">#67001F','#F4A582']</span>
+
+<span class="hljs-attr">fig</span> = go.Figure()
+
+fig.add_trace(go.Scatter(
+    <span class="hljs-attr">x=data.age,</span>
+    <span class="hljs-attr">y=data.tx_cholesterol,</span>
+    <span class="hljs-attr">mode</span> = 'markers',
+    <span class="hljs-attr">marker_color=(data.maladie_cardiaque=='abscence')*1,</span>
+    <span class="hljs-attr">marker=dict(colorscale=colors),</span>
+    <span class="hljs-attr">text=data.maladie_cardiaque</span>
+))
+
+fig.update_layout(
+    <span class="hljs-comment"># Titre du graphique</span>
+    <span class="hljs-attr">title_text='Age</span> en fonction du tx de chol',
+    <span class="hljs-attr">title_font</span> = dict(<span class="hljs-attr">size</span> = <span class="hljs-number">20</span>, <span class="hljs-attr">color</span> = <span class="hljs-string">"grey"</span>),
+    <span class="hljs-attr">title_x</span> = <span class="hljs-number">0.5</span>,
+
+    <span class="hljs-comment"># Titre des axes</span>
+    <span class="hljs-attr">xaxis_title_text='Age',</span>
+    <span class="hljs-attr">yaxis_title_text='Taux</span> de chol',
+
+    <span class="hljs-comment"># Couleur de font</span>
+    <span class="hljs-attr">paper_bgcolor</span> = 'rgb(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>)',
+    <span class="hljs-attr">plot_bgcolor</span> = 'rgb(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>)'
+)
+
+
+fig.show()
+</code></pre>
+<h3 id="diagramme-en-bar">Diagramme en Bar</h3>
+<pre><code class="lang-python"><span class="hljs-attr">label</span> = data[<span class="hljs-string">"sex"</span>].value_counts().keys().tolist() 
+<span class="hljs-attr">valeurs</span> = data[<span class="hljs-string">"sex"</span>].value_counts().values.tolist()
+<span class="hljs-attr">colors</span> = ['<span class="hljs-comment">#67001F','#B2182B','#D6604D','#F4A582']</span>
+
+<span class="hljs-attr">fig</span> = go.Figure()
+
+<span class="hljs-comment"># Ajout des traces</span>
+fig.add_trace(go.Bar(
+    <span class="hljs-attr">x=label,</span>
+    <span class="hljs-attr">y=valeurs</span>
+))
+
+<span class="hljs-comment"># recouvrement des histogrames </span>
+fig.update_layout(
+    <span class="hljs-comment"># Titre du graphique</span>
+    <span class="hljs-attr">title_text='Répartission</span> Homme/Femme',
+    <span class="hljs-attr">title_font</span> = dict(<span class="hljs-attr">size</span> = <span class="hljs-number">20</span>, <span class="hljs-attr">color</span> = <span class="hljs-string">"grey"</span>),
+    <span class="hljs-attr">title_x</span> = <span class="hljs-number">0.5</span>,
+    <span class="hljs-comment"># Titres des axes</span>
+    <span class="hljs-attr">xaxis_title_text='Age',</span>
+    <span class="hljs-attr">yaxis_title_text='Taux</span> de chol',
+
+    <span class="hljs-comment"># Couleur de font</span>
+    <span class="hljs-attr">paper_bgcolor</span> = 'rgb(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>)',
+    <span class="hljs-attr">plot_bgcolor</span> = 'rgb(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">255</span>)'
+)
+
+fig.update_traces(<span class="hljs-attr">marker_color='#F4A582',</span> <span class="hljs-comment"># Modification de l'apparence des bars</span>
+                  <span class="hljs-attr">marker_line_color='#67001F',</span> <span class="hljs-comment"># Modification de l'apparence des bars</span>
+                  <span class="hljs-attr">marker_line_width=3,</span>
+                  <span class="hljs-attr">opacity=0.8</span> <span class="hljs-comment"># Niveau de Transparence</span>
+                  )
+
+fig.show()
+</code></pre>
+	
+
+				
+									
+								</section>	
+									
+									
+
+
+
+
+						</div>
+					</div>
+					
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="index.html">Acceuil</a></li>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="1-Python_Pandas.html">Manipulation de DataFrame - Pandas</a></li>
+												<li><a href="1-Python_Numpy.html">Manipulation de Vecteurs - Numpy</a></li>
+												<li><a href="1-Python_Matplotlib.html">Visualisation de données - Matplotlib</a></li>
+												<li><a href="1-Python_Plotly.html">Visualisation de données - Plotly</a></li>
+												<li><a href="1-Python_API_GCP.html">Utilisation de l'API GCP</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="2-R_manip.html">Manipulation de DataFrame</a></li>
+												<li><a href="2-R_visu.html">Visualisation de données</a></li>
+												<li><a href="2-R_shiny.html">Création de Dashboard avec Shiny</a></li>
+											</ul>
+										</li>								
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="3-Projet_reco_img.html">Moteur de recommandation de vêtements</a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

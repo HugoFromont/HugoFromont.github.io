@@ -1,0 +1,1281 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-PNJTS2L');</script>
+		<!-- End Google Tag Manager -->
+		
+	
+		<title>Accueil</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154786126-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'UA-154786126-1');
+		</script>
+	</head>
+	
+	
+	
+	<body class="is-preload">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNJTS2L"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+
+
+
+							<!-- Content -->
+								<section>
+									<h1>Manipulation de DataFrame</h1>
+									<span class="image main"><img src="images/1-Python_Intro_Pandas.png" alt="" /></span>
+									
+				
+<p>À travers ce notebook nous verons les fonctions les plus utiles de Pandas. <br>
+La librairie Pandas est très utilisée pour la création, la manipulation et la visualisation de dataframe avec python.</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+</code></pre>
+<h2 id="importation-de-donn-es">Importation de données</h2>
+<p>Il est possible de créer un dataframe à partir de certains objets pyhton.</p>
+<pre><code class="lang-python"># <span class="hljs-symbol">Cr</span>éation d<span class="hljs-string">'un dataframe à partir d'</span>une liste
+data = [[<span class="hljs-string">'prenom1'</span>, <span class="hljs-number">21</span>], [<span class="hljs-string">'prenom2'</span>, <span class="hljs-number">32</span>], [<span class="hljs-string">'prenom3'</span>, <span class="hljs-number">12</span>]] 
+pd.<span class="hljs-symbol">DataFrame</span>(data, columns = [<span class="hljs-string">'prenom'</span>, <span class="hljs-string">'age'</span>])
+
+# <span class="hljs-symbol">M</span>ême <span class="hljs-symbol">Chose</span> avec un dictionnaire
+data = {<span class="hljs-string">'prenom'</span>:[<span class="hljs-string">'prenom1'</span>, <span class="hljs-string">'prenom2'</span>, <span class="hljs-string">'prenom3'</span>], <span class="hljs-string">'age'</span>:[<span class="hljs-number">21</span>, <span class="hljs-number">32</span>, <span class="hljs-number">12</span>]}
+pd.<span class="hljs-symbol">DataFrame</span>(data)
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>prenom</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>prenom1</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>prenom2</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>prenom3</td>
+      <td>12</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>Mais la plupart du temps nous utiliserons des données stockées dans un fichier externe. 
+Pour cela, nous pouvons utiliser les fonctions de Pandas qui permettent d&#39;importer de nombreux types de fichiers et de les convertir en objet pandas.
+Voici un résumé des principales fonctions de pandas pour l&#39;importation de données </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type Fichier</th>
+<th style="text-align:center">Fonction</th>
+<th style="text-align:center">Decription</th>
+<th style="text-align:center">lien doc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Pickling</td>
+<td style="text-align:center">read_pickle</td>
+<td style="text-align:center">Load pickled pandas object (or any object) from file.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_pickle.html#pandas.read_pickle">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Flat file</td>
+<td style="text-align:center">read_table</td>
+<td style="text-align:center">Read general delimited file into DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_table.html#pandas.read_table">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Flat file</td>
+<td style="text-align:center">read_csv</td>
+<td style="text-align:center">Read a comma-separated values (csv) file into DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Flat file</td>
+<td style="text-align:center">read_fwf</td>
+<td style="text-align:center">Read a table of fixed-width formatted lines into DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_fwf.html#pandas.read_fwf">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Flat file</td>
+<td style="text-align:center">read_msgpack</td>
+<td style="text-align:center">(DEPRECATED) Load msgpack pandas object from the specified file path.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_msgpack.html#pandas.read_msgpack">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Clipboard</td>
+<td style="text-align:center">read_clipboard</td>
+<td style="text-align:center">Read text from clipboard and pass to read_csv.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_clipboard.html#pandas.read_clipboard">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Excel</td>
+<td style="text-align:center">read_excel</td>
+<td style="text-align:center">Read an Excel file into a pandas DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html#pandas.read_excel">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">JSON</td>
+<td style="text-align:center">read_json</td>
+<td style="text-align:center">Convert a JSON string to pandas object.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html#pandas.read_json">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">HTML</td>
+<td style="text-align:center">read_html</td>
+<td style="text-align:center">Read HTML tables into a list of DataFrame objects.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_html.html#pandas.read_html">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">HDF5</td>
+<td style="text-align:center">read_hdf</td>
+<td style="text-align:center">Read from the store, close it if we opened it.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_hdf.html#pandas.read_hdf">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Feather</td>
+<td style="text-align:center">read_feather</td>
+<td style="text-align:center">Load a feather-format object from the file path.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_feather.html#pandas.read_feather">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Parquet</td>
+<td style="text-align:center">read_parquet</td>
+<td style="text-align:center">Load a parquet object from the file path, returning a DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_parquet.html#pandas.read_parquet">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">SAS</td>
+<td style="text-align:center">read_sas</td>
+<td style="text-align:center">Read SAS files stored as either XPORT or SAS7BDAT format files.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_sas.html#pandas.read_sas">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">SQL</td>
+<td style="text-align:center">read_sql_table</td>
+<td style="text-align:center">Read SQL database table into a DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_sql_table.html#pandas.read_sql_table">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">SQL</td>
+<td style="text-align:center">read_sql_query</td>
+<td style="text-align:center">Read SQL query into a DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_sql_query.html#pandas.read_sql_query">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">SQL</td>
+<td style="text-align:center">read_sql</td>
+<td style="text-align:center">Read SQL query or database table into a DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_sql.html#pandas.read_sql">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">Google BigQuery</td>
+<td style="text-align:center">read_gbq</td>
+<td style="text-align:center">Load data from Google BigQuery.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_gbq.html#pandas.read_gbq">lien</a></td>
+</tr>
+<tr>
+<td style="text-align:center">STATA</td>
+<td style="text-align:center">read_stata</td>
+<td style="text-align:center">Read Stata file into DataFrame.</td>
+<td style="text-align:center"><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_stata.html#pandas.read_stata">lien</a></td>
+</tr>
+</tbody>
+</table>
+<p>Pour la suite, nous allons utiliser un jeu de données sur les maladies cardiaques disponibles sur Kaggle.
+Le jeu de données contient 13 variables :</p>
+<ul>
+<li>âge</li>
+<li>sexe</li>
+<li>type de douleur thoracique</li>
+<li>tension artérielle au repos</li>
+<li>cholestoral sérique</li>
+<li>glycémie à jeun</li>
+<li>résultats électrocardiographiques au repos</li>
+<li>fréquence cardiaque maximale atteinte</li>
+<li>angine de poitrine</li>
+<li>pente du segment ST d&#39;exercice maximal</li>
+<li>nombre de principaux vaisseaux</li>
+<li>thal</li>
+</ul>
+<p>Nous avons rajouté des lignes à ce jeu de données pour illustrer quelques exemples. <br></p>
+<p>Pour importer ce jeu de données, nous allons utiliser la fonction read_csv.</p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span> = pd.read_csv('<span class="hljs-title">data</span>/<span class="hljs-title">heart</span>.<span class="hljs-title">csv'</span>)</span>
+</code></pre>
+<h2 id="information-sur-le-jeu-de-donn-es">Information sur le jeu de données</h2>
+<p>Une fois le jeu de données importé, nous pouvons obtenir des informations sur celui-ci. <br>
+Dans un premier temps, nous pouvons visualiser un échantillon de données grâce à la méthode <strong>head()</strong></p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span>.head()</span>
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>cp</th>
+      <th>trestbps</th>
+      <th>chol</th>
+      <th>fbs</th>
+      <th>restecg</th>
+      <th>thalach</th>
+      <th>exang</th>
+      <th>oldpeak</th>
+      <th>slope</th>
+      <th>ca</th>
+      <th>thal</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>145.0</td>
+      <td>233</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>150.0</td>
+      <td>0.0</td>
+      <td>2.3</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>130.0</td>
+      <td>250</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>187.0</td>
+      <td>0.0</td>
+      <td>3.5</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>130.0</td>
+      <td>204</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>172.0</td>
+      <td>0.0</td>
+      <td>1.4</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>120.0</td>
+      <td>236</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>178.0</td>
+      <td>0.0</td>
+      <td>0.8</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>120.0</td>
+      <td>354</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>163.0</td>
+      <td>1.0</td>
+      <td>0.6</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>Pour illustrer les exemples, nous allons seulement utiliser quelques variables. Nous conservons uniquement les variables age, sex, chol et target. <br>
+La variable target indique la présence d&#39;une maladie cardiaque chez le patient.</p>
+<pre><code class="lang-python"><span class="hljs-attr">data</span> = data[[<span class="hljs-string">'age'</span>,<span class="hljs-string">'sex'</span>,<span class="hljs-string">'chol'</span>,<span class="hljs-string">'target'</span>]]
+</code></pre>
+<p>Pour obtenir des informations, sur les variables. Nous utilisons la méthode <strong>info()</strong></p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span>.info()</span>
+</code></pre>
+<pre><code>&lt;class <span class="hljs-string">'pandas.core.frame.DataFrame'</span>&gt;
+RangeIndex: <span class="hljs-number">304</span> entries, <span class="hljs-number">0</span> to <span class="hljs-number">303</span>
+Data columns (total <span class="hljs-number">4</span> columns):
+age       <span class="hljs-number">304</span> non-null <span class="hljs-keyword">int64</span>
+sex       <span class="hljs-number">303</span> non-null <span class="hljs-keyword">float64</span>
+chol      <span class="hljs-number">304</span> non-null <span class="hljs-keyword">int64</span>
+target    <span class="hljs-number">303</span> non-null <span class="hljs-keyword">float64</span>
+dtypes: <span class="hljs-keyword">float64</span>(<span class="hljs-number">2</span>), <span class="hljs-keyword">int64</span>(<span class="hljs-number">2</span>)
+memory usage: <span class="hljs-number">9.6</span> KB
+</code></pre><p>Cette méthode permet de voir que le jeu de données est composé de 304 lignes et de 4 variables. <br>
+La plupart des variables sont de type numérique avec 13 variables de type int et 1 de type float</p>
+<p>Nous pouvons aussi visualiser le nombre de valeurs distinct pour chacune des variables.</p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span>.nunique()</span>
+</code></pre>
+<pre><code>age        <span class="hljs-number">41</span>
+sex         <span class="hljs-number">2</span>
+chol      <span class="hljs-number">152</span>
+<span class="hljs-keyword">target</span>      <span class="hljs-number">2</span>
+dtype: int64
+</code></pre><p>Pour obtenir des informations sur la distribution des variables, nous pouvons utiliser les méthodes suivantes : <br>
+Bien que cela ne veut rien dire sur les variables sexe et target puisse qu&#39;il s&#39;agit de variables qualitatives</p>
+<pre><code class="lang-python"><span class="hljs-meta"># Description du jeux de données</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span>.describe()</span>
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>chol</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>304.000000</td>
+      <td>303.000000</td>
+      <td>304.000000</td>
+      <td>303.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>54.401316</td>
+      <td>0.683168</td>
+      <td>246.263158</td>
+      <td>0.544554</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>9.087590</td>
+      <td>0.466011</td>
+      <td>51.745153</td>
+      <td>0.498835</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>29.000000</td>
+      <td>0.000000</td>
+      <td>126.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>47.750000</td>
+      <td>0.000000</td>
+      <td>211.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>55.500000</td>
+      <td>1.000000</td>
+      <td>240.500000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>61.000000</td>
+      <td>1.000000</td>
+      <td>274.250000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>77.000000</td>
+      <td>1.000000</td>
+      <td>564.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>Ou encore</p>
+<pre><code class="lang-python">print(<span class="hljs-name">data</span>['age'].max())
+print(<span class="hljs-name">data</span>['age'].min())
+print(<span class="hljs-name">data</span>['age'].mean())
+print(<span class="hljs-name">data</span>['age'].median())
+print(<span class="hljs-name">data</span>['age'].count())
+print(<span class="hljs-name">data</span>['age'].std())
+</code></pre>
+<pre><code><span class="hljs-number">77</span>
+<span class="hljs-number">29</span>
+<span class="hljs-number">54.401315789473685</span>
+<span class="hljs-number">55.5</span>
+<span class="hljs-number">304</span>
+<span class="hljs-number">9.087589817549375</span>
+</code></pre><p>Pour obtenir la matrice des corrélations, nous pouvons utiliser la méthode corr() qui utilise la valeur du test de Pearson par défaut. C&#39;est pour cette raison que nous sélectionnons uniquement nos variables quantitatives.  </p>
+<pre><code class="lang-python">data<span class="hljs-string">[['age','chol']]</span>.corr()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>chol</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>age</th>
+      <td>1.000000</td>
+      <td>0.213177</td>
+    </tr>
+    <tr>
+      <th>chol</th>
+      <td>0.213177</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>Nous pouvons aussi réaliser des agrégations comme dans l&#39;exemple suivant :</p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span>['target'].value_counts()</span>
+</code></pre>
+<pre><code>1<span class="hljs-selector-class">.0</span>    165
+0<span class="hljs-selector-class">.0</span>    138
+<span class="hljs-selector-tag">Name</span>: <span class="hljs-selector-tag">target</span>, <span class="hljs-selector-tag">dtype</span>: <span class="hljs-selector-tag">int64</span>
+</code></pre><p>On peut verifier la présence de valeurs manqauntes</p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span>.isnull().sum()</span>
+</code></pre>
+<pre><code>age       <span class="hljs-number">0</span>
+sex       <span class="hljs-number">1</span>
+chol      <span class="hljs-number">0</span>
+<span class="hljs-keyword">target</span>    <span class="hljs-number">1</span>
+dtype: int64
+</code></pre><h2 id="manipulation-de-donn-es">Manipulation de données</h2>
+<p>On peut supprimer les valeurs manquantes d&#39;un dataset avec :</p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span>.dropna(<span class="hljs-title">inplace</span>=<span class="hljs-type">True</span>)</span>
+</code></pre>
+<p>Nous aurions aussi pu remplacer les valeurs manquantes par la moyenne ou d&#39;autres types d&#39;d&#39;agrégations.</p>
+<pre><code class="lang-python"><span class="hljs-keyword">data</span>[<span class="hljs-string">'age'</span>] = <span class="hljs-keyword">data</span>[<span class="hljs-string">'age'</span>].fillna(<span class="hljs-keyword">data</span>[<span class="hljs-string">'age'</span>].mean())
+</code></pre>
+<p>Les variables sex et target ne contiennent que 2 modalités codées sous forme d&#39;entier. Nous allons transformer ces deux variables pour qu&#39;elles soient plus parlantes</p>
+<pre><code class="lang-python">def rec_sex(valeur):
+    <span class="hljs-keyword">if</span> valeur == <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span>(<span class="hljs-string">"Homme"</span>)
+    <span class="hljs-keyword">else</span> :
+        <span class="hljs-keyword">return</span>(<span class="hljs-string">"Femme"</span>)
+
+<span class="hljs-keyword">data</span>[<span class="hljs-string">'sex'</span>] = <span class="hljs-keyword">data</span>.sex.apply(rec_sex)
+
+<span class="hljs-keyword">data</span>.head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>chol</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>Homme</td>
+      <td>233</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>Homme</td>
+      <td>250</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>Femme</td>
+      <td>204</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>Homme</td>
+      <td>236</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>Femme</td>
+      <td>354</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>Pour changer le format d&#39;une variable :</p>
+<pre><code class="lang-python"><span class="hljs-title">data</span>['target'] = data.target.<span class="hljs-keyword">as</span><span class="hljs-keyword">type</span>(int)
+</code></pre>
+<p>On peut concaténer des fichiers en ligne ou en colonne :</p>
+<pre><code class="lang-python">dat<span class="hljs-built_in">a_concat</span> = pd.concat([data,data], axis = <span class="hljs-number">0</span>)
+print(<span class="hljs-string">"shape = "</span>,dat<span class="hljs-built_in">a_concat</span>.shape)
+dat<span class="hljs-built_in">a_concat</span>.head()
+</code></pre>
+<pre><code><span class="hljs-attr">shape</span> =  (<span class="hljs-number">606</span>, <span class="hljs-number">4</span>)
+</code></pre><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>chol</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>Homme</td>
+      <td>233</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>Homme</td>
+      <td>250</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>Femme</td>
+      <td>204</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>Homme</td>
+      <td>236</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>Femme</td>
+      <td>354</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<pre><code class="lang-python">dat<span class="hljs-built_in">a_concat</span> = pd.concat([data,data], axis = <span class="hljs-number">1</span>)
+print(<span class="hljs-string">"shape = "</span>,dat<span class="hljs-built_in">a_concat</span>.shape)
+dat<span class="hljs-built_in">a_concat</span>.head()
+</code></pre>
+<pre><code><span class="hljs-attr">shape</span> =  (<span class="hljs-number">303</span>, <span class="hljs-number">8</span>)
+</code></pre><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>chol</th>
+      <th>target</th>
+      <th>age</th>
+      <th>sex</th>
+      <th>chol</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>Homme</td>
+      <td>233</td>
+      <td>1</td>
+      <td>63</td>
+      <td>Homme</td>
+      <td>233</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>Homme</td>
+      <td>250</td>
+      <td>1</td>
+      <td>37</td>
+      <td>Homme</td>
+      <td>250</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>Femme</td>
+      <td>204</td>
+      <td>1</td>
+      <td>41</td>
+      <td>Femme</td>
+      <td>204</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>Homme</td>
+      <td>236</td>
+      <td>1</td>
+      <td>56</td>
+      <td>Homme</td>
+      <td>236</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>Femme</td>
+      <td>354</td>
+      <td>1</td>
+      <td>57</td>
+      <td>Femme</td>
+      <td>354</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>On peut réaliser des jointures entre dataframe par exemple nous allons remplacer la variable target par &quot;présence&quot; ou &quot;abscence&quot; avec une jointure</p>
+<pre><code class="lang-python">data_merge = pd.<span class="hljs-symbol">DataFrame</span>([[<span class="hljs-number">1</span>, <span class="hljs-string">'présence'</span>], [<span class="hljs-number">0</span>, <span class="hljs-string">'abscence'</span>]], columns = [<span class="hljs-string">'target'</span>, <span class="hljs-string">'maladie_cardiaque'</span>])
+
+data = pd.merge(data,data_merge, how=<span class="hljs-string">'inner'</span>, on=<span class="hljs-string">'target'</span>)
+data.head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>chol</th>
+      <th>target</th>
+      <th>maladie_cardiaque</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>Homme</td>
+      <td>233</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>Homme</td>
+      <td>250</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>Femme</td>
+      <td>204</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>Homme</td>
+      <td>236</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>Femme</td>
+      <td>354</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>Pour renommer des variables :</p>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">data</span>.rename(<span class="hljs-title">columns</span>={'<span class="hljs-title">chol'</span>:'<span class="hljs-title">tx_cholesterol'</span>}, <span class="hljs-title">inplace</span> = <span class="hljs-type">True</span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span>.head()</span>
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>tx_cholesterol</th>
+      <th>target</th>
+      <th>maladie_cardiaque</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>63</td>
+      <td>Homme</td>
+      <td>233</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>Homme</td>
+      <td>250</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>41</td>
+      <td>Femme</td>
+      <td>204</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>56</td>
+      <td>Homme</td>
+      <td>236</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>57</td>
+      <td>Femme</td>
+      <td>354</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h2 id="agr-gations">Agrégations</h2>
+<p>On peut réaliser differents types d&#39;aggrégations avec pandas.</p>
+<pre><code class="lang-python"><span class="hljs-meta"># Pour avoir la Fréquence des modalités d'une variable</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span>.maladie_cardiaque.value_counts(<span class="hljs-title">normalize</span> = <span class="hljs-type">True</span>)</span>
+</code></pre>
+<pre><code><span class="hljs-selector-tag">pr</span>é<span class="hljs-selector-tag">sence</span>    0<span class="hljs-selector-class">.544554</span>
+<span class="hljs-selector-tag">abscence</span>    0<span class="hljs-selector-class">.455446</span>
+<span class="hljs-selector-tag">Name</span>: <span class="hljs-selector-tag">maladie_cardiaque</span>, <span class="hljs-selector-tag">dtype</span>: <span class="hljs-selector-tag">float64</span>
+</code></pre><pre><code class="lang-python"><span class="hljs-meta"># Moyenne par groupes</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span>.groupby(['<span class="hljs-title">maladie_cardiaque'</span>]).mean()</span>
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>tx_cholesterol</th>
+      <th>target</th>
+    </tr>
+    <tr>
+      <th>maladie_cardiaque</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>abscence</th>
+      <td>56.601449</td>
+      <td>251.086957</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>présence</th>
+      <td>52.496970</td>
+      <td>242.230303</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<pre><code class="lang-python"><span class="hljs-meta"># Moyenne par groupes</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span>.groupby(['<span class="hljs-title">sex'</span>,'<span class="hljs-title">target'</span>]).mean()</span>
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>age</th>
+      <th>tx_cholesterol</th>
+    </tr>
+    <tr>
+      <th>sex</th>
+      <th>target</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">Femme</th>
+      <th>0</th>
+      <td>59.041667</td>
+      <td>274.958333</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>54.555556</td>
+      <td>256.750000</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Homme</th>
+      <th>0</th>
+      <td>56.087719</td>
+      <td>246.061404</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50.903226</td>
+      <td>230.989247</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<pre><code class="lang-python"><span class="hljs-meta"># Trier une dataframe</span>
+<span class="hljs-class"><span class="hljs-keyword">data</span>.sort_values('<span class="hljs-title">age'</span>).head()</span>
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>tx_cholesterol</th>
+      <th>target</th>
+      <th>maladie_cardiaque</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>72</th>
+      <td>29</td>
+      <td>Homme</td>
+      <td>204</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>34</td>
+      <td>Homme</td>
+      <td>182</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>125</th>
+      <td>34</td>
+      <td>Femme</td>
+      <td>210</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+    <tr>
+      <th>239</th>
+      <td>35</td>
+      <td>Homme</td>
+      <td>282</td>
+      <td>0</td>
+      <td>abscence</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>35</td>
+      <td>Femme</td>
+      <td>183</td>
+      <td>1</td>
+      <td>présence</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<p>Une fois notre pré-trairement réalisé, nous pouvons exporter notre table de résulats dans differents formats. <br>
+Voici un exemple d&#39;export en csv :</p>
+<pre><code class="lang-python">data[[<span class="hljs-string">'age'</span>,<span class="hljs-string">'sex'</span>,<span class="hljs-string">'tx_cholesterol'</span>,<span class="hljs-string">'maladie_cardiaque'</span>]].to_csv(<span class="hljs-string">'data/data_clean.csv'</span>,<span class="hljs-keyword">index</span> = <span class="hljs-keyword">False</span>)
+</code></pre>
+<h3 id="autres-fonctions-utiles">Autres fonctions utiles</h3>
+<pre><code class="lang-python"><span class="hljs-meta"># Transformer un nombre de seconde en datetime :</span>
+pd.to_datetime(variable_second, unit=<span class="hljs-string">'s'</span>)
+</code></pre>
+									
+
+									
+									
+									
+								</section>	
+									
+									
+
+
+
+
+						</div>
+					</div>
+					
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="index.html">Acceuil</a></li>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="1-Python_Pandas.html">Manipulation de DataFrame - Pandas</a></li>
+												<li><a href="1-Python_Numpy.html">Manipulation de Vecteurs - Numpy</a></li>
+												<li><a href="1-Python_Matplotlib.html">Visualisation de données - Matplotlib</a></li>
+												<li><a href="1-Python_Plotly.html">Visualisation de données - Plotly</a></li>
+												<li><a href="1-Python_API_GCP.html">Utilisation de l'API GCP</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="2-R_manip.html">Manipulation de DataFrame</a></li>
+												<li><a href="2-R_visu.html">Visualisation de données</a></li>
+												<li><a href="2-R_shiny.html">Création de Dashboard avec Shiny</a></li>
+											</ul>
+										</li>								
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="3-Projet_reco_img.html">Moteur de recommandation de vêtements</a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-PNJTS2L');</script>
+		<!-- End Google Tag Manager -->
+		
+	
+		<title>Accueil</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154786126-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'UA-154786126-1');
+		</script>
+	</head>
+	
+	
+	
+	<body class="is-preload">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNJTS2L"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+
+
+
+							<!-- Content -->
+								<section>
+									<h1>Visualisation de données</h1>
+									<br>
+									<span class="image main"><img src="images/1-Python_Intro_Matplotlib.png" alt="" /></span>
+									
+<p>À travers ce guide, nous verons quelques fonctions utiles de la librairies Matplotlib pour créer des graphiques de bases. <br>
+Matplotlib est une librairie permettant de développer des graphiques simples pour visualiser rapidement ses données.</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+</code></pre>
+<p>Afin d&#39;illustrer les exemples, nous allons importer le jeu de données IRIS</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+from sklearn <span class="hljs-keyword">import</span> datasets
+iris = datasets.load_iris()
+
+iris_df = pd.DataFrame(iris.<span class="hljs-keyword">data</span>,columns=[<span class="hljs-string">'sepal_length'</span>,<span class="hljs-string">'sepal_width'</span>,<span class="hljs-string">'petal_length'</span>,<span class="hljs-string">'petal_width'</span>])
+iris_df[<span class="hljs-string">'class'</span>] = iris.target
+iris_df.head()
+</code></pre>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sepal_length</th>
+      <th>sepal_width</th>
+      <th>petal_length</th>
+      <th>petal_width</th>
+      <th>class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h1 id="graphiques-de-bases">Graphiques de bases</h1>
+<p>Matplotlib permet de construire très rapidement des graphiques simples. <br>D&#39;ailleurs, Pandas intègre certaines fonctions pour les appliquer directement au niveau d&#39;un dataframe Pandas.</p>
+<h3 id="histograme">Histograme</h3>
+<pre><code class="lang-python"><span class="hljs-selector-tag">plt</span><span class="hljs-selector-class">.hist</span>(iris_df.sepal_length, bins = <span class="hljs-number">20</span>)
+<span class="hljs-selector-tag">plt</span><span class="hljs-selector-class">.show</span>()
+
+# <span class="hljs-selector-tag">Revient</span> <span class="hljs-selector-tag">au</span> <span class="hljs-selector-tag">m</span>ê<span class="hljs-selector-tag">me</span> <span class="hljs-selector-tag">que</span> :
+<span class="hljs-selector-id">#iris_df</span><span class="hljs-selector-class">.sepal_length</span><span class="hljs-selector-class">.hist</span>(bins = <span class="hljs-number">20</span>)
+<span class="hljs-selector-id">#plt</span><span class="hljs-selector-class">.show</span>()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_8_0.png" alt="png"></p>
+<h3 id="boxplot">Boxplot</h3>
+<pre><code class="lang-python"><span class="hljs-selector-tag">iris_df</span><span class="hljs-selector-class">.plot</span>(kind=<span class="hljs-string">'box'</span>, vert=False)
+<span class="hljs-selector-tag">plt</span><span class="hljs-selector-class">.show</span>()
+
+# <span class="hljs-selector-tag">Revient</span> <span class="hljs-selector-tag">pr</span>è<span class="hljs-selector-tag">sque</span> <span class="hljs-selector-tag">au</span> <span class="hljs-selector-tag">m</span>ê<span class="hljs-selector-tag">me</span> <span class="hljs-selector-tag">que</span>
+<span class="hljs-selector-id">#plt</span><span class="hljs-selector-class">.boxplot</span>([iris_df.sepal_length, iris_df.sepal_width, iris_df.petal_length, iris_df.petal_width,iris_df[<span class="hljs-string">'class'</span>]],vert=False)
+<span class="hljs-selector-id">#plt</span><span class="hljs-selector-class">.show</span>()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_10_0.png" alt="png"></p>
+<h3 id="graphique-de-densit-">Graphique de densité</h3>
+<pre><code class="lang-python"><span class="hljs-selector-tag">iris_df</span><span class="hljs-selector-class">.plot</span>(kind=<span class="hljs-string">'kde'</span>)
+<span class="hljs-selector-tag">plt</span><span class="hljs-selector-class">.show</span>()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_12_0.png" alt="png"></p>
+<h3 id="nuage-de-points">Nuage de points</h3>
+<pre><code class="lang-python">plt.scatter(iris_df<span class="hljs-selector-class">.sepal_length</span>, iris_df<span class="hljs-selector-class">.sepal_width</span>, c=iris_df[<span class="hljs-string">'class'</span>])
+plt.show()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_14_0.png" alt="png"></p>
+<h3 id="diagramme-circulaire">Diagramme circulaire</h3>
+<pre><code class="lang-python"><span class="hljs-keyword">label</span><span class="bash"> = iris_df[<span class="hljs-string">"class"</span>].value_counts().keys().tolist() 
+</span>valeurs = iris_df[<span class="hljs-string">"class"</span>].value_counts().values.tolist()
+
+plt.pie(valeurs, labels = <span class="hljs-keyword">label</span><span class="bash">)
+</span>plt.show()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_16_0.png" alt="png"></p>
+<h3 id="diagramme-en-bar">Diagramme en bar</h3>
+<pre><code class="lang-python"><span class="hljs-keyword">label</span><span class="bash"> = iris_df[<span class="hljs-string">"class"</span>].value_counts().keys().tolist() 
+</span>valeurs = iris_df[<span class="hljs-string">"class"</span>].value_counts().values.tolist()
+
+plt.bar(np.array(<span class="hljs-keyword">label</span><span class="bash">).astype(str),valeurs)
+</span>plt.show()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_18_0.png" alt="png"></p>
+<h3 id="afficher-une-image">Afficher une Image</h3>
+<pre><code class="lang-python">import numpy as np
+# On génère une matrice de nombre aléatoire
+image_random = np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">255</span>, <span class="hljs-number">2352</span>).reshape((<span class="hljs-number">28</span>,<span class="hljs-number">28</span>,<span class="hljs-number">3</span>))
+
+plt.imshow(image_random)
+plt.show()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_20_0.png" alt="png"></p>
+<h3 id="afficher-plusieurs-graphiques-sur-une-m-me-figure">Afficher plusieurs graphiques sur une même figure</h3>
+<pre><code class="lang-python"># Taille de la figure
+fig = plt.figure(figsize=(<span class="hljs-number">10</span>,<span class="hljs-number">10</span>))
+# Réglage de l'espacement entre graphiques
+plt.gcf().subplots_adjust( wspace = <span class="hljs-number">0.3</span>, hspace = <span class="hljs-number">0.3</span>)
+
+# Graphique <span class="hljs-number">1</span>
+plt.subplot(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>) # Emplacement du graphique sur la figures
+plt.hist(iris_df.sepal_length, bins = <span class="hljs-number">20</span>)
+
+# Graphique <span class="hljs-number">2</span>
+plt.subplot(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+plt.boxplot([iris_df.sepal_length, iris_df.sepal_width, iris_df.petal_length, iris_df.petal_width,iris_df['class']],vert=False)
+
+# Graphique <span class="hljs-number">3</span>
+plt.subplot(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+plt.scatter(iris_df.sepal_length, iris_df.sepal_width, c=iris_df['class'])
+
+# Graphique <span class="hljs-number">4</span>
+plt.subplot(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>)
+img = plt.imshow(np.random.randint(<span class="hljs-number">0</span>, <span class="hljs-number">255</span>, <span class="hljs-number">2352</span>).reshape((<span class="hljs-number">28</span>,<span class="hljs-number">28</span>,<span class="hljs-number">3</span>)))
+img.axes.get_xaxis().set_visible(False)# Suppression des axes
+img.axes.get_yaxis().set_visible(False) # Suppression des axes
+
+# Affichage de la figures
+plt.show()
+</code></pre>
+<p><img src="images/1-Python_Matplotlib_output_22_0.png" alt="png"></p>
+
+
+
+
+
+
+									
+									
+									
+								</section>	
+									
+									
+
+
+
+
+						</div>
+					</div>
+					
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="index.html">Acceuil</a></li>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="1-Python_Pandas.html">Manipulation de DataFrame - Pandas</a></li>
+												<li><a href="1-Python_Numpy.html">Manipulation de Vecteurs - Numpy</a></li>
+												<li><a href="1-Python_Matplotlib.html">Visualisation de données - Matplotlib</a></li>
+												<li><a href="1-Python_Plotly.html">Visualisation de données - Plotly</a></li>
+												<li><a href="1-Python_API_GCP.html">Utilisation de l'API GCP</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="2-R_manip.html">Manipulation de DataFrame</a></li>
+												<li><a href="2-R_visu.html">Visualisation de données</a></li>
+												<li><a href="2-R_shiny.html">Création de Dashboard avec Shiny</a></li>
+											</ul>
+										</li>								
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="3-Projet_reco_img.html">Moteur de recommandation de vêtements</a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

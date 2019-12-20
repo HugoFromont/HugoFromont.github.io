@@ -1,0 +1,355 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-PNJTS2L');</script>
+		<!-- End Google Tag Manager -->
+		
+	
+		<title>Accueil</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154786126-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'UA-154786126-1');
+		</script>
+	</head>
+	
+	
+	
+	<body class="is-preload">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNJTS2L"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+
+
+
+							<!-- Content -->
+								<section>
+									<h1>Manipulation de Vecteur avec Numpy</h1>
+
+<h1 id="guide-numpy">Guide Numpy</h1>
+<p>A travers ce guide nous verons les fonctions les plus utiles de numpy. <br>
+La librarie numpy est très utilisé pour la création et la manipulation de vecteurs avec python.</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+</code></pre>
+<h1 id="cr-ation-de-vecteurs">Création de vecteurs</h1>
+<p>Plusieur fonction utiles pour créer des vecteurs</p>
+<pre><code class="lang-python"># Création d'un vecteur
+&gt;&gt;&gt; np.array([[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]])
+array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+       [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])
+
+# Création d'un vecteur composé de <span class="hljs-number">0</span>
+&gt;&gt;&gt; np.zeros((<span class="hljs-number">2</span>,<span class="hljs-number">2</span>))
+array([[<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>],
+       [<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>]])
+
+# Création d'un vecteur composé de <span class="hljs-number">1</span>
+&gt;&gt;&gt; np.ones((<span class="hljs-number">2</span>,<span class="hljs-number">2</span>))
+array([[<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>],
+       [<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>]])
+
+# Création d'un vecteur composé d'une range de valeur
+&gt;&gt;&gt; np.arange(start = <span class="hljs-number">1</span>, stop = <span class="hljs-number">4</span>, step = <span class="hljs-number">1</span>)
+array([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+
+# Création d'un vecteur composé de <span class="hljs-number">5</span> nombres entre <span class="hljs-number">1</span> et <span class="hljs-number">0</span> à interval régulier 
+&gt;&gt;&gt; np.linspace(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>)
+array([<span class="hljs-number">0.</span>  , <span class="hljs-number">0.25</span>, <span class="hljs-number">0.5</span> , <span class="hljs-number">0.75</span>, <span class="hljs-number">1.</span>  ])
+
+# Création d'un vecteur de n nombre aléatoire entre <span class="hljs-number">0</span> et <span class="hljs-number">1</span>
+&gt;&gt;&gt; np.random.random((<span class="hljs-number">2</span>,<span class="hljs-number">2</span>))
+array([[<span class="hljs-number">0.62420147</span>, <span class="hljs-number">0.32848398</span>],
+       [<span class="hljs-number">0.59501749</span>, <span class="hljs-number">0.49543965</span>]])
+
+# Création d'un vecteur de n nombres générés aléatoirement celon une loi normal 
+&gt;&gt;&gt; np.random.randn(<span class="hljs-number">2</span>)
+array([<span class="hljs-number">0.8738856</span> , <span class="hljs-number">1.17466123</span>])
+
+# Création d'un vecteur de n nombres entier aléatoire entre min et max
+&gt;&gt;&gt; np.random.randint(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, <span class="hljs-number">5</span>)
+array([<span class="hljs-number">8</span>, <span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>])
+
+# Créer une matrice identité
+&gt;&gt;&gt; np.eye(<span class="hljs-number">3</span>,<span class="hljs-number">3</span>)
+#array([[<span class="hljs-number">1.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>],
+#       [<span class="hljs-number">0.</span>, <span class="hljs-number">1.</span>, <span class="hljs-number">0.</span>],
+#       [<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">1.</span>]])
+</code></pre>
+<h2 id="informations-sur-un-vecteur">Informations sur un vecteur</h2>
+<pre><code class="lang-python">vect = <span class="hljs-built_in">np</span>.<span class="hljs-built_in">random</span>.<span class="hljs-built_in">random</span>((<span class="hljs-number">2</span>,<span class="hljs-number">2</span>))
+</code></pre>
+<pre><code class="lang-python"><span class="hljs-comment"># Optenir la shape du vecteur</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; vect.shape
+(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>)
+
+<span class="hljs-comment"># Obtenir le format du vecteur</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; vect.dtype
+dtype(<span class="hljs-string">'float64'</span>)
+
+<span class="hljs-comment"># Obtenir le nombre de dimmenssion</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; vect.ndim
+<span class="hljs-number">2</span>
+
+<span class="hljs-comment"># Obtenir la taille du vecteur</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; vect.size
+<span class="hljs-number">4</span>
+</code></pre>
+<h1 id="manipuation-de-vecteur">Manipuation de vecteur</h1>
+<pre><code class="lang-python">vect = <span class="hljs-built_in">np</span>.<span class="hljs-built_in">random</span>.<span class="hljs-built_in">random</span>((<span class="hljs-number">2</span>,<span class="hljs-number">2</span>))
+vect
+</code></pre>
+<pre><code>array(<span class="hljs-string">[[0.87159346, 0.31201421],
+       [0.34451705, 0.44297274]]</span>)
+</code></pre><pre><code class="lang-python"># Modification du format du vecteur
+&gt;&gt;&gt; vect.astype(int)
+array([[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>],
+       [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]])
+
+# Trier le vecteur par la dimmention selectionné
+&gt;&gt;&gt; np.sort(vect, axis = <span class="hljs-number">0</span>)
+array([[<span class="hljs-number">0.16140848</span>, <span class="hljs-number">0.64891121</span>],
+       [<span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.78870194</span>]])
+
+# Ajouter un vecteur à un autre vecteur
+&gt;&gt;&gt; np.append(vect,vect[:<span class="hljs-number">1</span>])
+array([<span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.64891121</span>, <span class="hljs-number">0.16140848</span>, <span class="hljs-number">0.78870194</span>, <span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.64891121</span>])
+
+# Extraire une partie d'un vecteur
+&gt;&gt;&gt; vect.reshape((<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>))
+array([[<span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.64891121</span>, <span class="hljs-number">0.16140848</span>, <span class="hljs-number">0.78870194</span>]])
+
+# Concatenation de deux vecteurs
+&gt;&gt;&gt; np.concatenate((vect,vect),axis=<span class="hljs-number">0</span>)
+array([[<span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.64891121</span>],
+       [<span class="hljs-number">0.16140848</span>, <span class="hljs-number">0.78870194</span>],
+       [<span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.64891121</span>],
+       [<span class="hljs-number">0.16140848</span>, <span class="hljs-number">0.78870194</span>]])
+
+# Divise un vecteur en plusieur sous-vecteur
+&gt;&gt;&gt; vect1, vect2 = np.array_split(vect, <span class="hljs-number">2</span>)
+&gt;&gt;&gt; print(vect1)
+&gt;&gt;&gt; print(vect2)
+[[<span class="hljs-number">0.45412182</span> <span class="hljs-number">0.64891121</span>]]
+[[<span class="hljs-number">0.16140848</span> <span class="hljs-number">0.78870194</span>]]
+
+# Applati un vecteur en <span class="hljs-number">1</span> dimenssion (revient au même que vect.reshape(-<span class="hljs-number">1</span>))
+&gt;&gt;&gt; vect.flatten()
+array([<span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.64891121</span>, <span class="hljs-number">0.16140848</span>, <span class="hljs-number">0.78870194</span>])
+
+# Transposition d'un vecteur
+&gt;&gt;&gt; vect.transpose()
+array([[<span class="hljs-number">0.45412182</span>, <span class="hljs-number">0.16140848</span>],
+       [<span class="hljs-number">0.64891121</span>, <span class="hljs-number">0.78870194</span>]])
+
+# Inversion de matrice
+&gt;&gt;&gt; np.linalg.inv(vect)
+array([[ <span class="hljs-number">3.11214662</span>, -<span class="hljs-number">2.56054505</span>],
+       [-<span class="hljs-number">0.6369033</span> ,  <span class="hljs-number">1.79192371</span>]])
+</code></pre>
+<h2 id="op-ration-sur-les-vecteurs">Opération sur les vecteurs</h2>
+<pre><code class="lang-python"># Adition de deux vecteurs
+&gt;&gt;&gt; np.add(vect,vect)
+array([[<span class="hljs-number">0.50823531</span>, <span class="hljs-number">0.92420162</span>],
+       [<span class="hljs-number">0.55160466</span>, <span class="hljs-number">0.24786462</span>]])
+
+# Soustraction de deux vecteurs
+&gt;&gt;&gt; np.subtract(vect,vect)
+array([[<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>],
+       [<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>]])
+
+# Division de deux vecteurs
+&gt;&gt;&gt; np.divide(vect,vect)
+array([[<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>],
+       [<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>]])
+
+# Multiplication de deux vecteurs 
+&gt;&gt;&gt; np.multiply(vect,vect)
+array([[<span class="hljs-number">0.06457578</span>, <span class="hljs-number">0.21353716</span>],
+       [<span class="hljs-number">0.07606693</span>, <span class="hljs-number">0.01535922</span>]])
+
+# Produits scalaire de <span class="hljs-number">2</span> matrices
+&gt;&gt;&gt; np.dot(vect,vect)
+array([[<span class="hljs-number">0.19202426</span>, <span class="hljs-number">0.17469719</span>],
+       [<span class="hljs-number">0.10426706</span>, <span class="hljs-number">0.1428077</span> ]])
+
+# Teste l'egalité entre deux vecteurs
+&gt;&gt;&gt; np.equal(vect,vect)
+array([[ True,  True],
+       [ True,  True]])
+
+# passe chaque valeurs a la racine carré
+&gt;&gt;&gt; np.sqrt(vect)
+array([[<span class="hljs-number">0.50410084</span>, <span class="hljs-number">0.67977997</span>],
+       [<span class="hljs-number">0.52516886</span>, <span class="hljs-number">0.35204021</span>]])
+
+# passe chaque valeurs au sinus
+&gt;&gt;&gt; np.sin(vect)
+array([[<span class="hljs-number">0.2513915</span> , <span class="hljs-number">0.44582956</span>],
+       [<span class="hljs-number">0.27231903</span>, <span class="hljs-number">0.1236153</span> ]])
+
+# passe chaque valeurs au cosinus
+&gt;&gt;&gt; np.cos(vect)
+array([[<span class="hljs-number">0.96788549</span>, <span class="hljs-number">0.89511787</span>],
+       [<span class="hljs-number">0.96220702</span>, <span class="hljs-number">0.99233022</span>]])
+
+# passe chaque valeurs au log
+&gt;&gt;&gt; np.log(vect)
+array([[<span class="hljs-number">-1.36995791</span>, <span class="hljs-number">-0.77197221</span>],
+       [<span class="hljs-number">-1.28807086</span>, <span class="hljs-number">-2.08801976</span>]])
+</code></pre>
+<h2 id="agr-gation">Agrégation</h2>
+<pre><code class="lang-python"><span class="hljs-comment"># Somme d'un vecteur</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.sum(vect)
+<span class="hljs-number">1.4661173044858296</span>
+
+<span class="hljs-comment"># Minimum d'un vecteur</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.min(vect)
+<span class="hljs-number">0</span>.<span class="hljs-number">007704675</span>895379376
+
+<span class="hljs-comment"># Indice du minimum</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.argmin(vect)
+<span class="hljs-number">0</span>
+
+<span class="hljs-comment"># Indice des minimum pour la dimention axis</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.argmin(vect,axis=<span class="hljs-number">0</span>)
+array([<span class="hljs-number">1</span>, <span class="hljs-number">0</span>])
+
+<span class="hljs-comment"># Maximum d'un vecteur </span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.max(vect)
+<span class="hljs-number">0</span>.<span class="hljs-number">8240497812697638</span>
+
+<span class="hljs-comment"># Indice du maximum</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.argmax(vect)
+<span class="hljs-number">1</span>
+
+<span class="hljs-comment"># Ecart type d'un vecteur</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.std(vect)
+<span class="hljs-number">0</span>.<span class="hljs-number">29823842159783637</span>
+
+<span class="hljs-comment"># Somme cumulé d'un vecteur</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.cumsum(vect)
+ array([<span class="hljs-number">0</span>.<span class="hljs-number">0077046</span>8, <span class="hljs-number">0</span>.<span class="hljs-number">83175446</span>, <span class="hljs-number">1.0688294</span> , <span class="hljs-number">1.4661173</span> ])
+
+<span class="hljs-comment"># Coeficient de corrélation</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; vect = np.random.random((<span class="hljs-number">3</span>,<span class="hljs-number">1000</span>))
+<span class="hljs-meta">&gt;&gt;</span>&gt; np.corrcoef(vect)
+array([[ <span class="hljs-number">1</span>.        ,  <span class="hljs-number">0</span>.<span class="hljs-number">0215</span>8884,  <span class="hljs-number">0</span>.<span class="hljs-number">00444511</span>],
+       [ <span class="hljs-number">0</span>.<span class="hljs-number">0215</span>8884,  <span class="hljs-number">1</span>.        , -<span class="hljs-number">0</span>.<span class="hljs-number">031003</span>98],
+       [ <span class="hljs-number">0</span>.<span class="hljs-number">00444511</span>, -<span class="hljs-number">0</span>.<span class="hljs-number">031003</span>98,  <span class="hljs-number">1</span>.        ]])
+</code></pre>
+
+									
+									
+									
+								</section>	
+									
+									
+
+
+
+
+						</div>
+					</div>
+					
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="index.html">Acceuil</a></li>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="1-Python_Pandas.html">Manipulation de DataFrame - Pandas</a></li>
+												<li><a href="1-Python_Numpy.html">Manipulation de Vecteurs - Numpy</a></li>
+												<li><a href="1-Python_Matplotlib.html">Visualisation de données - Matplotlib</a></li>
+												<li><a href="1-Python_Plotly.html">Visualisation de données - Plotly</a></li>
+												<li><a href="1-Python_API_GCP.html">Utilisation de l'API GCP</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="2-R_manip.html">Manipulation de DataFrame</a></li>
+												<li><a href="2-R_visu.html">Visualisation de données</a></li>
+												<li><a href="2-R_shiny.html">Création de Dashboard avec Shiny</a></li>
+											</ul>
+										</li>								
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="3-Projet_reco_img.html">Moteur de recommandation de vêtements</a></li>
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
