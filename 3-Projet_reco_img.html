@@ -83,13 +83,11 @@ from PIL <span class="hljs-keyword">import</span> Image
 <span class="hljs-keyword">import</span> requests
 from io <span class="hljs-keyword">import</span> BytesIO
 
-from google.colab <span class="hljs-keyword">import</span> drive
-drive.mount(<span class="hljs-string">'/content/drive'</span>)
 </code></pre>
 <h2 id="importation-des-donn-es">Importation des données</h2>
 <p>Le jeu de données mis à disposition par Zalando Research est un fichier Json qui contient 8792 lignes. Chacune des lignes correspond à une robe. <br>
 Pour chaque robe du dataset, nous avons un lien url vers la photo du produit, et plusieurs descriptions du produit.</p>
-<pre><code class="lang-python"><span class="hljs-keyword">data</span> = pd.read_json(<span class="hljs-string">"/content/drive/My Drive/data_google_colab/feidegger/FEIDEGGER_release_1.1.json"</span>)
+<pre><code class="lang-python"><span class="hljs-keyword">data</span> = pd.read_json(<span class="hljs-string">"data/FEIDEGGER_release_1.1.json"</span>)
 <span class="hljs-keyword">data</span>.head()
 </code></pre>
 <div>
