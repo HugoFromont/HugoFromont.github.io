@@ -10,6 +10,10 @@
 		})(window,document,'script','dataLayer','GTM-PNJTS2L');</script>
 		<!-- End Google Tag Manager -->
 		
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="assets/js/aff_code.js"></script>
+		
+		
 	
 		<title>Moteur de recommandation</title>
 		<meta charset="utf-8" />
@@ -56,10 +60,15 @@
 
 							<!-- Content -->
 								<section>
-									<h1>Moteur de Recommandation</h1>
-									<span class="image main"><img src="images/3-Projet_Intro_Reco.png" alt="" /></span>
-									
 
+<h1>Moteur de Recommandation</h1>
+<span class="image main"><img src="images/3-Projet_Intro_Reco.png" alt="" /></span>
+
+<!-- Bouton -->							
+<button id="afficheMasque">Afficher le code Python</button>
+<br>
+<br>
+<!-- Intro -->
 <p>Les moteurs de recommandations ont progressivement envahi les sites marchands. Avec l&#39;augmentation de la puissance de calcul, il est possible de croiser de plus en plus de données (données de ventes, descriptions produits, commentaires clients...), ce qui à considérablement augmenté la pertinence de ces outils. Cette amélioration profite aussi bien aux clients qui obtiennent un accès plus rapide aux produits qu&#39;ils souhaitent acheter, que pour les entreprises qui augmentent leur chiffre d&#39;affaire ainsi que la satisfaction client.
 <br><br>
 L&#39;objectif de ce projet est de voir s&#39;il est possible de réaliser un moteur de recommandation basé uniquement sur des images.
@@ -68,28 +77,31 @@ Pour réaliser ce projet, nous avons utilisé un jeu de données mis à disposit
 <br><br>
 Le système de recommandation sera composé de 2 composants:</p>
 <ul>
-<li>Un algorithme de features extraction</li>
-<li>Une matrice de similarité</li>
+	<li>Un algorithme de features extraction</li>
+	<li>Une matrice de similarité</li>
 </ul>
 <p>Nous testerons 2 algorithmes de features extraction différents. Et nous comparerons les résultats à la fin.</p>
-<pre><code class="lang-python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
-<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<!-- code -->
+<div id="cod1"><pre><code class="lang-python">import pandas as pd
+import numpy as np
 
-<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
-from PIL <span class="hljs-keyword">import</span> Image
+import matplotlib.pyplot as plt
+from PIL import Image
+	
+import tqdm
+	
+import requests
+from io import BytesIO
+</code></pre></div>
 
-<span class="hljs-keyword">import</span> tqdm
+<h2>Importation des données</h2>
 
-<span class="hljs-keyword">import</span> requests
-from io <span class="hljs-keyword">import</span> BytesIO
-
-</code></pre>
-<h2 id="importation-des-donn-es">Importation des données</h2>
 <p>Le jeu de données mis à disposition par Zalando Research est un fichier Json qui contient 8792 lignes. Chacune des lignes correspond à une robe. <br>
 Pour chaque robe du dataset, nous avons un lien url vers la photo du produit, et plusieurs descriptions du produit.</p>
-<pre><code class="lang-python"><span class="hljs-keyword">data</span> = pd.read_json(<span class="hljs-string">"data/FEIDEGGER_release_1.1.json"</span>)
-<span class="hljs-keyword">data</span>.head()
-</code></pre>
+
+<div id="cod2"><pre><code class="lang-python">data = pd.read_json("data/FEIDEGGER_release_1.1.json")
+data.head()
+</code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -152,7 +164,7 @@ Pour chaque robe du dataset, nous avons un lien url vers la photo du produit, et
 
 <h4 id="t-l-chargement-des-images">Téléchargement des images</h4>
 <p>Pour récupérer les images des produits, nous devons scraper chacun des liens urls et convertir les images pour les rendre exploitables.</p>
-<pre><code class="lang-python">image = []
+<div id="cod3"><pre><code class="lang-python">image = []
 
 <span class="hljs-keyword">for</span> <span class="hljs-selector-tag">i</span> <span class="hljs-keyword">in</span> tqdm.tqdm(range(<span class="hljs-number">0</span>,len(data))):
   response = requests.get(data<span class="hljs-selector-class">.url</span>[i])
@@ -160,10 +172,10 @@ Pour chaque robe du dataset, nous avons un lien url vers la photo du produit, et
   <span class="hljs-selector-tag">img</span> = np.array(<span class="hljs-selector-tag">img</span>.<span class="hljs-attribute">resize</span>((<span class="hljs-number">224</span>, <span class="hljs-number">224</span>)))
   <span class="hljs-selector-tag">img</span> = <span class="hljs-selector-tag">img</span>.astype(<span class="hljs-string">'float16'</span>)/<span class="hljs-number">255</span>
   image.append(img)
-</code></pre>
+</code></pre></div>
 <pre><span class="hljs-number">100</span>%|██████████| <span class="hljs-number">8792/8792</span> [<span class="hljs-number">09:10&lt;00:00</span>, <span class="hljs-number">19</span>.<span class="hljs-number">28</span>it/s]
 </pre><p>Voici un extrait des images de robes obtenues :</p>
-<pre><code class="lang-python">fig = plt.figure(figsize=(<span class="hljs-number">25</span>,<span class="hljs-number">9</span>))
+<div id="cod4"><pre><code class="lang-python">fig = plt.figure(figsize=(<span class="hljs-number">25</span>,<span class="hljs-number">9</span>))
 plt.gcf().subplots_adjust( wspace = <span class="hljs-number">0.1</span>, hspace = <span class="hljs-number">0.1</span>)
 <span class="hljs-keyword">for</span> <span class="hljs-selector-tag">i</span> <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,<span class="hljs-number">76</span>):
     plt.subplot(<span class="hljs-number">5</span>, <span class="hljs-number">15</span>, i)
@@ -171,8 +183,8 @@ plt.gcf().subplots_adjust( wspace = <span class="hljs-number">0.1</span>, hspace
     <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.axes</span><span class="hljs-selector-class">.get_xaxis</span>().set_visible(False)
     <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.axes</span><span class="hljs-selector-class">.get_yaxis</span>().set_visible(False)
 plt.show()
-</code></pre>
-<p><img src="images/3-Projet_reco_output_10_0.png" alt="png"></p>
+</code></pre></div>
+<p><img src="images/3-Projet_reco_output_10_0.png" alt="png" class="image main"></p>
 <h2 id="feature-extraction">Feature Extraction</h2>
 <p>Dans un dataset traditionnel composé de lignes et de variables, chaque variable est un indicateur qui permet de décrire une ligne du dataset. <br>
 Dans un dataset d&#39;images, nous ne disposons pas de variables qui permettent de dire qu&#39;une robe est une robe a rayure ou une robe à pois. C&#39;est une combinaison de pixels localisée à un endroit variant d&#39;une image à une autre qui permet à l&#39;oeil humain de faire la nuance. <br>
@@ -190,15 +202,15 @@ Nous allons utiliser le modèle VGG16. Ce modèle relativement simple est un ré
 <img src = "images/3-Projet_archi_vgg16.png">
 <br><br>
 Pour utiliser ce modèle en tant qu&#39;extracteur de features, il suffit de supprimer la dernière couche composée de 1000 neurones. Notre couche de neurones de sortie devient alors l&#39;avant dernière chouche du VGG16 qui correspond à une couche de 4096 neurones.</p>
-<pre><code class="lang-python">from keras<span class="hljs-selector-class">.applications</span><span class="hljs-selector-class">.vgg16</span> import VGG16
+<div id="cod5"><pre><code class="lang-python">from keras<span class="hljs-selector-class">.applications</span><span class="hljs-selector-class">.vgg16</span> import VGG16
 from keras<span class="hljs-selector-class">.models</span> import Model
 
 model = VGG16(include_top=True, weights=<span class="hljs-string">'imagenet'</span>)
 model<span class="hljs-selector-class">.layers</span><span class="hljs-selector-class">.pop</span>()
 model = Model(input=model<span class="hljs-selector-class">.input</span>,output=model<span class="hljs-selector-class">.layers</span>[-<span class="hljs-number">1</span>].output)
-</code></pre>
-<pre><code class="lang-python"><span class="hljs-selector-tag">model</span><span class="hljs-selector-class">.summary</span>()
-</code></pre>
+</code></pre></div>
+<div id="cod6"><pre><code class="lang-python"><span class="hljs-selector-tag">model</span><span class="hljs-selector-class">.summary</span>()
+</code></pre></div>
 
 <pre>Model: "model_2"
 <span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
@@ -255,9 +267,9 @@ Non-trainable params: 0
 </pre>
 
 <p>Pour obtenir les features de chaque image, nous pouvons réaliser un model.predict()</p>
-<pre><code class="lang-python">vgg16_features_image = model.predict(<span class="hljs-keyword">image</span>)
+<div id="cod7"><pre><code class="lang-python">vgg16_features_image = model.predict(<span class="hljs-keyword">image</span>)
 <span class="hljs-keyword">print</span>(<span class="hljs-string">"Taile de vgg16_features_image : {}"</span>.<span class="hljs-keyword">format</span>(vgg16_features_image.shape))
-</code></pre>
+</code></pre></div>
 <pre>Taile de vg<span class="hljs-name">g16</span>_features_image : <span class="hljs-comment">(8792, 4096)</span>
 </pre><h3 id="autoencodeur">Autoencodeur</h3>
 <p>La deuxième méthode que nous allons tester pour extraire des informations d&#39;une image est la création d&#39;un auto-encodeur.
@@ -267,7 +279,7 @@ Un auto-encodeur est un réseau de neurones utilisé pour réduire les dimension
 <p>Pour créer notre auto-encodeur, nous allons utiliser tensorflow.
 <br>
 Nous créons un encodeur composé d&#39;une succession de convolutions et de poolings. Puis nous utilisons un flatten et un layer dense de 4096 neurones afin que l&#39;output de l&#39;encodeur soit de même taille que la sortie du VGG16. Puis nous le connectons à un décodeur composé de convolutions et de upsamplings qui permet de ré-obtenir un vecteur de même taille que nos images.</p>
-<pre><code class="lang-python">import tensorflow as tf
+<div id="cod8"><pre><code class="lang-python">import tensorflow as tf
 
 # Encodeur
 input_img = tf.keras.Input(shape=(<span class="hljs-number">224</span>,<span class="hljs-number">224</span>,<span class="hljs-number">3</span>))
@@ -292,7 +304,7 @@ Decod = tf.keras.layers.Conv2D(<span class="hljs-number">3</span>, (<span class=
 
 model = tf.keras.Model(input_img, Decod)
 model.summary()
-</code></pre>
+</code></pre></div>
 <pre>Model: "model_22"
 <span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
 <span class="hljs-section">Layer (type)                 Output Shape              Param #   
@@ -334,9 +346,9 @@ Trainable params: 51,393,161
 Non-trainable params: 0
 <span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
 </pre><p>Nous entrainons notre ento-encodeur sur les images :</p>
-<pre><code class="lang-python">model.<span class="hljs-built_in">compile</span>(optimizer=<span class="hljs-string">"adam"</span>, loss=<span class="hljs-string">"mse"</span>)
+<div id="cod11"><pre><code class="lang-python">model.<span class="hljs-built_in">compile</span>(optimizer=<span class="hljs-string">"adam"</span>, loss=<span class="hljs-string">"mse"</span>)
 model.fit([<span class="hljs-built_in">image</span>],<span class="hljs-built_in">image</span>, batch_size = <span class="hljs-number">100</span>, epochs = <span class="hljs-number">15</span>, shuffle=<span class="hljs-literal">True</span>)
-</code></pre>
+</code></pre></div>
 <pre>Train on <span class="hljs-number">8792</span> samples
 Epoch <span class="hljs-number">1</span>/<span class="hljs-number">15</span>
 <span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 23s 3ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.1471</span>
@@ -370,26 +382,26 @@ Epoch <span class="hljs-number">15</span>/<span class="hljs-number">15</span>
 <span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0176</span>
 </pre><p>Les features des images correspondent à la sortie de l&#39;encodeur.
 Pour récupérer la sortie de l&#39;encodeur, nous créons un modèle composé des layers de l&#39;encodeur et de la même manière que pour VGG16, nous appliquons la fonction predict pour extraire les features.  </p>
-<pre><code class="lang-python"><span class="hljs-attr">Encodeur</span> = tf.keras.Model(input_img, Encod)
+<div id="cod12"><pre><code class="lang-python"><span class="hljs-attr">Encodeur</span> = tf.keras.Model(input_img, Encod)
 <span class="hljs-attr">encod_features_image</span> = Encodeur.predict(image)
-</code></pre>
+</code></pre></div>
 <h3 id="calcul-de-similarit-">Calcul de similarité</h3>
 <p>Afin de pouvoir proposer des vêtements similaires à partir d&#39;un vêtement sélectionné par un client, il est nécessaire de sélectionner une métrique permettant de mesurer la similarité de deux images. Pour ce faire, nous avons utilisé la cos similarité, car cette métrique est bien adaptée à ce type de problème.
 Elle mesure l&#39;angle qui sépare deux vecteurs.</p>
 <p><img src = "images/3-Projet_reco_formule_simi.PNG"></p>
 <p>On peut réaliser une matrice de similarité grâce à la fonction cosine_similarity de sklearn</p>
-<pre><code class="lang-python">from sklearn<span class="hljs-selector-class">.metrics</span><span class="hljs-selector-class">.pairwise</span> import cosine_similarity
+<div id="cod13"><pre><code class="lang-python">from sklearn<span class="hljs-selector-class">.metrics</span><span class="hljs-selector-class">.pairwise</span> import cosine_similarity
 
 vgg16_matrice_cos = cosine_similarity(vgg16_features_image)
 encod_matrice_cos = cosine_similarity(encod_features_image)
 
 <span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">"taille vgg16_matrice_cos : {}"</span>.format(vgg16_matrice_cos.shape)</span></span>)
 <span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">"taille encod_matrice_cos : {}"</span>.format(encod_matrice_cos.shape)</span></span>)
-</code></pre>
+</code></pre></div>
 <pre>taille vgg16_matrice_cos : (8792, 8792)
 taille encod_matrice_cos : (8792, 8792)
 </pre><p>Pour extraire à partir d&#39;une image, d&#39;autres images qui lui sont le plus similaire, nous avons créé une fonction qui prend en entrée l&#39;identifiant d&#39;une image et qui retourne l&#39;identifiant et le score de similarité des N images qui lui ressemblent le plus.</p>
-<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_cos_vgg16</span><span class="hljs-params">(image_id, nb_simil = <span class="hljs-number">5</span>)</span></span>:
+<div id="cod14"><pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_cos_vgg16</span><span class="hljs-params">(image_id, nb_simil = <span class="hljs-number">5</span>)</span></span>:
   score_vgg16 = pd.DataFrame({
       <span class="hljs-string">'score'</span> : vgg16_matrice_cos[image_id], 
       <span class="hljs-string">'index'</span> : np.arange(<span class="hljs-number">0</span>,len(vgg16_matrice_cos))
@@ -405,9 +417,9 @@ taille encod_matrice_cos : (8792, 8792)
       })
   score_encod = score_encod.sort_values(<span class="hljs-string">'score'</span>,ascending  = False)
   <span class="hljs-keyword">return</span>((score_encod.index[<span class="hljs-number">1</span><span class="hljs-symbol">:nb_simil+</span><span class="hljs-number">1</span>],score_encod.score[<span class="hljs-number">1</span><span class="hljs-symbol">:nb_simil+</span><span class="hljs-number">1</span>]))
-</code></pre>
+</code></pre></div>
 <p>Nous créons aussi une fonction qui permet d&#39;afficher l&#39;image sélectionnée et les N images ayant le score de similarité le plus élevé.</p>
-<pre><code class="lang-python">def plot_similarite(image_id, nb_simil = <span class="hljs-number">5</span>):
+<div id="cod15"><pre><code class="lang-python">def plot_similarite(image_id, nb_simil = <span class="hljs-number">5</span>):
   fig = plt.figure(figsize=(<span class="hljs-number">18</span>,<span class="hljs-number">7</span>))
   plt.gcf().subplots_adjust( wspace = <span class="hljs-number">0.2</span>, hspace = <span class="hljs-number">0.2</span>)
 
@@ -440,53 +452,53 @@ taille encod_matrice_cos : (8792, 8792)
     img.axes.get_xaxis().set_visible(<span class="hljs-literal">False</span>)
     img.axes.get_yaxis().set_visible(<span class="hljs-literal">False</span>)
   plt.show()
-</code></pre>
+</code></pre></div>
 <p>On peut maintenant vérifier que notre score de similarité fonctionne correctement. <br>
 On applique nos fonctions sur les 20 premières images.</p>
-<pre><code class="lang-python">for x in range(0,20):
-  print("<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">__ Image numéro : {} __</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>".format(x))
+<div id="cod16"><pre><code class="lang-python">for x in range(0,20):
+  print("<span class="hljs-strong">______________________________________ Image numéro : {} ______________________________________".format(x))
   plot<span class="hljs-emphasis">_similarite(image_</span>id = x, nb_simil = 4)
-</code></pre>
+</code></pre></div>
 <p>__________________________________________ Image numéro : 0 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_1.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_1.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 1 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_3.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_3.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 2 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_5.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_5.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 3 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_7.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_7.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 4 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_9.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_9.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 5 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_11.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_11.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 6 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_13.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_13.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 7 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_15.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_15.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 8 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_17.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_17.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 9 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_19.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_19.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 10 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_21.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_21.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 11 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_23.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_23.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 12 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_25.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_25.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 13 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_27.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_27.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 14 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_29.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_29.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 15 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_31.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_31.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 16 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_33.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_33.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 17 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_35.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_35.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 18 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_37.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_37.png" alt="png" class="image main"></p>
 <p>__________________________________________ Image numéro : 19 __________________________________________</p>
-<p><img src="images/3-Projet_reco_output_35_39.png" alt="png"></p>
+<p><img src="images/3-Projet_reco_output_35_39.png" alt="png" class="image main"></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Pour la mise en place du modèle, le VGG16 dispose d&#39;un avantage, puisqu&#39;il ne nécessite aucun entraînement et nécessite donc très peu de ressource de calcul. </p>
 <p>Pour les résultats, le modèle avec le VGG16 semble être meilleur, surtout pour la détection de motif sur les vêtements comme les rayures, pois ou encore les motifs florales.
