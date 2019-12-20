@@ -170,7 +170,7 @@ data.head()
   <span class="hljs-selector-tag">img</span> = <span class="hljs-selector-tag">img</span>.astype(<span class="hljs-string">'float16'</span>)/<span class="hljs-number">255</span>
   image.append(img)
 </code></pre></div>
-<pre><span class="hljs-number">100</span>%|██████████| <span class="hljs-number">8792/8792</span> [<span class="hljs-number">09:10&lt;00:00</span>, <span class="hljs-number">19</span>.<span class="hljs-number">28</span>it/s]
+<pre id= "output_code"><span class="hljs-number">100</span>%|██████████| <span class="hljs-number">8792/8792</span> [<span class="hljs-number">09:10&lt;00:00</span>, <span class="hljs-number">19</span>.<span class="hljs-number">28</span>it/s]
 </pre><p>Voici un extrait des images de robes obtenues :</p>
 <div id="cod4"><pre><code class="lang-python">fig = plt.figure(figsize=(<span class="hljs-number">25</span>,<span class="hljs-number">9</span>))
 plt.gcf().subplots_adjust( wspace = <span class="hljs-number">0.1</span>, hspace = <span class="hljs-number">0.1</span>)
@@ -209,7 +209,7 @@ model = Model(input=model<span class="hljs-selector-class">.input</span>,output=
 <div id="cod6"><pre><code class="lang-python"><span class="hljs-selector-tag">model</span><span class="hljs-selector-class">.summary</span>()
 </code></pre></div>
 
-<pre>Model: "model_2"
+<pre id= "output_code">Model: "model_2"
 <span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
 <span class="hljs-section">Layer (type)                 Output Shape              Param #   
 =================================================================</span>
@@ -302,8 +302,8 @@ Decod = tf.keras.layers.Conv2D(<span class="hljs-number">3</span>, (<span class=
 model = tf.keras.Model(input_img, Decod)
 model.summary()
 </code></pre></div>
-<pre>Model: "model_22"
-<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+<pre id= "output_code">Model: "model_22"
+____________________</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
 <span class="hljs-section">Layer (type)                 Output Shape              Param #   
 =================================================================</span>
 input_10 (InputLayer)        [(None, 224, 224, 3)]     0         
@@ -346,7 +346,7 @@ Non-trainable params: 0
 <div id="cod11"><pre><code class="lang-python">model.<span class="hljs-built_in">compile</span>(optimizer=<span class="hljs-string">"adam"</span>, loss=<span class="hljs-string">"mse"</span>)
 model.fit([<span class="hljs-built_in">image</span>],<span class="hljs-built_in">image</span>, batch_size = <span class="hljs-number">100</span>, epochs = <span class="hljs-number">15</span>, shuffle=<span class="hljs-literal">True</span>)
 </code></pre></div>
-<pre>Train on <span class="hljs-number">8792</span> samples
+<pre id= "output_code">Train on <span class="hljs-number">8792</span> samples
 Epoch <span class="hljs-number">1</span>/<span class="hljs-number">15</span>
 <span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 23s 3ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.1471</span>
 Epoch <span class="hljs-number">2</span>/<span class="hljs-number">15</span>
