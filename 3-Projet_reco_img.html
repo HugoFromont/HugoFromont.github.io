@@ -125,31 +125,31 @@ data.head()
   <tbody>
     <tr>
       <th>0</th>
-      <td><a href="https://i2.ztat.net/large/Y0/32/1C/00/UE/11/Y0">https://i2.ztat.net/large/Y0/32/1C/00/UE/11/Y0</a>...</td>
+      <td>https://i2.ztat.net/...</td>
       <td>[kurze, sexy, sommer, sexy, party, gelb kleid,...</td>
       <td>7</td>
     </tr>
     <tr>
       <th>1</th>
-      <td><a href="https://i6.ztat.net/large/V1/02/1C/0T/QK/11/V1">https://i6.ztat.net/large/V1/02/1C/0T/QK/11/V1</a>...</td>
+      <td>https://i6.ztat.net/...</td>
       <td>[blaues knie langes damen kleid mit weissem pu...</td>
       <td>6</td>
     </tr>
     <tr>
       <th>2</th>
-      <td><a href="https://i6.ztat.net/large/TF/72/1C/01/5K/11/TF">https://i6.ztat.net/large/TF/72/1C/01/5K/11/TF</a>...</td>
+      <td>https://i6.ztat.net/...</td>
       <td>[Dieses Produkt ist ein Kleid. Es ist grau und...</td>
       <td>2</td>
     </tr>
     <tr>
       <th>3</th>
-      <td><a href="https://i2.ztat.net/large/VE/12/1C/14/9C/11/VE">https://i2.ztat.net/large/VE/12/1C/14/9C/11/VE</a>...</td>
+      <td>https://i2.ztat.net/...</td>
       <td>[Oberschenkellanges Stoffkleid in grai mit Hüf...</td>
       <td>7</td>
     </tr>
     <tr>
       <th>4</th>
-      <td><a href="https://i6.ztat.net/large/S2/92/1C/0B/AK/11/S2">https://i6.ztat.net/large/S2/92/1C/0B/AK/11/S2</a>...</td>
+      <td>https://i6.ztat.net/...</td>
       <td>[Es ist ein elegantes dunkelblaues mittellange...</td>
       <td>7</td>
     </tr>
@@ -196,7 +196,7 @@ Le deuxième est l&#39;utilisation d&#39;un auto-encodeur.</p>
 <br><br>
 Nous allons utiliser le modèle VGG16. Ce modèle relativement simple est un réseau convolutif de classification construit sur le dataset de ImageNet. Il prend en entrée des images de taille 224<em> 224</em> 3 et retourne un vecteur de taille 1000 qui correspond à la probabilité que l&#39;image en entrée appartiennent a chacune des 1000 classes de ImageNet
 <br><br>
-<img src = "images/3-Projet_archi_vgg16.png">
+<img src = "images/3-Projet_archi_vgg16.png" style="width: 50%;" >
 <br><br>
 Pour utiliser ce modèle en tant qu&#39;extracteur de features, il suffit de supprimer la dernière couche composée de 1000 neurones. Notre couche de neurones de sortie devient alors l&#39;avant dernière chouche du VGG16 qui correspond à une couche de 4096 neurones.</p>
 <div id="cod5"><pre><code class="lang-python">from keras<span class="hljs-selector-class">.applications</span><span class="hljs-selector-class">.vgg16</span> import VGG16
@@ -272,7 +272,7 @@ Non-trainable params: 0
 <p>La deuxième méthode que nous allons tester pour extraire des informations d&#39;une image est la création d&#39;un auto-encodeur.
 <br><br>
 Un auto-encodeur est un réseau de neurones utilisé pour réduire les dimensions d&#39;un dataset. Il est composé d&#39;une couche d&#39;entrée et d&#39;une couche de sortie de même taille ainsi que de couches de neurones intermédaires. L&#39;auto-encodeur apprend à reproduire ce qu&#39;on lui donne en entrée. Mais à cause des layers intermédiaires qui ont un nombre de paramètres restreint, l&#39;auto-encodeur est obligé de résumer l&#39;information présente dans le dataset d&#39;image.</p>
-<p><img src = "images/3-Projet_reco_autoencod.png"></p>
+<p><img src = "images/3-Projet_reco_autoencod.png" style="width: 60%;" ></p>
 <p>Pour créer notre auto-encodeur, nous allons utiliser tensorflow.
 <br>
 Nous créons un encodeur composé d&#39;une succession de convolutions et de poolings. Puis nous utilisons un flatten et un layer dense de 4096 neurones afin que l&#39;output de l&#39;encodeur soit de même taille que la sortie du VGG16. Puis nous le connectons à un décodeur composé de convolutions et de upsamplings qui permet de ré-obtenir un vecteur de même taille que nos images.</p>
@@ -385,7 +385,7 @@ Pour récupérer la sortie de l&#39;encodeur, nous créons un modèle composé d
 <h3 id="calcul-de-similarit-">Calcul de similarité</h3>
 <p>Afin de pouvoir proposer des vêtements similaires à partir d&#39;un vêtement sélectionné par un client, il est nécessaire de sélectionner une métrique permettant de mesurer la similarité de deux images. Pour ce faire, nous avons utilisé la cos similarité, car cette métrique est bien adaptée à ce type de problème.
 Elle mesure l&#39;angle qui sépare deux vecteurs.</p>
-<p><img src = "images/3-Projet_reco_formule_simi.PNG"></p>
+<p><img src = "images/3-Projet_reco_formule_simi.PNG"  style="width: 20%;" ></p>
 <p>On peut réaliser une matrice de similarité grâce à la fonction cosine_similarity de sklearn</p>
 <div id="cod13"><pre><code class="lang-python">from sklearn<span class="hljs-selector-class">.metrics</span><span class="hljs-selector-class">.pairwise</span> import cosine_similarity
 
