@@ -1,0 +1,590 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-PNJTS2L');</script>
+		<!-- End Google Tag Manager -->
+		
+		
+	
+		<title>Moteur de recommandation</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-154786126-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'UA-154786126-1');
+		</script>
+	</head>
+	
+	
+	
+	<body class="is-preload">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNJTS2L"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							
+							
+							<header id="header">
+									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<ul class="icons">
+										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
+										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
+									</ul>
+								</header>
+
+
+
+
+							<!-- Content -->
+								<section>
+
+<h1>Prédiction d'une serie temporelle</h1>
+<span class="image main"><img src="images/3-Projet_Intro_forecast_ts.jpg" alt="" /></span>
+
+<!-- Bouton -->							
+<button id="afficheMasque">Afficher le code Python</button>
+<br>
+<br>
+<!-- Intro -->
+<p>Les données de timeserie, sont des séquence de données horodatées. Au dela de leur stockage qui peut savéré volumineux, ce type de données peut être plus complexe à traiter, à cause de la volumétrie de features et de la dépendance temporelle des données. Pour croiser ces données avec d'autres types de données (plus classique), nous réalisons sonvent un résumé de la serie temporelle (min, max, moyenne, ecart type...) que nous venons ajouter aux autres données. Cependant nous perdons beaucoup d'informations.
+<br>
+Même si dans de nombreux cas il est préferable de procéder ainsi, certain cas nessécite de capturer plus d'information sur des series de données. Pour cela, nous pouvons utilisé des réseaux de neurones LSTM (Long Short Time Memory), qui ont la capacité à comprendre la structure temporèle des données et à garder en mémoire une parties d'informations importantes.
+<br>
+Dans ce projet, nous allons voir comment utiliser les réseaux de neurones LSTM pour prédire les valeurs futures d'une serie temporelle. Ce genre de problème peut être très utiles pour les entreprises. Par exemple il peut permettre de prédire une quantité de ventes pour optimiser ces stocks ou ca main d'oeuvre. Prédire la valeur d'un produits financier dans le temps...
+<br>
+Dans ce projet, nous allons prédire la consommation electriques des 24h à venir en fonction de la consommation electrique passé. </p>
+
+<!-- code -->
+<div id="cod1"><pre><code class="lang-python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from google.colab import drive
+drive.mount('/content/drive')
+</code></pre></div>
+
+<h2>Importation des données</h2>
+
+<p>Le jeux de données que nous allons utilisé provient de la platform Open data d'Enedis. Le jeux de données représente la consommation éléctrique des points de soutirage supperieur à 36kVa [(lien vers le jeux de données)](https://data.enedis.fr/explore/dataset/conso-sup36/information/?disjunctive.profil&disjunctive.secteur_activite&dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJsaW5lIiwiZnVuYyI6IlNVTSIsInlBeGlzIjoidG90YWxfZW5lcmdpZV9zb3V0aXJlZV93aCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiMwMEEzRTAifV0sInhBeGlzIjoiaG9yb2RhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJtaW51dGUiLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJjb25zby1zdXAzNiIsIm9wdGlvbnMiOnsiZGlzanVuY3RpdmUucHJvZmlsIjp0cnVlLCJkaXNqdW5jdGl2ZS5zZWN0ZXVyX2FjdGl2aXRlIjp0cnVlfX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0%3D). 
+<br>
+Voici un apercut des données qui provient directement de platform OpenData d'Enedis qui permet visualiser les jeux de données.</p>
+
+<div id="cod2"><pre><code class="lang-python">data = pd.read_json("data/FEIDEGGER_release_1.1.json")
+data.head()
+</code></pre></div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>url</th>
+      <th>descriptions</th>
+      <th>split</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>https://i2.ztat.net/...</td>
+      <td>[kurze, sexy, sommer, sexy, party, gelb kleid,...</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>https://i6.ztat.net/...</td>
+      <td>[blaues knie langes damen kleid mit weissem pu...</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>https://i6.ztat.net/...</td>
+      <td>[Dieses Produkt ist ein Kleid. Es ist grau und...</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>https://i2.ztat.net/...</td>
+      <td>[Oberschenkellanges Stoffkleid in grai mit Hüf...</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>https://i6.ztat.net/...</td>
+      <td>[Es ist ein elegantes dunkelblaues mittellange...</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h4 id="t-l-chargement-des-images">Téléchargement des images</h4>
+<p>Pour récupérer les images des produits, nous devons scraper chacun des liens urls et convertir les images pour les rendre exploitables.</p>
+<div id="cod3"><pre><code class="lang-python">image = []
+
+<span class="hljs-keyword">for</span> <span class="hljs-selector-tag">i</span> <span class="hljs-keyword">in</span> tqdm.tqdm(range(<span class="hljs-number">0</span>,len(data))):
+  response = requests.get(data<span class="hljs-selector-class">.url</span>[i])
+  <span class="hljs-selector-tag">img</span> = Image.open(BytesIO(response.<span class="hljs-attribute">content</span>))
+  <span class="hljs-selector-tag">img</span> = np.array(<span class="hljs-selector-tag">img</span>.<span class="hljs-attribute">resize</span>((<span class="hljs-number">224</span>, <span class="hljs-number">224</span>)))
+  <span class="hljs-selector-tag">img</span> = <span class="hljs-selector-tag">img</span>.astype(<span class="hljs-string">'float16'</span>)/<span class="hljs-number">255</span>
+  image.append(img)
+</code></pre></div>
+<pre id= "output_code"><span class="hljs-number">100</span>%|██████████| <span class="hljs-number">8792/8792</span> [<span class="hljs-number">09:10&lt;00:00</span>, <span class="hljs-number">19</span>.<span class="hljs-number">28</span>it/s]
+</pre><p>Voici un extrait des images de robes obtenues :</p>
+<div id="cod4"><pre><code class="lang-python">fig = plt.figure(figsize=(<span class="hljs-number">25</span>,<span class="hljs-number">9</span>))
+plt.gcf().subplots_adjust( wspace = <span class="hljs-number">0.1</span>, hspace = <span class="hljs-number">0.1</span>)
+<span class="hljs-keyword">for</span> <span class="hljs-selector-tag">i</span> <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,<span class="hljs-number">76</span>):
+    plt.subplot(<span class="hljs-number">5</span>, <span class="hljs-number">15</span>, i)
+    <span class="hljs-selector-tag">img</span> = plt.imshow((image[i]*<span class="hljs-number">255</span>).astype(int))
+    <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.axes</span><span class="hljs-selector-class">.get_xaxis</span>().set_visible(False)
+    <span class="hljs-selector-tag">img</span><span class="hljs-selector-class">.axes</span><span class="hljs-selector-class">.get_yaxis</span>().set_visible(False)
+plt.show()
+</code></pre></div>
+<p><img src="images/3-Projet_reco_output_10_0.png" alt="png" class="image main"></p>
+<h2 id="feature-extraction">Feature Extraction</h2>
+<p>Dans un dataset traditionnel composé de lignes et de variables, chaque variable est un indicateur qui permet de décrire une ligne du dataset. <br>
+Dans un dataset d&#39;images, nous ne disposons pas de variables qui permettent de dire qu&#39;une robe est une robe a rayure ou une robe à pois. C&#39;est une combinaison de pixels localisée à un endroit variant d&#39;une image à une autre qui permet à l&#39;oeil humain de faire la nuance. <br>
+C&#39;est pour cette raison que nous utilisons un algorithme de features extraction afin de transformer une image en features. Ou chaque features contient une information différente sur l&#39;image.
+<br><br>
+Dans cette application, nous allons comparer deux algorithmes de features extraction.
+<br><br>
+Le premier algorithme est un modèle convolutif pré-entraîné sur un jeu de données d&#39;images variées (ImageNet).<br>
+Le deuxième est l&#39;utilisation d&#39;un auto-encodeur.</p>
+<h3 id="transfert-learning-pour-l-extraction-de-features">Transfert Learning pour l&#39;extraction de features</h3>
+<p>Pour extraire des features d&#39;une image, il est possible d&#39;utiliser un modèle convolutif pré-entraîné. C&#39;est-à-dire que l&#39;on récupère les poids d&#39;un modèle de classification construit sur un autre jeu de données.
+<br><br>
+Nous allons utiliser le modèle VGG16. Ce modèle relativement simple est un réseau convolutif de classification construit sur le dataset de ImageNet. Il prend en entrée des images de taille 224<em> 224</em> 3 et retourne un vecteur de taille 1000 qui correspond à la probabilité que l&#39;image en entrée appartiennent a chacune des 1000 classes de ImageNet
+<br><br>
+<img src = "images/3-Projet_archi_vgg16.png" style="width: 50%;" >
+<br><br>
+Pour utiliser ce modèle en tant qu&#39;extracteur de features, il suffit de supprimer la dernière couche composée de 1000 neurones. Notre couche de neurones de sortie devient alors l&#39;avant dernière chouche du VGG16 qui correspond à une couche de 4096 neurones.</p>
+<div id="cod5"><pre><code class="lang-python">from keras<span class="hljs-selector-class">.applications</span><span class="hljs-selector-class">.vgg16</span> import VGG16
+from keras<span class="hljs-selector-class">.models</span> import Model
+
+model = VGG16(include_top=True, weights=<span class="hljs-string">'imagenet'</span>)
+model<span class="hljs-selector-class">.layers</span><span class="hljs-selector-class">.pop</span>()
+model = Model(input=model<span class="hljs-selector-class">.input</span>,output=model<span class="hljs-selector-class">.layers</span>[-<span class="hljs-number">1</span>].output)
+</code></pre></div>
+<div id="cod6"><pre><code class="lang-python"><span class="hljs-selector-tag">model</span><span class="hljs-selector-class">.summary</span>()
+</code></pre></div>
+
+<pre id= "output_code">Model: "model_2"
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+<span class="hljs-section">Layer (type)                 Output Shape              Param #   
+=================================================================</span>
+input_2 (InputLayer)         (None, 224, 224, 3)       0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block1_conv1 (Conv2D)        (None, 224, 224, 64)      1792      
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block1_conv2 (Conv2D)        (None, 224, 224, 64)      36928     
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block1_pool (MaxPooling2D)   (None, 112, 112, 64)      0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block2_conv1 (Conv2D)        (None, 112, 112, 128)     73856     
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block2_conv2 (Conv2D)        (None, 112, 112, 128)     147584    
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block2_pool (MaxPooling2D)   (None, 56, 56, 128)       0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block3_conv1 (Conv2D)        (None, 56, 56, 256)       295168    
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block3_conv2 (Conv2D)        (None, 56, 56, 256)       590080    
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block3_conv3 (Conv2D)        (None, 56, 56, 256)       590080    
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block3_pool (MaxPooling2D)   (None, 28, 28, 256)       0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block4_conv1 (Conv2D)        (None, 28, 28, 512)       1180160   
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block4_conv2 (Conv2D)        (None, 28, 28, 512)       2359808   
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block4_conv3 (Conv2D)        (None, 28, 28, 512)       2359808   
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block4_pool (MaxPooling2D)   (None, 14, 14, 512)       0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block5_conv1 (Conv2D)        (None, 14, 14, 512)       2359808   
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block5_conv2 (Conv2D)        (None, 14, 14, 512)       2359808   
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block5_conv3 (Conv2D)        (None, 14, 14, 512)       2359808   
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+block5_pool (MaxPooling2D)   (None, 7, 7, 512)         0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+flatten (Flatten)            (None, 25088)             0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+fc1 (Dense)                  (None, 4096)              102764544 
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+<span class="hljs-section">fc2 (Dense)                  (None, 4096)              16781312  
+=================================================================</span>
+Total params: 134,260,544
+Trainable params: 134,260,544
+Non-trainable params: 0
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+</pre>
+
+<p>Pour obtenir les features de chaque image, nous pouvons réaliser un model.predict()</p>
+<div id="cod7"><pre><code class="lang-python">vgg16_features_image = model.predict(<span class="hljs-keyword">image</span>)
+<span class="hljs-keyword">print</span>(<span class="hljs-string">"Taile de vgg16_features_image : {}"</span>.<span class="hljs-keyword">format</span>(vgg16_features_image.shape))
+</code></pre></div>
+<pre>Taile de vg<span class="hljs-name">g16</span>_features_image : <span class="hljs-comment">(8792, 4096)</span>
+</pre><h3 id="autoencodeur">Autoencodeur</h3>
+<p>La deuxième méthode que nous allons tester pour extraire des informations d&#39;une image est la création d&#39;un auto-encodeur.
+<br><br>
+Un auto-encodeur est un réseau de neurones utilisé pour réduire les dimensions d&#39;un dataset. Il est composé d&#39;une couche d&#39;entrée et d&#39;une couche de sortie de même taille ainsi que de couches de neurones intermédaires. L&#39;auto-encodeur apprend à reproduire ce qu&#39;on lui donne en entrée. Mais à cause des layers intermédiaires qui ont un nombre de paramètres restreint, l&#39;auto-encodeur est obligé de résumer l&#39;information présente dans le dataset d&#39;image.</p>
+<p><img src = "images/3-Projet_reco_autoencod.png" style="width: 60%;" ></p>
+<p>Pour créer notre auto-encodeur, nous allons utiliser tensorflow.
+<br>
+Nous créons un encodeur composé d&#39;une succession de convolutions et de poolings. Puis nous utilisons un flatten et un layer dense de 4096 neurones afin que l&#39;output de l&#39;encodeur soit de même taille que la sortie du VGG16. Puis nous le connectons à un décodeur composé de convolutions et de upsamplings qui permet de ré-obtenir un vecteur de même taille que nos images.</p>
+<div id="cod8"><pre><code class="lang-python">import tensorflow as tf
+
+# Encodeur
+input_img = tf.keras.Input(shape=(<span class="hljs-number">224</span>,<span class="hljs-number">224</span>,<span class="hljs-number">3</span>))
+Encod = tf.keras.layers.Conv2D(<span class="hljs-number">16</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), padding='same', activation='relu')(input_img)
+Encod = tf.keras.layers.MaxPooling2D((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))(Encod)
+Encod = tf.keras.layers.Conv2D(<span class="hljs-number">5</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), padding='same', activation='relu')(Encod)
+Encod = tf.keras.layers.MaxPooling2D((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))(Encod)
+Encod = tf.keras.layers.Conv2D(<span class="hljs-number">2</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), padding='same', activation='relu')(Encod)
+Encod = tf.keras.layers.Flatten()(Encod)
+Encod = tf.keras.layers.Dense(<span class="hljs-number">4096</span>)(Encod)
+
+# Decodeur
+Decod = tf.keras.layers.Dense(<span class="hljs-number">6272</span>)(Encod)
+Decod = tf.keras.layers.Reshape((<span class="hljs-number">56</span>, <span class="hljs-number">56</span>, <span class="hljs-number">2</span>))(Decod)
+Decod = tf.keras.layers.Conv2D(<span class="hljs-number">2</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), padding='same', activation='relu')(Decod)
+Decod = tf.keras.layers.UpSampling2D((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))(Decod)
+Decod = tf.keras.layers.Conv2D(<span class="hljs-number">5</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), padding='same', activation='relu')(Decod)
+Decod = tf.keras.layers.UpSampling2D((<span class="hljs-number">2</span>, <span class="hljs-number">2</span>))(Decod)
+Decod = tf.keras.layers.Conv2D(<span class="hljs-number">16</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), padding='same', activation='relu')(Decod)
+Decod = tf.keras.layers.Conv2D(<span class="hljs-number">3</span>, (<span class="hljs-number">3</span>, <span class="hljs-number">3</span>), padding='same', activation='relu')(Decod)
+
+
+model = tf.keras.Model(input_img, Decod)
+model.summary()
+</code></pre></div>
+<pre id= "output_code">Model: "model_22"
+____________________</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+<span class="hljs-section">Layer (type)                 Output Shape              Param #   
+=================================================================</span>
+input_10 (InputLayer)        [(None, 224, 224, 3)]     0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+conv2d_63 (Conv2D)           (None, 224, 224, 16)      448       
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+max<span class="hljs-emphasis">_pooling2d_</span>18 (MaxPooling (None, 112, 112, 16)      0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+conv2d_64 (Conv2D)           (None, 112, 112, 5)       725       
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+max<span class="hljs-emphasis">_pooling2d_</span>19 (MaxPooling (None, 56, 56, 5)         0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+conv2d_65 (Conv2D)           (None, 56, 56, 2)         92        
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+flatten_9 (Flatten)          (None, 6272)              0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+dense_18 (Dense)             (None, 4096)              25694208  
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+dense_19 (Dense)             (None, 6272)              25696384  
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+reshape_9 (Reshape)          (None, 56, 56, 2)         0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+conv2d_66 (Conv2D)           (None, 56, 56, 2)         38        
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+up<span class="hljs-emphasis">_sampling2d_</span>18 (UpSampling (None, 112, 112, 2)       0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+conv2d_67 (Conv2D)           (None, 112, 112, 5)       95        
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+up<span class="hljs-emphasis">_sampling2d_</span>19 (UpSampling (None, 224, 224, 5)       0         
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+conv2d_68 (Conv2D)           (None, 224, 224, 16)      736       
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+<span class="hljs-section">conv2d_69 (Conv2D)           (None, 224, 224, 3)       435       
+=================================================================</span>
+Total params: 51,393,161
+Trainable params: 51,393,161
+Non-trainable params: 0
+<span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span><span class="hljs-strong">_____</span>
+</pre><p>Nous entrainons notre ento-encodeur sur les images :</p>
+<div id="cod11"><pre><code class="lang-python">model.<span class="hljs-built_in">compile</span>(optimizer=<span class="hljs-string">"adam"</span>, loss=<span class="hljs-string">"mse"</span>)
+model.fit([<span class="hljs-built_in">image</span>],<span class="hljs-built_in">image</span>, batch_size = <span class="hljs-number">100</span>, epochs = <span class="hljs-number">15</span>, shuffle=<span class="hljs-literal">True</span>)
+</code></pre></div>
+<pre id= "output_code">Train on <span class="hljs-number">8792</span> samples
+Epoch <span class="hljs-number">1</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 23s 3ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.1471</span>
+Epoch <span class="hljs-number">2</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0376</span>
+Epoch <span class="hljs-number">3</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0301</span>
+Epoch <span class="hljs-number">4</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0270</span>
+Epoch <span class="hljs-number">5</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0247</span>
+Epoch <span class="hljs-number">6</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0234</span>
+Epoch <span class="hljs-number">7</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0224</span>
+Epoch <span class="hljs-number">8</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0217</span>
+Epoch <span class="hljs-number">9</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0209</span>
+Epoch <span class="hljs-number">10</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0198</span>
+Epoch <span class="hljs-number">11</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0192</span>
+Epoch <span class="hljs-number">12</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0186</span>
+Epoch <span class="hljs-number">13</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0183</span>
+Epoch <span class="hljs-number">14</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0178</span>
+Epoch <span class="hljs-number">15</span>/<span class="hljs-number">15</span>
+<span class="hljs-number">8792</span><span class="hljs-regexp">/8792 [==============================] - 21s 2ms/</span>sample - <span class="hljs-string">loss:</span> <span class="hljs-number">0.0176</span>
+</pre><p>Les features des images correspondent à la sortie de l&#39;encodeur.
+Pour récupérer la sortie de l&#39;encodeur, nous créons un modèle composé des layers de l&#39;encodeur et de la même manière que pour VGG16, nous appliquons la fonction predict pour extraire les features.  </p>
+<div id="cod12"><pre><code class="lang-python"><span class="hljs-attr">Encodeur</span> = tf.keras.Model(input_img, Encod)
+<span class="hljs-attr">encod_features_image</span> = Encodeur.predict(image)
+</code></pre></div>
+<h3 id="calcul-de-similarit-">Calcul de similarité</h3>
+<p>Afin de pouvoir proposer des vêtements similaires à partir d&#39;un vêtement sélectionné par un client, il est nécessaire de sélectionner une métrique permettant de mesurer la similarité de deux images. Pour ce faire, nous avons utilisé la cos similarité, car cette métrique est bien adaptée à ce type de problème.
+Elle mesure l&#39;angle qui sépare deux vecteurs.</p>
+<p><img src = "images/3-Projet_reco_formule_simi.PNG"  style="width: 20%;" ></p>
+<p>On peut réaliser une matrice de similarité grâce à la fonction cosine_similarity de sklearn</p>
+<div id="cod13"><pre><code class="lang-python">from sklearn<span class="hljs-selector-class">.metrics</span><span class="hljs-selector-class">.pairwise</span> import cosine_similarity
+
+vgg16_matrice_cos = cosine_similarity(vgg16_features_image)
+encod_matrice_cos = cosine_similarity(encod_features_image)
+
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">"taille vgg16_matrice_cos : {}"</span>.format(vgg16_matrice_cos.shape)</span></span>)
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">"taille encod_matrice_cos : {}"</span>.format(encod_matrice_cos.shape)</span></span>)
+</code></pre></div>
+<pre>taille vgg16_matrice_cos : (8792, 8792)
+taille encod_matrice_cos : (8792, 8792)
+</pre><p>Pour extraire à partir d&#39;une image, d&#39;autres images qui lui sont le plus similaire, nous avons créé une fonction qui prend en entrée l&#39;identifiant d&#39;une image et qui retourne l&#39;identifiant et le score de similarité des N images qui lui ressemblent le plus.</p>
+<div id="cod14"><pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_cos_vgg16</span><span class="hljs-params">(image_id, nb_simil = <span class="hljs-number">5</span>)</span></span>:
+  score_vgg16 = pd.DataFrame({
+      <span class="hljs-string">'score'</span> : vgg16_matrice_cos[image_id], 
+      <span class="hljs-string">'index'</span> : np.arange(<span class="hljs-number">0</span>,len(vgg16_matrice_cos))
+      })
+  score_vgg16 = score_vgg16.sort_values(<span class="hljs-string">'score'</span>,ascending  = False)
+  <span class="hljs-keyword">return</span>((score_vgg16.index[<span class="hljs-number">1</span><span class="hljs-symbol">:nb_simil+</span><span class="hljs-number">1</span>],score_vgg16.score[<span class="hljs-number">1</span><span class="hljs-symbol">:nb_simil+</span><span class="hljs-number">1</span>]))
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_cos_encod</span><span class="hljs-params">(image_id, nb_simil = <span class="hljs-number">5</span>)</span></span>:
+  score_encod = pd.DataFrame({
+      <span class="hljs-string">'score'</span> : encod_matrice_cos[image_id], 
+      <span class="hljs-string">'index'</span> : np.arange(<span class="hljs-number">0</span>,len(encod_matrice_cos))
+      })
+  score_encod = score_encod.sort_values(<span class="hljs-string">'score'</span>,ascending  = False)
+  <span class="hljs-keyword">return</span>((score_encod.index[<span class="hljs-number">1</span><span class="hljs-symbol">:nb_simil+</span><span class="hljs-number">1</span>],score_encod.score[<span class="hljs-number">1</span><span class="hljs-symbol">:nb_simil+</span><span class="hljs-number">1</span>]))
+</code></pre></div>
+<p>Nous créons aussi une fonction qui permet d&#39;afficher l&#39;image sélectionnée et les N images ayant le score de similarité le plus élevé.</p>
+<div id="cod15"><pre><code class="lang-python">def plot_similarite(image_id, nb_simil = <span class="hljs-number">5</span>):
+  fig = plt.figure(figsize=(<span class="hljs-number">18</span>,<span class="hljs-number">7</span>))
+  plt.gcf().subplots_adjust( wspace = <span class="hljs-number">0.2</span>, hspace = <span class="hljs-number">0.2</span>)
+
+  # Image selectionnée
+  plt.subplot(<span class="hljs-number">1</span>, nb_simil +<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+  plt.title(<span class="hljs-string">'Image selectionnée'</span>)
+  img = plt.imshow((image[image_id] * <span class="hljs-number">255</span>).astype(int))
+  img.axes.get_xaxis().set_visible(<span class="hljs-literal">False</span>)
+  img.axes.get_yaxis().set_visible(<span class="hljs-literal">False</span>)
+
+  ##### VGG16 #####
+  # Image similaire (cos metric)
+  index_simi_img,score = extract_cos_vgg16(image_id = image_id, nb_simil = nb_simil)
+
+  for i <span class="hljs-keyword">in</span> range(len(index_simi_img)):
+    plt.subplot(<span class="hljs-number">2</span>, nb_simil +<span class="hljs-number">1</span>, i+<span class="hljs-number">2</span>)
+    plt.title(<span class="hljs-string">'VGG16 - Score : '</span> + str(round(score[index_simi_img[i]],<span class="hljs-number">2</span>)))
+    img = plt.imshow((image[index_simi_img[i]]*<span class="hljs-number">255</span>).astype(int))
+    img.axes.get_xaxis().set_visible(<span class="hljs-literal">False</span>)
+    img.axes.get_yaxis().set_visible(<span class="hljs-literal">False</span>)
+
+  ##### autoencod #####
+  # Image similaire (cos metric)
+  index_simi_img,score = extract_cos_encod(image_id = image_id, nb_simil = nb_simil)
+
+  for i <span class="hljs-keyword">in</span> range(len(index_simi_img)):
+    plt.subplot(<span class="hljs-number">2</span>, nb_simil +<span class="hljs-number">1</span>, nb_simil +<span class="hljs-number">3</span> +i)
+    plt.title(<span class="hljs-string">'Encodeur - Score : '</span> + str(round(score[index_simi_img[i]],<span class="hljs-number">2</span>)))
+    img = plt.imshow((image[index_simi_img[i]]*<span class="hljs-number">255</span>).astype(int))
+    img.axes.get_xaxis().set_visible(<span class="hljs-literal">False</span>)
+    img.axes.get_yaxis().set_visible(<span class="hljs-literal">False</span>)
+  plt.show()
+</code></pre></div>
+<p>On peut maintenant vérifier que notre score de similarité fonctionne correctement. <br>
+On applique nos fonctions sur les 20 premières images.</p>
+<div id="cod16"><pre><code class="lang-python">for x in range(0,20):
+  print("<span class="hljs-strong">______________________________________ Image numéro : {} ______________________________________".format(x))
+  plot<span class="hljs-emphasis">_similarite(image_</span>id = x, nb_simil = 4)
+</code></pre></div>
+<p>__________________________________________ Image numéro : 0 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_1.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 1 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_3.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 2 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_5.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 3 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_7.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 4 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_9.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 5 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_11.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 6 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_13.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 7 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_15.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 8 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_17.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 9 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_19.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 10 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_21.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 11 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_23.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 12 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_25.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 13 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_27.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 14 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_29.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 15 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_31.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 16 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_33.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 17 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_35.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 18 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_37.png" alt="png" class="image main"></p>
+<p>__________________________________________ Image numéro : 19 __________________________________________</p>
+<p><img src="images/3-Projet_reco_output_35_39.png" alt="png" class="image main"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Pour la mise en place du modèle, le VGG16 dispose d&#39;un avantage, puisqu&#39;il ne nécessite aucun entraînement et nécessite donc très peu de ressource de calcul. </p>
+<p>Pour les résultats, le modèle avec le VGG16 semble être meilleur, surtout pour la détection de motif sur les vêtements comme les rayures, pois ou encore les motifs florales.
+Le modèle avec l&#39;auto-encodeur arrive à repérer les formes et les couleurs des vêtements, mais à beaucoup plus de mal à donner de l&#39;importance aux motifs.</p>
+<p>Le VGG16 étant programmé pour classifier des images varié comme par exemple des fleurs, des objet avec des pois ou rayures... De ce fait, il est plus sensible aux motifs des vêtements. Alors que pour l&#39;auto-encodeur, le principe est de résumer l&#39;information présente dans une image, de ce fait le modèle doit sûrement privilégier les formes et les couleurs qui ont un plus fort impact sur le calcul de l&#39;erreur lors de la construction du réseau de neurones.</p>
+<p>Cependant, dans certains cas ou les images sont vraiment spécifiques à un problème, peut être que l&#39;auto-encodeur fournirait de meilleur résultats</p>
+<p>La difficulté d&#39;une telle approche réside dans le fait qu&#39;il est difficile d&#39;évaluer le moteur de recommandation en terme de performance. En effet, à ma connaissance, nous n&#39;avons pas comme pour un problème supervisé une métrique permettant de quantifier la qualité du modèle.</p>
+<p>Une Solution pourrait consister à mettre en production le moteur de recommandation sur un échantillon de client afin de réaliser un A/B testing.</p>
+									
+			
+
+
+			
+									
+								</section>	
+									
+									
+
+
+
+
+						</div>
+					</div>
+					
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="index.html">Acceuil</a></li>
+										<li>
+											<span class="opener">Pyhton</span>
+											<ul>
+												<li><a href="1-Python_Pandas.html">Manipulation de DataFrame - Pandas</a></li>
+												<li><a href="1-Python_Numpy.html">Manipulation de Vecteurs - Numpy</a></li>
+												<li><a href="1-Python_Matplotlib.html">Visualisation de données - Matplotlib</a></li>
+												<li><a href="1-Python_Plotly.html">Visualisation de données - Plotly</a></li>
+												<li><a href="1-Python_API_GCP.html">Utilisation de l'API GCP</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">R</span>
+											<ul>
+												<li><a href="2-R_manip.html">Manipulation de DataFrame</a></li>
+												<li><a href="2-R_visu.html">Visualisation de données</a></li>
+												<li><a href="2-R_shiny.html">Création de Dashboard avec Shiny</a></li>
+											</ul>
+										</li>								
+										<li>
+											<span class="opener">Projet Python</span>
+											<ul>
+												<li><a href="3-Projet_reco_img.html">Moteur de recommandation de vêtements</a></li>
+												<li><a href="3-Projet_classif_img.html">Classification d'images</a></li>
+												
+											</ul>
+										</li>
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Contact</h2>
+									</header>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">hugo.fromont35@gmail.com</a></li>
+										<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/hugo-fromont/">Linkedin</a></li>
+										<li class="icon brands fa-github"><a href="https://github.com/HugoFromont">Github</a></li>
+									</ul>
+								</section>
+								
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+
+						</div>
+					</div>
+
+			</div>
+
+
+		<!-- Scripts -->
+			<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/aff_code.js" type="text/javascript"></script>
+
+	</body>
+</html>
