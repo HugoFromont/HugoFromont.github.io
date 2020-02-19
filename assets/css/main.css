@@ -3674,3 +3674,7 @@ input, select, textarea {
 #output_code {
     font-size: 65%;
 }
+
+.lang-python {
+    font-size: 80%;
+}

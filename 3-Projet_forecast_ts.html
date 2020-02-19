@@ -768,8 +768,11 @@ MLQTTMA3GAyGdoIJ+AaDwdBOMAHfYDAY2gn/H23IJQkxYEWdAAAAAElFTkSuQmCC
          )
 		 
 		 
-train_features,train_features_jf,train_features_vac,train_features_t,train_features_date,train_target,train_target_jf,train_target_vac,train_target_date = create_matrice(train, length_vect = 48*7, nb_targets = 48)
-valid_features,valid_features_jf,valid_features_vac,valid_features_t,valid_features_date,valid_target,valid_target_jf,valid_target_vac,valid_target_date = create_matrice(valid, length_vect = 48*7, nb_targets = 48)
+train_features,train_features_jf,train_features_vac,train_features_t,train_features_date,
+train_target,train_target_jf,train_target_vac,train_target_date = create_matrice(train, length_vect = 48*7, nb_targets = 48)
+
+valid_features,valid_features_jf,valid_features_vac,valid_features_t,valid_features_date,
+valid_target,valid_target_jf,valid_target_vac,valid_target_date = create_matrice(valid, length_vect = 48*7, nb_targets = 48)
 
 train_past_fetures = np.concatenate([train_features,train_features_jf],2)
 valid_past_fetures = np.concatenate([valid_features,valid_features_jf],2)
