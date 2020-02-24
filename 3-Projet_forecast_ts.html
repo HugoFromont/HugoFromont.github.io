@@ -69,12 +69,12 @@
 
 
 <!-- Intro -->
-<p>Les données de timeserie, sont des séquence de données horodatées. Au dela de leur stockage qui peut savéré volumineux, 
+<p>Les données de timeserie, sont des séquences de données horodatés. Au delà de leur stockage qui peut s'avéré volumineux, 
 ce type de données peut être plus complexe à traiter, à cause de la volumétrie de features et de la dépendance temporelle des données. 
-Pour croiser ces données avec d'autres types de données (plus classique), nous réalisons sonvent un résumé de la serie temporelle (min, max, moyenne, ecart type...) que nous venons ajouter aux autres données. Cependant nous perdons beaucoup d'informations.</p>
-<p>Même si dans de nombreux cas il est préferable de procéder ainsi, certain cas nessécite de capturer plus d'information sur des series de données. Pour cela, nous pouvons utilisé des réseaux de neurones LSTM (Long Short Time Memory), qui ont la capacité à comprendre la structure temporèle des données et à garder en mémoire une parties d'informations importantes.</p>
-<p>Dans ce projet, nous allons voir comment utiliser les réseaux de neurones LSTM pour prédire les valeurs futures d'une serie temporelle. Ce genre de problème peut être très utiles pour les entreprises. Par exemple il peut permettre de prédire une quantité de ventes pour optimiser ces stocks ou ca main d'oeuvre. Prédire la valeur d'un produits financier dans le temps...</p>
-<p>Dans ce projet, nous allons prédire la consommation electriques des 24h à venir en fonction de la consommation electrique passé.</p>
+Pour croiser ces données avec d'autres types de données (plus classique), nous réalisons souvent un résumé de la série temporelle (min, max, moyenne, écart type...) que nous venons ajouter aux autres données. Cependant, nous perdons beaucoup d'informations.</p>
+<p>Même si dans de nombreux cas, il est préférable de procéder ainsi, certains cas nécéssite de capturer plus d'informations sur les series de données. Pour cela, nous pouvons utiliser des réseaux de neurones LSTM (Long Short Time Memory), qui ont la capacité à comprendre la structure temporèlle des données et à garder en mémoire une parties d'informations importantes.</p>
+<p>Dans ce projet, nous allons voir comment utiliser les réseaux de neurones LSTM pour prédire les valeurs futures d'une série temporelle. Ce genre de problème peut être très utile pour les entreprises. Par exemple, il peut permettre de prédire une quantité de ventes pour optimiser ces stocks ou ca main d'œuvre. Prédire la valeur d'un produit financier dans le temps...</p>
+<p>Dans ce projet, nous allons prédire la consommation électriques des 24h à venir en fonction de la consommation électrique passé.</p>
 
 
 <!-- code -->
@@ -88,20 +88,20 @@ drive.mount('/content/drive')
 
 <h2>Importation des données</h2>
 
-<p>Le jeux de données que nous allons utilisé provient de la platform Open data d'Enedis. Le jeux de données représente la consommation éléctrique des points de soutirage supperieur à 36kVa <a href="https://data.enedis.fr/explore/dataset/conso-sup36/information/?disjunctive.profil&amp;disjunctive.secteur_activite&amp;dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJsaW5lIiwiZnVuYyI6IlNVTSIsInlBeGlzIjoidG90YWxfZW5lcmdpZV9zb3V0aXJlZV93aCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiMwMEEzRTAifV0sInhBeGlzIjoiaG9yb2RhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJtaW51dGUiLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJjb25zby1zdXAzNiIsIm9wdGlvbnMiOnsiZGlzanVuY3RpdmUucHJvZmlsIjp0cnVlLCJkaXNqdW5jdGl2ZS5zZWN0ZXVyX2FjdGl2aXRlIjp0cnVlfX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0%3D">(lien vers le jeux de données)</a>.</p>
-<p>Voici un apercut des données qui provient directement de platform OpenData d'Enedis qui permet visualiser les jeux de données.</p>
+<p>Le jeu de données que nous allons utiliser provient de la platforme Open data d'Enedis. Le jeu de données représente la consommation électrique des points de soutirage supérieur à 36kVa <a href="https://data.enedis.fr/explore/dataset/conso-sup36/information/?disjunctive.profil&amp;disjunctive.secteur_activite&amp;dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJsaW5lIiwiZnVuYyI6IlNVTSIsInlBeGlzIjoidG90YWxfZW5lcmdpZV9zb3V0aXJlZV93aCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiMwMEEzRTAifV0sInhBeGlzIjoiaG9yb2RhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJtaW51dGUiLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJjb25zby1zdXAzNiIsIm9wdGlvbnMiOnsiZGlzanVuY3RpdmUucHJvZmlsIjp0cnVlLCJkaXNqdW5jdGl2ZS5zZWN0ZXVyX2FjdGl2aXRlIjp0cnVlfX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0%3D">(lien vers le jeu de données)</a>.</p>
+<p>Voici un aperçut des données qui provient directement de platforme OpenData d'Enedis qui permet visualiser de les jeux de données.</p>
 
-<p>L'objectif de ce projet est de prédire les valeurs de consommation total des 24 prochaines heures. Nous avons donc agrégés toutes les régions et les dommaines d'activités pour avoir la consommation total par pas de 30 minutes.</p>
+<p>L'objectif de ce projet est de prédire les valeurs de consommation totale des 24 prochaines heures. Nous avons donc agrégé toutes les régions et les domaines d'activités pour avoir la consommation totale par pas de 30 minutes.</p>
 <p>Comme dans tout problème de machine learning, il est important de faire un état des lieux des données disponibles. 
-Dans ce problème, nous avons identifié 3 sources de données pouvant être intergrées croisé avec les données de consomamtions :</p>
+Dans ce problème, nous avons identifié 3 sources de données pouvant être intégrées croisé avec les données de consommations :</p>
 <ul>
-<li>Les données de température exterieur</li>
-<li>Les données sur les jours ferié </li>
-<li>Les données sur les periodes de vacances scolaires</li>
+<li>Les données de température extérieur</li>
+<li>Les données sur les jours fériés </li>
+<li>Les données sur les périodes de vacances scolaires</li>
 </ul>
-<p>Nous avons récupéré toutes ces donnée  en OpenData. Les données Météo proviennent de MétéFrance, Les données sur les jours ferié et les vacances scolaire proviennent de data.gouv.</p>
+<p>Nous avons récupéré toutes ces données en OpenData. Les données Météo proviennent de MétéFrance, les données sur les jours fériés et les vacances scolaire proviennent de data.gouv.</p>
 
-<p>L'enssemble des données ont été retravaillées et jointurées pour être stockées dans un même csv.</p>
+<p>L'ensemble des données ont été retravaillées et jointurées pour être stockées dans un même csv.</p>
 
 
 
@@ -164,8 +164,8 @@ data.head()
   </tbody>
 </table>
 
-<p>Comme pour tout problème supervisé, nous divisons le jeux de données en deux échantillons (apprentissage et validation). Dans ce type de problème, nous ne pouvons pas effectuer d'échantillonnage aléatoire pour ne pas que l'apprentissage s'effectuer sur des morceaux de serie se trouvant aussi dans l'echantilloon de validation. L'echantillonngae s'effectue donc par date.</p>
-<p>L'echantillon d'apprentissage est composé des valeurs précedant le 01-07-2019. Tandisque l'echantillon de validation est composé des valeurs anterieur à cette date.</p>
+<p>Comme pour tout problème supervisé, nous divisons le jeu de données en deux échantillons (apprentissage et validation). Dans ce type de problème, nous ne pouvons pas effectuer d'échantillonnage aléatoire pour ne pas que l'apprentissage s'effectuer sur des morceaux de série se trouvant aussi dans l'échantillon de validation. L'échantillonnage s'effectue donc par date.</p>
+<p>L'échantillon d'apprentissage est composé des valeurs précédant le 01-07-2019. Tandis que l'échantillon de validation est composé des valeurs antérieur à cette date.</p>
 
 
 
@@ -180,7 +180,7 @@ print("valid : {}  | {}%".format(valid.shape, round(valid.shape[0]/data.shape[0]
 valid : (8834, 5)  | 25%
 </pre>
 
-<p>Nous centrons et reduisons les données de consommation pour avoir un modèle qui converge plus vite.</p>
+<p>Nous centrons et réduisons les données de consommation pour avoir un modèle qui converge plus vite.</p>
 
 <div id="cod4"><pre><code class="lang-python">conso_mean = train.total_soutiree.mean()
 conso_std = train.total_soutiree.std()
@@ -195,16 +195,16 @@ train['t'] = (train.t - t_mean)/t_std
 valid['t'] = (valid.t - t_mean)/t_std
 </code></pre></div>
 
-<p>En visualisant les données, nous avons remarqué une tendance hebdomadaire dans les données. En effet nous observons de forte consommation en journée du lundi au vendredi, tandisque le weekend et les jour ferier l'amplitude de consommation est beaucoup plus faible.</p>
-<p>Pour créer un modèle LSTM, nous avons choisie de mettre en entrée les valeurs de consommation des 7 dernier jours, pour que le modèle puisse ce repérer la temporralité des jours de la semaine.</p>
+<p>En visualisant les données, nous avons remarqué une tendance hebdomadaire dans les données. En effet, nous observons de forte consommation en journée du lundi au vendredi, tandis que le weekend et les jours fériés l'amplitude de consommation est beaucoup plus faible.</p>
+<p>Pour créer un modèle LSTM, nous avons choisi de mettre en entrée les valeurs de consommation des 7 dernier jours, pour que le modèle puisse se repérer la temporalité des jours de la semaine.</p>
 <p>Voici une représentation graphique de ce que nous souhaitons introduire dans notre modèle :</p>
 <ul>
-<li>En bleu, les donnés passé</li>
+<li>En bleu, les donnés passés</li>
 <li>En vert les données futures que nous devons prédire </li>
-<li>En gris les données des jours ferier (0 = jour normal | 1 = Jour feriée)</li>
+<li>En gris les données des jours fériés (0 = jour normal | 1 = Jour ferié)</li>
 <li>En noire les données des vacances (0 = jour normal | 1 = vacances scolaires)</li>
 </ul>
-<p>A noter que pour les jours feriées et les vacances scolaire, nous selectionnons les valeurs des jours passé, masi aussi les valeurs des 24 prochaines heures, car c'est un information que l'on peut avoir même pour des valeurs futures. Par contre, les données de consommation et de temperatures exterieurs sont disponible uniquement dans le passé.</p>
+<p>À noter que pour les jours feriés et les vacances scolaire, nous selectionnons les valeurs des jours passé, masi aussi les valeurs des 24 prochaines heures, car c'est un information que l'on peut avoir même pour des valeurs futures. Par contre, les données de consommation et de températures extérieures sont disponible uniquement dans le passé.</p>
 
 
 <div id="cod5"><pre><code class="lang-python">
@@ -719,7 +719,7 @@ MLQTTMA3GAyGdoIJ+AaDwdBOMAHfYDAY2gn/H23IJQkxYEWdAAAAAElFTkSuQmCC
 >
 </div>
 
-<p>Nous allons donc creér une fonction permmettant de créer nos vecteur de features et de target.</p>
+<p>Nous allons donc créer une fonction permettant de créer nos vecteurs de features et de target.</p>
 
 <div id="cod6"><pre><code class="lang-python">def create_matrice(data, length_vect = 150, nb_targets = 24):
 
@@ -779,9 +779,9 @@ valid_past_fetures = np.concatenate([valid_features,valid_features_jf],2)
 </code></pre></div>
 
 
-<p>Après avoir tester different modèles, nous avons retenu dans notre modèle final uniquement les données de consommation et les données sur les jours feriées.
+<p>Après avoir testé differents modèles, nous avons retenu dans notre modèle final uniquement les données de consommation et les données sur les jours feriés.
 
-Voici le modèle que nous avons créé. Nous avons un premier layer LSTM qui prend en entré les données passé de conso et jour feriée. Ce layer renvoi en sortie un vecteur de 48 valeurs que nous concaténons aux valeurs futures des jours feriées. Nous rajoutons un layers LSTM Puis un layer Dense pour predir les 48 prochianes valeurs de consommations.</p>
+Voici le modèle que nous avons créé. Nous avons un premier layer LSTM qui prend en entrée les données passé de consommations et des jours feriées. Ce layer renvoi en sortie un vecteur de 48 valeurs que nous concaténons aux valeurs futures des jours feriés. Nous rajoutons un layers LSTM Puis un layer Dense pour prédir les 48 prochaines valeurs de consommations.</p>
 
 
 
@@ -855,159 +855,37 @@ ________________________________________________________________________________
 
 <pre id="output_code">
 Train on 25821 samples, validate on 8449 samples
-Epoch 1/300
+Epoch 1/100
 25821/25821 [==============================] - 91s 4ms/sample - loss: 0.7185 - val_loss: 0.3502
-Epoch 2/300
+Epoch 2/100
 25821/25821 [==============================] - 89s 3ms/sample - loss: 0.2419 - val_loss: 0.2447
-Epoch 3/300
+Epoch 3/100
 25821/25821 [==============================] - 90s 3ms/sample - loss: 0.1548 - val_loss: 0.1541
-Epoch 4/300
-25821/25821 [==============================] - 90s 3ms/sample - loss: 0.1068 - val_loss: 0.1031
-Epoch 5/300
-25821/25821 [==============================] - 90s 3ms/sample - loss: 0.0921 - val_loss: 0.1127
-Epoch 6/300
-25821/25821 [==============================] - 90s 3ms/sample - loss: 0.0838 - val_loss: 0.0904
-Epoch 7/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0791 - val_loss: 0.0809
-Epoch 8/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0705 - val_loss: 0.0739
-Epoch 9/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0681 - val_loss: 0.0748
-Epoch 10/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0633 - val_loss: 0.0888
-Epoch 11/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0576 - val_loss: 0.0866
-Epoch 12/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0568 - val_loss: 0.0522
-Epoch 13/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0497 - val_loss: 0.0514
-Epoch 14/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0453 - val_loss: 0.0643
-Epoch 15/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0385 - val_loss: 0.0497
-Epoch 16/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0390 - val_loss: 0.0586
-Epoch 17/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0442 - val_loss: 0.0445
-Epoch 18/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0349 - val_loss: 0.0617
-Epoch 19/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0408 - val_loss: 0.0425
-Epoch 20/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0271 - val_loss: 0.0408
-Epoch 21/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.1061 - val_loss: 0.0752
-Epoch 22/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0601 - val_loss: 0.0617
-Epoch 23/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0536 - val_loss: 0.0646
-Epoch 24/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0560 - val_loss: 0.0678
-Epoch 25/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0440 - val_loss: 0.0529
-Epoch 26/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0417 - val_loss: 0.0583
-Epoch 27/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0417 - val_loss: 0.0446
-Epoch 28/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.1863 - val_loss: 0.1383
-Epoch 29/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.1010 - val_loss: 0.1003
-Epoch 30/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0641 - val_loss: 0.0819
-Epoch 31/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0611 - val_loss: 0.0750
-Epoch 32/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0586 - val_loss: 0.0712
-Epoch 33/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0530 - val_loss: 0.0621
-Epoch 34/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0438 - val_loss: 0.0614
-Epoch 35/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0424 - val_loss: 0.0557
-Epoch 36/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0523 - val_loss: 0.1012
-Epoch 37/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0420 - val_loss: 0.0583
-Epoch 38/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0387 - val_loss: 0.0508
-Epoch 39/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0370 - val_loss: 0.0504
-Epoch 40/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0382 - val_loss: 0.0539
-Epoch 41/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0369 - val_loss: 0.0557
-Epoch 42/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0345 - val_loss: 0.0531
-Epoch 43/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0364 - val_loss: 0.0616
-Epoch 44/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0383 - val_loss: 0.0463
-Epoch 45/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0345 - val_loss: 0.0481
-Epoch 46/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0371 - val_loss: 0.0707
-Epoch 47/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0430 - val_loss: 0.1212
-Epoch 48/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0379 - val_loss: 0.0461
-Epoch 49/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0317 - val_loss: 0.0574
-Epoch 50/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0290 - val_loss: 0.0438
-Epoch 51/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0306 - val_loss: 0.0547
-Epoch 52/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0303 - val_loss: 0.0367
-Epoch 53/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0271 - val_loss: 0.0394
-Epoch 54/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0264 - val_loss: 0.0317
-Epoch 55/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0230 - val_loss: 0.0292
-Epoch 56/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0209 - val_loss: 0.0286
-Epoch 57/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0195 - val_loss: 0.0249
-Epoch 58/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0205 - val_loss: 0.0239
-Epoch 59/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0205 - val_loss: 0.0242
-Epoch 60/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0166 - val_loss: 0.0223
-Epoch 61/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0150 - val_loss: 0.0217
-Epoch 62/300
-25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0196 - val_loss: 0.0298
-Epoch 63/300
-25821/25821 [==============================] - 87s 3ms/sample - loss: 0.0142 - val_loss: 0.0216
-Epoch 64/300
+
+...
+
+Epoch 92/100
 25821/25821 [==============================] - 88s 3ms/sample - loss: 0.0134 - val_loss: 0.0196
-Epoch 65/300
+Epoch 93/100
 25821/25821 [==============================] - 90s 3ms/sample - loss: 0.0143 - val_loss: 0.0189
-Epoch 66/300
-25821/25821 [==============================] - 94s 4ms/sample - loss: 0.0276 - val_loss: 0.0460
-Epoch 67/300
+Epoch 94/100
 25821/25821 [==============================] - 90s 3ms/sample - loss: 0.0199 - val_loss: 0.0198
-Epoch 68/300
+Epoch 95/100
 25821/25821 [==============================] - 90s 3ms/sample - loss: 0.0126 - val_loss: 0.0185
-Epoch 69/300
+Epoch 96/100
 25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0124 - val_loss: 0.0212
-Epoch 70/300
-25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0177 - val_loss: 0.0755
-Epoch 71/300
+Epoch 97/100
 25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0178 - val_loss: 0.0189
-Epoch 72/300
+Epoch 98/100
 25821/25821 [==============================] - 89s 3ms/sample - loss: 0.0114 - val_loss: 0.0176
-Epoch 73/300
+Epoch 99/100
 25821/25821 [==============================] - 92s 4ms/sample - loss: 0.0173 - val_loss: 0.0164
-Epoch 73/300
+Epoch 100/100
 25821/25821 [==============================] - 91s 4ms/sample - loss: 0.0106 - val_loss: 0.0167
- 
  </pre>
 
-<p>L'erreur moyenne de notre modèle est de l'ordre de 18 million de watt. Soit une erreur d'à peu près 2% part rapport à la valeur réel.</p>
-<p>Nous allons maintenant appliquer le modèle sur l'échantillon de validation. Puis nous allons afficher concaténer les valeurs qui aurait été prédites pour chacun des jours de l'echantillon de validation. Nous allons les superposer sur les valeurs réels pour avoir une représentation visuel des erreur de notre modèle</p>
+<p>L'erreur moyenne de notre modèle est de l'ordre de 18 millions de watt. Soit une erreur d'à peu près 2% part rapport à la valeur réelle.</p>
+<p>Nous allons maintenant appliquer le modèle sur l'échantillon de validation. Puis nous allons afficher concaténer les valeurs qui auraient été prédites pour chacun des jours de l'échantillon de validation. Nous allons les superposer sur les valeurs réelles pour avoir une représentation visuelle des erreurs de notre modèle.</p>
 
 
 
@@ -6528,8 +6406,8 @@ hBAC+H/npGLFxWn16QAAAABJRU5ErkJggg==
 </div></pre>
 
 
-<p>On peut voir que notre modèle est globalement correct. On peut quand même observer une sur-éstimation des pics de consos sur le mois d'aout et pendant les vacances de noël. 
-On peut aussi voir que même si le modèle est moins précis sur les périodes de vacances et de jours feriée, il arrive quand même à prévoir le changement.</p>
+<p>On peut voir que notre modèle est globalement correct. On peut quand même observer une sur-estimation des pics de consommations sur le mois d'août et pendant les vacances de Noël. 
+On peut aussi voir que même si le modèle est moins précis sur les périodes de vacances et de jours feriés, il arrive quand même à prévoir le changement.</p>
 
 
 
