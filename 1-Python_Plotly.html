@@ -11,7 +11,7 @@
 		<!-- End Google Tag Manager -->
 		
 	
-		<title>Accueil</title>
+		<title>Python</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -44,7 +44,7 @@
 							
 							
 							<header id="header">
-									<a href="index.html" class="logo"><strong>Accueil</strong></a>
+									<a class="logo"><strong>Python - Visualisation avec Plotly</strong></a>
 									<ul class="icons">
 										<li><a href="https://www.linkedin.com/in/hugo-fromont/" class="icon brands fa-linkedin"><span class="label">Linkedin</span></a></li>
 										<li><a href="https://github.com/HugoFromont" class="icon brands fa-github"><span class="label">Github</span></a></li>
@@ -56,10 +56,9 @@
 
 							<!-- Content -->
 								<section>
-									<h1>Visualisation de données avec Plotly</h1>
 									<span class="image main"><img src="images/1-Python_Intro_Plotly.png" alt="" /></span>
 
-<h1 id="guide-plotly">Guide Plotly</h1>
+<h3 id="guide-plotly">Guide Plotly</h3>
 <p>A travesr ce guide, nous verons quelques focntion de la librairies plotly. <br>
 Plotly est une librarie permettant de développer des graphiques interactifs très élaboré.</p>
 <pre><code class="lang-python"><span class="hljs-comment"># Pour l'affichage des graphque sur un notebook</span>
@@ -141,11 +140,11 @@ init_notebook_mode(connected=<span class="hljs-keyword">True</span>)
 
 
 
-<h1 id="graphique-de-base">Graphique de base</h1>
+<h3 id="graphique-de-base">Graphique de base</h3>
 <p>Il y a deux manières de faire un graphique avec plotly soit avec plotly express ou plotly graph_objects.</p>
 <p>Plotly Express est une librérie basé sur plotly.graph_objects pour l&#39;exploration rapide des données et la génération de figures.</p>
 <p>ici nous alons présenter quelques graphique de base avec plotly graph_object, en ajoutant quelques paramettres qui permetteront de personnalisé rapidement un graphique.</p>
-<h2 id="histograme">Histograme</h2>
+<h3 id="histograme">Histograme</h3>
 <pre><code class="lang-python"><span class="hljs-comment"># Création de l'object graphique</span>
 <span class="hljs-attr">fig</span> = go.Figure()
 
@@ -185,7 +184,7 @@ fig.update_traces(<span class="hljs-attr">marker_color='#67001F',</span>
 
 fig.show()
 </code></pre>
-<h2 id="diagramme-circulaire">Diagramme Circulaire</h2>
+<h3 id="diagramme-circulaire">Diagramme Circulaire</h3>
 <pre><code class="lang-python"><span class="hljs-attr">label</span> = data[<span class="hljs-string">"sex"</span>].value_counts().keys().tolist() 
 <span class="hljs-attr">valeurs</span> = data[<span class="hljs-string">"sex"</span>].value_counts().values.tolist()
 <span class="hljs-attr">colors</span> = ['<span class="hljs-comment">#67001F','#F4A582']</span>
@@ -215,7 +214,7 @@ fig.update_traces(
 
 fig.show()
 </code></pre>
-<h2 id="nuage-de-points">Nuage de points</h2>
+<h3 id="nuage-de-points">Nuage de points</h3>
 <pre><code class="lang-python"><span class="hljs-attr">colors</span> = ['<span class="hljs-comment">#67001F','#F4A582']</span>
 
 <span class="hljs-attr">fig</span> = go.Figure()
@@ -330,8 +329,9 @@ fig.show()
 											<span class="opener">Projet Python</span>
 											<ul>
 												<li><a href="3-Projet_reco_img.html">Moteur de recommandation de vêtements</a></li>
+												<li><a href="3-Projet_forecast_ts.html">Pévision de series temporelles</a></li>
 												<li><a href="3-Projet_classif_img.html">Classification d'images</a></li>
-												
+												<li><a href="3-Construction.html">Classification de commentaires</a></li>
 											</ul>
 										</li>
 									</ul>
