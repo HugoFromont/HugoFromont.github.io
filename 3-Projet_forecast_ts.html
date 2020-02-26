@@ -900,8 +900,13 @@ Epoch 100/100
  </pre>
 
 <h2>Résultats</h2>
+
 <p>L'erreur moyenne de notre modèle est de l'ordre de 18 millions de watt. Soit une erreur d'à peu près 2% part rapport à la valeur réelle.</p>
-<p>Nous allons maintenant appliquer le modèle sur l'échantillon de validation. Puis nous allons afficher concaténer les valeurs qui auraient été prédites pour chacun des jours de l'échantillon de validation. Nous allons les superposer sur les valeurs réelles pour avoir une représentation visuelle des erreurs de notre modèle.</p>
+<p>Pour visulaliser les résultats, nous allons appliquer le modèle sur l'échantillon de validation. 
+Nous appliquons le modèle afin de prédire les valeurs de consommation de chaque jour de 0h00 à 23h30. 
+Puis nous concaténons les prédictions pour obtenir les graphiques ci dessous.</p>
+
+ 
 
 
 
@@ -6422,8 +6427,9 @@ hBAC+H/npGLFxWn16QAAAABJRU5ErkJggg==
 </div></pre>
 
 
-<p>On peut voir que notre modèle est globalement correct. On peut quand même observer une sur-estimation des pics de consommations sur le mois d'août et pendant les vacances de Noël. 
-On peut aussi voir que même si le modèle est moins précis sur les périodes de vacances et de jours feriés, il arrive quand même à prévoir le changement.</p>
+<p>On peut voir que notre modèle est globalement correct même si on observe quand même une sur-estimation des pics de consommations 
+sur le mois d'août et pendant les vacances de Noël. On peut aussi voir que même si le modèle est moins précis sur les périodes de 
+vacances et de jours feriés, il arrive quand même à prévoir le changement.</p>
 
 
 
