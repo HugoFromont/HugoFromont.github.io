@@ -68,19 +68,19 @@
 
 
 <!-- Intro -->
-<p>Les données de timeserie, sont des séquences de données horodatés. Au delà de leur stockage qui peut s'avéré volumineux, 
+<p>Les données de timeserie sont des séquences de données horodatées. Au delà de leur stockage qui peut s'avérer volumineux, 
 ce type de données peut être plus complexe à traiter, à cause de la volumétrie de features et de la dépendance temporelle des données.
 Pour utiliser ces données dans des modèles de prévision, nous approchons souvent la série grace aux techniques de séries chronologiques.
-Pour croiser ces données avec d'autres types de données (plus classique), nous réalisons souvent un résumé de la série 
-temporelle (min, max, moyenne, écart type...) que nous venons ajouter aux autres données. Cependant, nous perdons beaucoup d'informations.</p>
-<p>Même si dans de nombreux cas, il est préférable d'utiliser les techniques décrite précedement, certains cas nécéssite de capturer plus d'informations 
+Pour croiser ces données avec d'autres types de données (plus classiques), nous réalisons souvent un résumé de la série 
+temporelle (min, max, moyenne, écart type...) que nous venons ajouter aux autres données. Cependant, nous perdons beaucoup ainsi d'informations.</p>
+<p>Même si dans de nombreux cas il est préférable d'utiliser les techniques décrites précedement, certains cas nécéssitent de capturer plus d'informations 
 sur les series de données. Pour cela, nous pouvons utiliser des réseaux de neurones LSTM (Long Short Time Memory), 
-qui ont la capacité à comprendre la structure temporèlle des données et à garder en mémoire une parties d'informations importantes.</p>
+qui ont la capacité a comprendre la structure temporelle des données et à garder en mémoire une partie des informations importantes.</p>
 
 <p>Dans ce projet, nous allons voir comment utiliser les réseaux de neurones LSTM pour prédire les valeurs futures d'une série temporelle.
 Ce genre de problème peut être très utile pour les entreprises. Par exemple, il peut permettre de prédire une quantité de ventes pour optimiser 
-ces stocks ou ca main d'œuvre. Prédire la valeur d'un produit financier dans le temps...</p>
-<p>Dans ce projet, nous allons prédire la consommation électriques des 24h à venir en fonction de la consommation électrique passé.</p>
+ses stocks ou sa main d'œuvre. Prédire la valeur d'un produit financier dans le temps...</p>
+<p>Dans ce projet, nous allons prédire la consommation électrique des 24h à venir en fonction de la consommation électrique passée.</p>
 
 
 <!-- code -->
@@ -94,22 +94,23 @@ drive.mount('/content/drive')
 
 <h2>Importation des données</h2>
 
-<p>Le jeu de données que nous allons utiliser provient de la platforme Open data d'Enedis. Le jeu de données représente la consommation électrique 
-des points de soutirage supérieur à 36kVa <a href="https://data.enedis.fr/explore/dataset/conso-sup36/information/?disjunctive.profil&amp;disjunctive.secteur_activite&amp;dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJsaW5lIiwiZnVuYyI6IlNVTSIsInlBeGlzIjoidG90YWxfZW5lcmdpZV9zb3V0aXJlZV93aCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiMwMEEzRTAifV0sInhBeGlzIjoiaG9yb2RhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJtaW51dGUiLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJjb25zby1zdXAzNiIsIm9wdGlvbnMiOnsiZGlzanVuY3RpdmUucHJvZmlsIjp0cnVlLCJkaXNqdW5jdGl2ZS5zZWN0ZXVyX2FjdGl2aXRlIjp0cnVlfX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0%3D">(lien vers le jeu de données)</a>.</p>
-<p>Voici un aperçut des données qui provient directement de platforme OpenData d'Enedis qui permet de visualiser les jeux de données.</p>
+<p>Le jeu de données que nous allons utiliser provient de la plateforme Open data d'Enedis. Le jeu de données représente la consommation électrique 
+des points de soutirage supérieurs à 36kVa <a href="https://data.enedis.fr/explore/dataset/conso-sup36/information/?disjunctive.profil&amp;disjunctive.secteur_activite&amp;dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJsaW5lIiwiZnVuYyI6IlNVTSIsInlBeGlzIjoidG90YWxfZW5lcmdpZV9zb3V0aXJlZV93aCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiMwMEEzRTAifV0sInhBeGlzIjoiaG9yb2RhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJtaW51dGUiLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJjb25zby1zdXAzNiIsIm9wdGlvbnMiOnsiZGlzanVuY3RpdmUucHJvZmlsIjp0cnVlLCJkaXNqdW5jdGl2ZS5zZWN0ZXVyX2FjdGl2aXRlIjp0cnVlfX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0%3D">(lien vers le jeu de données)</a>.</p>
+<p>Voici un aperçu des données qui provient directement de plateforme OpenData d'Enedis qui permet de visualiser les jeux de données.</p>
 
 <img src = "images/3-Projet_forecast_ts_visu.jpg" width = 90%>
 
 <p>L'objectif de ce projet est de prédire les valeurs de consommation totale des 24 prochaines heures. Nous avons donc agrégé toutes les régions 
 et les domaines d'activités pour avoir la consommation totale par pas de 30 minutes.</p>
 <p>Comme dans tout problème de machine learning, il est important de faire un état des lieux des données disponibles. 
-Dans ce problème, nous avons identifié 3 sources de données pouvant être croisé avec les données de consommations :
+Dans ce problème, nous avons identifié 3 sources de données pouvant être croisées avec les données de consommations :
 <ul>
-<li>Les données de température extérieur</li>
+<li>Les données de température extérieure</li>
 <li>Les données sur les jours fériés </li>
 <li>Les données sur les périodes de vacances scolaires</li>
 </ul></p>
-<p>Nous avons récupéré toutes ces données en OpenData. Les données Météo proviennent de MétéFrance, les données sur les jours fériés et les vacances scolaire proviennent de data.gouv.</p>
+<p>Nous avons récupéré toutes ces données en OpenData. Les données Météo proviennent de MétéoFrance, les données sur les jours fériés et les 
+vacances scolaires proviennent de data.gouv.</p>
 
 <p>L'ensemble des données ont été retravaillées et jointurées pour être stockées dans un même csv.</p>
 
@@ -174,8 +175,11 @@ data.head()
   </tbody>
 </table>
 
-<p>Comme pour tout problème supervisé, nous divisons le jeu de données en deux échantillons (apprentissage et validation). Dans ce type de problème, nous ne pouvons pas effectuer d'échantillonnage aléatoire pour ne pas que l'apprentissage s'effectuer sur des morceaux de série se trouvant aussi dans l'échantillon de validation. L'échantillonnage s'effectue donc par date.</p>
-<p>L'échantillon d'apprentissage est composé des valeurs précédant le 01-07-2019. Tandis que l'échantillon de validation est composé des valeurs antérieur à cette date.</p>
+<p>Comme pour tout problème supervisé, nous divisons le jeu de données en deux échantillons (apprentissage et validation). 
+Dans ce type de problème, nous ne pouvons pas effectuer d'échantillonnage aléatoire pour ne pas que l'apprentissage s'effectue 
+sur des morceaux de séries se trouvant aussi dans l'échantillon de validation. L'échantillonnage s'effectue donc par date.</p>
+<p>L'échantillon d'apprentissage est composé des valeurs précédant le 01-07-2019. Tandis que l'échantillon de validation est composé 
+des valeurs antérieures à cette date.</p>
 
 
 
@@ -207,19 +211,21 @@ valid['t'] = (valid.t - t_mean)/t_std
 
 <p>En visualisant les données, nous avons remarqué une tendance hebdomadaire dans les données. En effet, nous observons de fortes consommations 
 en journée du lundi au vendredi, tandis que le weekend et les jours fériés l'amplitude de consommation est beaucoup plus faible.
-Un simple modèle de série chronologiques pourais détecter les tendances anuelle et hebdomadaire de la serie. Cependant, 
-le modèle serait trop généraliste pour détécter des événements plus anormaux comme les jours fériés.</p>
+Un simple modèle de série chronologiques pourrait détecter les tendances anuelles et hebdomadaires de la serie. Cependant, 
+le modèle serait trop généraliste pour détecter des événements plus anormaux comme les jours fériés.</p>
 
-<p>Pour créer notre modèle LSTM, nous avons choisi de mettre en entrée les valeurs de consommation des 7 dernier jours, pour que le modèle puisse se 
+<p>Pour créer notre modèle LSTM, nous avons choisi de mettre en entrée les valeurs de consommation des 7 dernier jours, pour que le modèle puisse 
 repérer la temporalité des jours de la semaine.</p>
 <p>Voici une représentation graphique de ce que nous souhaitons introduire dans notre modèle :</p>
 <ul>
-<li>En bleu, les donnés passés</li>
-<li>En vert les données futures que nous devons prédire </li>
-<li>En gris les données des jours fériés (0 = jour normal | 1 = Jour ferié)</li>
-<li>En noire les données des vacances (0 = jour normal | 1 = vacances scolaires)</li>
+<li>En bleu, les donnés passées</li>
+<li>En vert, les données futures que nous devons prédire </li>
+<li>En gris, les données des jours fériés (0 = jour normal | 1 = Jour ferié)</li>
+<li>En noir, les données des vacances (0 = jour normal | 1 = vacances scolaires)</li>
 </ul>
-<p>À noter que pour les jours feriés et les vacances scolaire, nous selectionnons les valeurs des jours passé, masi aussi les valeurs des 24 prochaines heures, car c'est un information que l'on peut avoir même pour des valeurs futures. Par contre, les données de consommation et de températures extérieures sont disponible uniquement dans le passé.</p>
+<p>À noter que pour les jours feriés et les vacances scolaires, nous sélectionnons les valeurs des jours passé, 
+mais aussi les valeurs des 24 prochaines heures, car c'est une information que l'on peut avoir même pour des valeurs futures. 
+Par contre, les données de consommation et de températures extérieures sont disponibles uniquement dans le passé.</p>
 
 
 <div id="cod5"><pre><code class="lang-python">
@@ -794,17 +800,19 @@ valid_past_fetures = np.concatenate([valid_features,valid_features_jf],2)
 </code></pre></div>
 
 
-<p>Après avoir testé differents modèles, nous avons retenu dans notre modèle final uniquement les données de consommation et les données sur les jours feriés.
-
-Voici le modèle que nous avons créé. Nous avons un premier layer LSTM qui prend en entrée les données passé de consommations et des jours feriées. Ce layer renvoi en sortie un vecteur de 48 valeurs que nous concaténons aux valeurs futures des jours feriés. Nous rajoutons un layers LSTM Puis un layer Dense pour prédir les 48 prochaines valeurs de consommations.</p>
-
-
+<p>Après avoir testé differents modèles, nous avons retenu dans notre modèle final uniquement les données de consommation et les données 
+sur les jours feriés. Voici le modèle que nous avons créé. Nous avons un premier layer LSTM qui prend en entrée les données passées de 
+consommations et des jours feriées. Ce layer renvoi en sortie un vecteur de 48 valeurs que nous concaténons aux valeurs futures des jours 
+feriés. Nous rajoutons un layers LSTM puis un layer Dense pour prédire les 48 prochaines valeurs de consommations.</p>
 
 
 <h2>Création du modèle</h2>
 
-<p>Après avoir tester different modèles, nous avons retenu dans notre modèle final uniquement les données de consommation et les données sur les jours feriées.</p>
-<p>Voici le modèle que nous avons créé. Nous avons un premier layer LSTM qui prend en entré les données passé de conso et jour feriée. Ce layer renvoi en sortie un vecteur de 48 valeurs que nous concaténons aux valeurs futures des jours feriées. Nous rajoutons un layers LSTM Puis un layer Dense pour predir les 48 prochianes valeurs de consommations.</p>
+<p>Après avoir testé differents modèles, nous avons retenu dans notre modèle final uniquement les données de consommation
+ et les données sur les jours feriés.</p>
+<p>Voici le modèle que nous avons créé. Nous avons un premier layer LSTM qui prend en entrée les données passées de consommation et jour feriés. 
+Ce layer renvoie en sortie un vecteur de 48 valeurs que nous concaténons aux valeurs futures des jours feriés. Nous rajoutons un layers 
+LSTM puis un layer Dense pour prédire les 48 prochaines valeurs de consommation.</p>
 
 
 <div id="cod7"><pre><code class="lang-python">import tensorflow as tf
@@ -901,13 +909,10 @@ Epoch 100/100
 
 <h2>Résultats</h2>
 
-<p>L'erreur moyenne de notre modèle est de l'ordre de 18 millions de watt. Soit une erreur d'à peu près 2% part rapport à la valeur réelle.</p>
-<p>Pour visulaliser les résultats, nous allons appliquer le modèle sur l'échantillon de validation. 
-Nous appliquons le modèle afin de prédire les valeurs de consommation de chaque jour de 0h00 à 23h30. 
+<p>L'erreur moyenne de notre modèle est de l'ordre de 18 millions de watt. Soit une erreur d'à peu près 2% par rapport à la valeur réelle.</p>
+<p>Pour visualiser les résultats, nous allons appliquer le modèle sur l'échantillon de validation. 
+Nous appliquons le modèle afin de prédire les valeurs de consommation de chaque jours de 0h00 à 23h30. 
 Puis nous concaténons les prédictions pour obtenir les graphiques ci dessous.</p>
-
- 
-
 
 
 
@@ -941,7 +946,7 @@ plt.plot(date[6000:9000],np.array(all_pred).reshape(-1)[6000:9000], color = "ora
 plt.plot(date[6000:9000],np.array(all_target).reshape(-1)[6000:9000], color = "green")
 plt.show()
 </code></pre></div>
-<p>Sur les graphiques suivants, la courbe verte représente les valeurs réels. La courbe jaune représente les valeurs prédites.
+<p>Sur les graphiques suivants, la courbe verte représente les valeurs réelles. La courbe jaune représente les valeurs prédites.
 </p>
 
 <pre id= "output_code">
@@ -6429,7 +6434,7 @@ hBAC+H/npGLFxWn16QAAAABJRU5ErkJggg==
 </div></pre>
 
 
-<p>On peut voir que notre modèle est globalement correct même si on observe quand même une sur-estimation des pics de consommations 
+<p>On peut voir que notre modèle est globalement correct même si on observe quand même une sur-estimation des pics de consommation 
 sur le mois d'août et pendant les vacances de Noël. On peut aussi voir que même si le modèle est moins précis sur ces périodes, il arrive quand même à prévoir le changement.</p>
 
 
