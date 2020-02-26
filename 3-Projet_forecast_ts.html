@@ -69,10 +69,17 @@
 
 <!-- Intro -->
 <p>Les données de timeserie, sont des séquences de données horodatés. Au delà de leur stockage qui peut s'avéré volumineux, 
-ce type de données peut être plus complexe à traiter, à cause de la volumétrie de features et de la dépendance temporelle des données. 
-Pour croiser ces données avec d'autres types de données (plus classique), nous réalisons souvent un résumé de la série temporelle (min, max, moyenne, écart type...) que nous venons ajouter aux autres données. Cependant, nous perdons beaucoup d'informations.</p>
-<p>Même si dans de nombreux cas, il est préférable de procéder ainsi, certains cas nécéssite de capturer plus d'informations sur les series de données. Pour cela, nous pouvons utiliser des réseaux de neurones LSTM (Long Short Time Memory), qui ont la capacité à comprendre la structure temporèlle des données et à garder en mémoire une parties d'informations importantes.</p>
-<p>Dans ce projet, nous allons voir comment utiliser les réseaux de neurones LSTM pour prédire les valeurs futures d'une série temporelle. Ce genre de problème peut être très utile pour les entreprises. Par exemple, il peut permettre de prédire une quantité de ventes pour optimiser ces stocks ou ca main d'œuvre. Prédire la valeur d'un produit financier dans le temps...</p>
+ce type de données peut être plus complexe à traiter, à cause de la volumétrie de features et de la dépendance temporelle des données.
+Pour utiliser ces données dans des modèles de prévision, nous approchons souvent la série grace aux techniques de séries chronologiques.
+Pour croiser ces données avec d'autres types de données (plus classique), nous réalisons souvent un résumé de la série 
+temporelle (min, max, moyenne, écart type...) que nous venons ajouter aux autres données. Cependant, nous perdons beaucoup d'informations.</p>
+<p>Même si dans de nombreux cas, il est préférable d'utiliser les techniques décrite précedement, certains cas nécéssite de capturer plus d'informations 
+sur les series de données. Pour cela, nous pouvons utiliser des réseaux de neurones LSTM (Long Short Time Memory), 
+qui ont la capacité à comprendre la structure temporèlle des données et à garder en mémoire une parties d'informations importantes.</p>
+
+<p>Dans ce projet, nous allons voir comment utiliser les réseaux de neurones LSTM pour prédire les valeurs futures d'une série temporelle.
+Ce genre de problème peut être très utile pour les entreprises. Par exemple, il peut permettre de prédire une quantité de ventes pour optimiser 
+ces stocks ou ca main d'œuvre. Prédire la valeur d'un produit financier dans le temps...</p>
 <p>Dans ce projet, nous allons prédire la consommation électriques des 24h à venir en fonction de la consommation électrique passé.</p>
 
 
@@ -87,17 +94,21 @@ drive.mount('/content/drive')
 
 <h2>Importation des données</h2>
 
-<p>Le jeu de données que nous allons utiliser provient de la platforme Open data d'Enedis. Le jeu de données représente la consommation électrique des points de soutirage supérieur à 36kVa <a href="https://data.enedis.fr/explore/dataset/conso-sup36/information/?disjunctive.profil&amp;disjunctive.secteur_activite&amp;dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJsaW5lIiwiZnVuYyI6IlNVTSIsInlBeGlzIjoidG90YWxfZW5lcmdpZV9zb3V0aXJlZV93aCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiMwMEEzRTAifV0sInhBeGlzIjoiaG9yb2RhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJtaW51dGUiLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJjb25zby1zdXAzNiIsIm9wdGlvbnMiOnsiZGlzanVuY3RpdmUucHJvZmlsIjp0cnVlLCJkaXNqdW5jdGl2ZS5zZWN0ZXVyX2FjdGl2aXRlIjp0cnVlfX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0%3D">(lien vers le jeu de données)</a>.</p>
-<p>Voici un aperçut des données qui provient directement de platforme OpenData d'Enedis qui permet visualiser de les jeux de données.</p>
+<p>Le jeu de données que nous allons utiliser provient de la platforme Open data d'Enedis. Le jeu de données représente la consommation électrique 
+des points de soutirage supérieur à 36kVa <a href="https://data.enedis.fr/explore/dataset/conso-sup36/information/?disjunctive.profil&amp;disjunctive.secteur_activite&amp;dataChart=eyJxdWVyaWVzIjpbeyJjaGFydHMiOlt7InR5cGUiOiJsaW5lIiwiZnVuYyI6IlNVTSIsInlBeGlzIjoidG90YWxfZW5lcmdpZV9zb3V0aXJlZV93aCIsInNjaWVudGlmaWNEaXNwbGF5Ijp0cnVlLCJjb2xvciI6IiMwMEEzRTAifV0sInhBeGlzIjoiaG9yb2RhdGUiLCJtYXhwb2ludHMiOiIiLCJ0aW1lc2NhbGUiOiJtaW51dGUiLCJzb3J0IjoiIiwiY29uZmlnIjp7ImRhdGFzZXQiOiJjb25zby1zdXAzNiIsIm9wdGlvbnMiOnsiZGlzanVuY3RpdmUucHJvZmlsIjp0cnVlLCJkaXNqdW5jdGl2ZS5zZWN0ZXVyX2FjdGl2aXRlIjp0cnVlfX19XSwidGltZXNjYWxlIjoiIiwiZGlzcGxheUxlZ2VuZCI6dHJ1ZSwiYWxpZ25Nb250aCI6dHJ1ZX0%3D">(lien vers le jeu de données)</a>.</p>
+<p>Voici un aperçut des données qui provient directement de platforme OpenData d'Enedis qui permet de visualiser les jeux de données.</p>
 
-<p>L'objectif de ce projet est de prédire les valeurs de consommation totale des 24 prochaines heures. Nous avons donc agrégé toutes les régions et les domaines d'activités pour avoir la consommation totale par pas de 30 minutes.</p>
+<img src = "images/3-Projet_forecast_ts_visu.jpg" width = 90%>
+
+<p>L'objectif de ce projet est de prédire les valeurs de consommation totale des 24 prochaines heures. Nous avons donc agrégé toutes les régions 
+et les domaines d'activités pour avoir la consommation totale par pas de 30 minutes.</p>
 <p>Comme dans tout problème de machine learning, il est important de faire un état des lieux des données disponibles. 
-Dans ce problème, nous avons identifié 3 sources de données pouvant être intégrées croisé avec les données de consommations :</p>
+Dans ce problème, nous avons identifié 3 sources de données pouvant être croisé avec les données de consommations :
 <ul>
 <li>Les données de température extérieur</li>
 <li>Les données sur les jours fériés </li>
 <li>Les données sur les périodes de vacances scolaires</li>
-</ul>
+</ul></p>
 <p>Nous avons récupéré toutes ces données en OpenData. Les données Météo proviennent de MétéFrance, les données sur les jours fériés et les vacances scolaire proviennent de data.gouv.</p>
 
 <p>L'ensemble des données ont été retravaillées et jointurées pour être stockées dans un même csv.</p>
@@ -194,8 +205,13 @@ train['t'] = (train.t - t_mean)/t_std
 valid['t'] = (valid.t - t_mean)/t_std
 </code></pre></div>
 
-<p>En visualisant les données, nous avons remarqué une tendance hebdomadaire dans les données. En effet, nous observons de forte consommation en journée du lundi au vendredi, tandis que le weekend et les jours fériés l'amplitude de consommation est beaucoup plus faible.</p>
-<p>Pour créer un modèle LSTM, nous avons choisi de mettre en entrée les valeurs de consommation des 7 dernier jours, pour que le modèle puisse se repérer la temporalité des jours de la semaine.</p>
+<p>En visualisant les données, nous avons remarqué une tendance hebdomadaire dans les données. En effet, nous observons de fortes consommations 
+en journée du lundi au vendredi, tandis que le weekend et les jours fériés l'amplitude de consommation est beaucoup plus faible.
+Un simple modèle de série chronologiques pourais détecter les tendances anuelle et hebdomadaire de la serie. Cependant, 
+le modèle serait trop généraliste pour détécter des événements plus anormaux comme les jours fériés.</p>
+
+<p>Pour créer notre modèle LSTM, nous avons choisi de mettre en entrée les valeurs de consommation des 7 dernier jours, pour que le modèle puisse se 
+repérer la temporalité des jours de la semaine.</p>
 <p>Voici une représentation graphique de ce que nous souhaitons introduire dans notre modèle :</p>
 <ul>
 <li>En bleu, les donnés passés</li>
