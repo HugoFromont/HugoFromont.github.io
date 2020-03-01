@@ -67,19 +67,10 @@
 <br>
 
 <!-- Intro -->
-<p>Le traitement des images est de plus en plus utilisé dans la data science, on trouve de nombreuses 
-applications dans des domaines très variés (industrie, bancaire, application mobile, santé...). 
-Par exemple, dans le domaine industrielle, le traitement des images est utilisé dans les machine 
-de production pour verifié la pose des composants électroniques ou l'orientation des pièces sur un tapi. 
-Dans le domaines bancaire, il est utilisé pour détecter la falsification de documents. <br>
-
-Les applications utilisant le traitement de l'images sont de plus en courant. 
-Notament grace aux progrès réalisés dans le domaines les dernières années.
-<br>L'objectif de ce projet, est de voir comment construire un réseau de neurones pour 
-classifier des images. Nous allons tester plusieurs méthodes pour former et optimiser 
-l'apprentissage d'un CNN. Pour ce faire, nous allons utiliser un jeu de données composé 
-d'images de chiens et de chats disponible sur la platforme Kaggle. Le jeu de données est composé 
-de 25 000 images labéllisées.</p>
+<p>Le traitement des images est de plus en plus utilisé dans la data science, on trouve de nombreuses applications dans des domaines très variés (industrie, bancaire, application mobile, santé...). Par exemple, dans le domaine industriel, le traitement des images est utilisé dans les machines de production pour vérifier la pose des composants électroniques ou l'orientation des pièces sur un tapis. Dans le domaine bancaire, il est utilisé pour détecter la falsification de documents. <br>
+Les applications utilisant le traitement de l'image sont de plus en courantes. Notamment grâce aux progrès réalisés dans le domaine les dernières années.
+<br>L'objectif de ce projet, est de voir comment construire un réseau de neurones pour classifier des images. Nous allons tester plusieurs méthodes pour former et optimiser l'apprentissage d'un CNN. Pour ce faire, nous allons utiliser un jeu de données composé d'images de chiens et de chats disponibles sur la plateforme Kaggle. Le jeu de données est composé de 25 000 images labellisées.
+</p>
 
 
 <div id="cod1"><pre><code class="lang-python">import pandas as pd
@@ -89,22 +80,19 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
-# Connection à google drive
 from google.colab import drive
 drive.mount('/content/gdrive')
 </code></pre></div>
 
 <h2>Importation des données</h2>
 
-<p>Le jeux de données récuperé sur Kaggle est composé de deux fichers compressés. Un premier pour 
-l'échantillon d'apprentissage et un second pour l'échantillon de test. <br>
-Nous allons dans un premier temps décompresser le fichier pour l'apprentissage 
-et extraire le nom des images.</p>
+<p>Le jeu de données récupéré sur Kaggle est composé de deux fichiers compressés. Un premier pour l'échantillon d'apprentissage et un second pour l'échantillon de test.
+Nous allons dans un premier temps décompresser le fichier pour l'apprentissage et extraire le nom des images.
+</p>
 
 
 
-<div id="cod2"><pre><code class="lang-python"># Déziper train
-!unzip '/content/gdrive/My Drive/data_google_colab/Dogs_vs_Cats/train.zip'
+<div id="cod2"><pre><code class="lang-python">!unzip '/content/gdrive/My Drive/data_google_colab/Dogs_vs_Cats/train.zip'
 
 files = os.listdir("/content/train/")
 files[:4]
@@ -114,10 +102,8 @@ files[:4]
 <pre id= "output_code">[&#39;dog.4400.jpg&#39;, &#39;dog.7995.jpg&#39;, &#39;cat.9682.jpg&#39;, &#39;cat.3733.jpg&#39;]</pre>
 
 
-<p>On peut voir que le label des images se trouve dans le nom de l'image. <br>
-À partir de ces images, nous allons créer deux échantillons, un pour l'apprentissage du modèle 
-et un pour la vérification des performances. Nous allons ensuite creér pour chacun des échantillons 
-un dataframe composé de deux variables :
+<p>On peut voir que le label des images se trouve dans le nom de l'image.
+À partir de ces images, nous allons créer deux échantillons, un pour l'apprentissage du modèle et un pour la vérification des performances. Nous allons ensuite créer pour chacun des échantillons un dataframe composé de deux variables :
 <ul><li>Le chemin d'accès à l'image</li>
 <li>Le label</li>
 </ul></p>
@@ -197,24 +183,13 @@ train.head()
 </div>
 
 <h2>Création du modèle</h2>
-<p>Il existe deux manières pour créer un réseau à convolution. La première méthode est de construire 
-l'architecture du CNN soit même, Les poids du modèle seront alors généré aléatoitrement. 
-La deuxième méthode consiste à réutiliser un CNN déjà entrainé sur un autres problème. 
-Il faut alors modifier les premiers et les derniers layers pour adapter le modèle à notre problème. 
-Puis on entraine ces nouveaux layers. 
-<br>
-
-Nous allons tester les deux méthodes dans ce projet.</p>
+<p>Il existe deux manières pour créer un réseau à convolution. La première méthode est de construire l'architecture du CNN soit même, Les poids du modèle seront alors générés aléatoirement. La deuxième méthode consiste à réutiliser un CNN déjà entraîné sur un autre problème. Il faut alors modifier les premiers et les derniers layers pour adapter le modèle à notre problème. Puis on entraîne ces nouveaux layers.
+<br>Nous allons tester les deux méthodes dans ce projet.
+</p>
 <h3>Construction d'un CNN</h3>
-<p>Il est tout à fait possible de créer sont propre réseau à convolution. À la difference 
-des réseaux de neurones simples, qui croisent toutes les features les une aux autres, 
-les CNN eux, traitent des filtres d'image puis les relient au fure et à mesures que 
-l'on avance dans le réseau. Cela permet d'avoir moins de paramètres à optimiser et de prendre en 
-compte la composante spacials des images.
+<p>Il est tout à fait possible de créer son propre réseau à convolution. À la différence des réseaux de neurones simples, qui croisent toutes les features les unes aux autres, les CNN eux, traitent des filtres d'images puis les relient au fur et à mesure que l'on avance dans le réseau. Cela permet d'avoir moins de paramètres à optimiser et de prendre en compte la composante spatiale des images.
 <br>
-L'architecture d'un CNN est composée de convolution et de pooling. Les convolutions 
-permettent de réaliser automatiquement des filtres sur une image. 
-Le pooling permettent de réduire les dimensions d'une matrices.</p>
+L'architecture d'un CNN est composée de convolution et de pooling. Les convolutions permettent de réaliser automatiquement des filtres sur une image. Le pooling permet de réduire les dimensions d’une matrice.</p>
 
 
 <div id="cod4"><pre><code class="lang-python">input_img = tf.keras.Input(shape=(112,112,3))
@@ -280,22 +255,18 @@ Trainable params: 3,234,441
 Non-trainable params: 0
 _________________________________________________________________
 </pre>
-<p>Notre CNN prend donc en entré une image de taille (112,112,3) et renvoi un vecteur d'une valeur en 
-sortie. Cette valeur correspond à la probabilité qu'il y est un chat sur la photo.
+<p>Notre CNN prend donc en entrée une image de taille (112,112,3) et renvoie un vecteur d'une valeur en sortie. Cette valeur correspond à la probabilité qu'il y ai un chat sur la photo.
 </p>
 
-<h2>Entrainement du modèle</h2>
-<p>Pour entraîner le modèle, nous devons redimensionner les images pour que celle-ci soit toute à la 
-même dimension. Nous avons choisi ici de donner en entrée des vecteurs de 112* 122* 3. 
-
-Pour convertir les images en vecteur et les redimensionner, nous avons deux possibilités.
+<h2>Entraînement du modèle</h2>
+<p>Pour entraîner le modèle, nous devons redimensionner les images pour que celles-ci soient toutes à la même dimension. 
+Nous avons choisi ici de donner en entrée des vecteurs de 112* 122* 3. <br>
+Pour convertir les images en vecteur et les redimensionner, nous avons deux possibilités. 
 Soit nous créons un vecteur de taille (nb_images, 112, 112, 3) qui contient l'ensemble des images. 
-L'inconvénient de cette méthode est que si le nombre d'image est élevé, vous risquez de saturer la RAM de 
-votre ordinateur. Soit nous importons uniquement le batch d'image que nous envoyons en entrée de notre CNN. 
-Cette méthode permet de ne pas saturer la RAM, mais augmente la durée de l'apprentissage du modèle.
-
-Ici, nous allons utiliser la deuxième méthode, car généralement dans ce genre de projet, 
-le dataset d'image ne permet pas de charger toutes les images dans la RAM.</p>
+L'inconvénient de cette méthode est que si le nombre d'images est élevé, vous risquez de saturer la RAM de votre ordinateur. 
+Soit nous importons uniquement le batch d'images que nous envoyons en entrée de notre CNN. Cette méthode permet de ne pas saturer la RAM, 
+mais augmente la durée d’apprentissage du modèle. <br>
+Ici, nous allons utiliser la deuxième méthode, car généralement dans ce genre de projet, le dataset d'images ne permet pas de charger toutes les images dans la RAM.</p>
 
 
 <div id="cod5"><pre><code class="lang-python">train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
@@ -896,16 +867,13 @@ Y/JkCcIYY0ye/h8/cYhFw81pgAAAAABJRU5ErkJggg==
 >
 </pre>
 
-<p>Nous pouvons voir que dès la 4ème époque, le modèle est en overfitting. <br>
+<p>Nous pouvons voir que dès la 4ème époque, le modèle est en overfitting.
+Comme dans un problème de régression classique, il existe des méthodes de régularisation permettant de limiter le sur-apprentissage.
+</p>
 
-Comme dans un problème de régression classique, il existe des méthodes de régularisation permettant de 
-limiter le sur-apprentissage. </p>
-
-<h2>Ajout de regularisation</h2>
+<h2>Ajout de régularisation</h2>
 <h3>Drop Out</h3>
-<p>Dans un premier temps, nous allons rajouter du drop out dans notre modèle. Le drop out 
-permet de "supprimer" aléatoirement des neurones dans un layer pour chaque batch d'entraînement 
-en modifiant leur valeur de sortie à 0.</p>
+<p>Dans un premier temps, nous allons rajouter du drop out dans notre modèle. Le drop out permet de "supprimer" aléatoirement des neurones dans un layer pour chaque batch d'entraînement en modifiant leur valeur de sortie à 0.</p>
 
 
 <div id="cod7"><pre><code class="lang-python">input_img = tf.keras.Input(shape=(112,112,3))
@@ -1547,14 +1515,11 @@ GGOM8cgShDHGGI8sQRhjjPHo/wGbr3K5UOf7IAAAAABJRU5ErkJggg==
 >
 </pre>
 
-<p>L'ajout de dropout à permis de retarder l'overfitting et d'améliorer netement les performances du 
-modèle. On peut quand même observer de l'overfitting à partir de 40ème époque. <br>
-Afin d'améliorer le modèle, il est necessaire de rajouter plus d'image dans 
-l'échantillon d'apprentissage.<br>
+<p>L'ajout de drop out a permis de retarder l'overfitting et d'améliorer nettement les performances du modèle. On peut quand même observer de l'overfitting à partir de 40ème époque.
+Afin d'améliorer le modèle, il est nécessaire de rajouter plus d'images dans l'échantillon d'apprentissage.
+<br>
 
-Ne disposant pas de plus d'images, nous allons utiliser du pré-processong sur les images. 
-Cette technique est un type de régularisation qui permet de modifier automatiquement les 
-images en entrée du modèle (zoom sur les images, rotation des images...). 
+Ne disposant pas de plus d'images, nous allons utiliser du pré-processing sur les images. Cette technique est un type de régularisation qui permet de modifier automatiquement les images en entrée du modèle (zoom sur les images, rotation des images...).
 </p>
 
 <h3>Pré-procesing</h3>
@@ -2192,19 +2157,14 @@ AABJRU5ErkJggg==
 ">
 </pre>
 
-<p>L'ajout du pré-processing, permet encore une fois de réduire l'overfitting et d'améliorer légèrement 
-les performances du modèle.</p>
+<p>L'ajout du pré-processing, permet encore une fois de réduire l'overfitting et d'améliorer légèrement les performances du modèle.</p>
 
 <h3>Transfert Learning</h3>
 
-<p>Comme nous l'avons évoqué plus haut, il est possible d'utiliser un réseau de neurones déjà entrainé, et de l'adapter à notre problème.<br>
-Cela peu être très utile quand nous ne disposont pas de beaucoup d'images pour entrainer notre modèle, 
-ou quand nous sommes confronté à un problème de classification complexe qui nécessite une architeture 
-neuronal plus élaboré et donc un entrainement plus long. <br>
-
-Heureusement, il existe des modèle pré-entrainé qui nous permettent de récuperer l'architecture et les poids d'un modèles.
-Généralement ces modèles sont pré-entrainé sur le jeux de données de ImageNet qui à été construit pour classifier des 
-images parmis 1 000 classes.</p>
+<p>Comme nous l'avons évoqué plus haut, il est possible d'utiliser un réseau de neurones déjà entraîné, et de l'adapter à notre problème.
+Cela peut être très utile quand nous ne disposons pas de beaucoup d'images pour entraîner notre modèle, ou quand nous sommes confrontés à un problème de classification complexe qui nécessite une architecture neuronale plus élaborée et donc un entraînement plus long.
+Heureusement, il existe des modèles pré-entraînés qui nous permettent de récupérer l'architecture et les poids d'un modèle. Généralement ces modèles sont pré-entraînés sur le jeu de données de ImageNet qui a été construit pour classifier des images parmi 1 000 classes.
+</p>
 
 
 
@@ -2274,12 +2234,8 @@ Epoch 3/3
 <h2>Conclusion</h2>
 
 
-<p>A travers ce projet, nous avons vu diffrentes manières de construire un réseau convolutif. 
-L'utilisation du transfert learning peu être très utile dans de nombreux problèmes. 
-Cependant quand nous sommes confronté à des problèmes relativements simples, 
-il est préférable de construire soit même un CNN pour avoir une architecture plus simple et plus facile à industrialisé.<br>
-Les choix liés à la création d'un CNN doivent donc tenire compte des données disponnibles pour l'entrainement,
-des resources à disposition, de la capacité à industrialisé le modèle et du temps aloué à la mission.
+<p>A travers ce projet, nous avons vu différentes manières de construire un réseau convolutif. L'utilisation du transfert learning peut-être très utile dans de nombreux problèmes. Cependant quand nous sommes confrontés à des problèmes relativement simples, il est préférable de construire soit même un CNN pour avoir une architecture plus simple et plus facile à industrialiser.
+Les choix liés à la création d'un CNN doivent donc tenir compte des données disponibles pour l'entraînement, des ressources à disposition, de la capacité à industrialiser le modèle et du temps alloué à la mission.
 </p>
 
 
@@ -2331,7 +2287,7 @@ des resources à disposition, de la capacité à industrialisé le modèle et du
 											<ul>
 												<li><a href="3-Projet_reco_img.html">Moteur de recommandation de vêtements</a></li>
 												<li><a href="3-Projet_forecast_ts.html">Pévision de series temporelles</a></li>
-												<li><a href="3-Construction.html">Classification d'images</a></li>
+												<li><a href="3-Projet_classif_img.html">Classification d'images</a></li>
 												<li><a href="3-Construction.html">Classification de commentaires</a></li>
 											</ul>
 										</li>
