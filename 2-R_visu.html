@@ -58,10 +58,126 @@
 								<section>
 									<h1>Visualisation de données</h1>
 
-									
-									
-									
-								</section>	
+<p>ggplot2 est une librairie très utilisée pour la création de graphiques avec R. Voici ci-dessous quelques exemples de graphiques.
+Une documentation très complète est disponible <a href="https://thinkr.fr/pdf/ggplot2-french-cheatsheet.pdf">ici</a> pour voir un aperçu des graphiques 
+qu'il est possible de réaliser.<br>Nous allons voir comment créer des graphiques avce ggplot2. 
+Afin d'illustrer les exemples ci-dessous, j'ai créé un jeu de données composé d'une variable qualitative et de deux variables quantitatives.</p>
+
+<div><pre><code class="lang-r">data <- data.frame(
+  sexe = c("M","F","M","F","M","F","M","F","M","F","M","F","M","F","M","F"),
+  age = c(10,15,26,45,78,46,85,5,12,18,64,59,34,28,47,7),
+  taille = c(136,158,165,155,160,176,168,124,159,163,162,164,184,191,174,135)
+)
+</code></pre></div>					
+
+<h2>Base de ggplot2</h2>
+<p>Pour créer un graphique avec ggplot2, vous devez d'abord initialiser un graphique avec la fonction suivante</p>
+
+<div><pre><code class="lang-r">ggplot(data,aes(x = age, y = taille))</code></pre></div>
+
+<img src="images/ggplot_base.png" width="60%" alt="" />
+<p>Vous remarquerez que rien n'apparait, ce qui est tout à fait normal, puisque nous n'avons pas spécifié ce que nous voulions afficher.
+Nous allons maintenant spécifier le type de graphique que nous voulons. Par exemple si nous voulons un nuage de points nous allons écrir ceci.
+</p>
+
+<div><pre><code class="lang-r">ggplot(data,aes(x = age, y = taille)) +
+  geom_point()</code></pre></div>
+<img src="images/ggplot_point.png" width="60%" alt="" />
+<p>Selon les graphiques que vous souhaitez réaliser il existe de nombreuses possibilités (geom_bar(),geom_boxplot()...). 
+Pour voir les possibilités que vous offre ggplot2, je vous conseille de consulter <a href="https://thinkr.fr/pdf/ggplot2-french-cheatsheet.pdf">ce document</a>
+ qui récapitule bien les différentes fonctions.
+
+Au sein d'un même graphqiue, nous pouvons superposer les éléments visuels. 
+Par exemple dans le graphique suivant nous allons supperposer un nuage de points et une courbe</p>
+
+<div><pre><code class="lang-r">ggplot(data,aes(x = age, y = taille)) +
+  geom_point() +
+  geom_line()</code></pre></div>
+<img src="images/ggplot_point_line.png" width="60%" alt="" />
+<p>Nous pouvons aussi différencier 2 types de données, par exemple les femmes et les hommes en rajoutant le paramètre color</p>
+<div><pre><code class="lang-r">ggplot(data,aes(x = age, y = taille, color=sexe)) +
+  geom_point() +
+  geom_line()</code></pre></div>
+<img src="images/ggplot_point_line_color.png" width="60%" alt="" />
+<p>Avant de voir comment il est possible de personnaliser le visuel des graphqiues, je vais vous présenter quelques exemples de graphiques qu'il est possible de réaliser avec notre jeu de données initiales</p>
+<div><pre><code class="lang-r">ggplot(data,aes(x = sexe, y = taille,color = sexe)) +
+  geom_boxplot() +
+  geom_point()</code></pre></div>
+<img src="images/ggplot_boxplot.png" width="60%" alt="" />
+
+<div><pre><code class="lang-r">data_graph <- data %>% group_by(sexe) %>% summarise(Age_mean = mean(age), Taille_mean = mean(taille))
+ggplot(data_graph,aes(x = sexe,y = Age_mean)) + geom_bar(stat = "identity")</code></pre></div>
+<img src="images/ggplot_bar.png" width="60%" alt="" />
+
+<h2>Personaliser un graphique ggplot</h2>
+<p>Ajouter ligne verticale</p>
+
+<div><pre><code class="lang-r">geom_vline(xintercept = 3, linetype="dotted", color = "blue", size=1.5)</code></pre></div>
+<p>Ajouter une ligne horizontale</p>
+
+<div><pre><code class="lang-r">geom_hline(yintercept=20, linetype="dashed", color = "red", size=2)</code></pre></div>
+<p>Ajouter une droite de régression</p>
+
+<div><pre><code class="lang-r">geom_abline(intercept = 37, slope = -5)</code></pre></div>
+<p>Ajouter un segment</p>
+
+<div><pre><code class="lang-r">geom_segment(aes(x = 4, y = 15, xend = 4, yend = 27))</code></pre></div>								
+
+<h2>Titre et axes</h2>
+<p>Ajout du titre d'un graphique et du titre des axes</p>
+
+<div><pre><code class="lang-r">graph + labs(title="Titre", x ="Axe X", y = "Axe Y", fill = "Légende")</code></pre></div>
+<p>Modification des limites d'axes</p>
+
+<div><pre><code class="lang-r">graph + xlim(0, 10) + ylim(0, 20)
+graph + expand_limits(x=c(0,10), y=c(0, 20))</code></pre></div>
+<p>Personalisation dans la fonction theme</p>
+
+<div><pre><code class="lang-r">graph + theme(
+    plot.title = element_text(face = "bold", colour = 'black', size = 10, hjust = 0.5, vjust = 0.5, angle = 0),
+    axis.title.x = element_text(face = "bold", colour = 'black', size = 10, hjust = 0.5, vjust = 0.5, angle = 0),
+    axis.title.y = element_text(face = "bold", colour = 'black', size = 10, hjust = 0.5, vjust = 0.5, angle = 90),
+    # pour les chioffre de graduation
+    axis.text.y = element_text(face = "bold"),
+    # pour les tirets de graduation
+    axis.ticks.y = element_blank(),
+  )</code></pre></div>
+<p>Pour masquer le titre et les titres d'axes</p>
+
+<div><pre><code class="lang-r">theme(
+  plot.title = element_blank(),
+  axis.title.x = element_blank(),
+  axis.title.y = element_blank(),
+  #graduation
+  axis.text.y =element_blank(),
+  # pour les tirets de graduation
+  axis.ticks.y = element_blank()
+)</code></pre></div>
+<p>modification du fond du graphique</p>
+
+<div><pre><code class="lang-r">theme(panel.background = element_rect(fill = 'white', colour = "gray", size = 1, linetype="solid"))</code></pre></div>
+fill = couleur de remplissage de la partie graphque colour = Couleur de bordure de la partie graphque size taille de la bordure linetype = type de bordure (blank, solid, dashed, dotted, dotdash, longdash, twodash)
+
+<p>modification des quadrillages</p>
+
+<div><pre><code class="lang-r">theme(
+panel.grid.major = element_line(colour = 'gray', size = 1 , linetype = "solid"),
+panel.grid.minor = element_line(colour = 'gray', size = 1 , linetype = "solid")
+)</code></pre></div>
+<p>fond du graphique</p>
+
+<div><pre><code class="lang-r">plot.background = element_rect(fill = "gray")</code></pre></div>									
+				
+				
+<h2>Graphiques interactifs</h2>
+<p>Il est possible de rendre un graphique ggplot interactif gràce au package plotly</p>
+
+<div><pre><code class="lang-r">library(plotly)
+ggplotly(g)</code></pre></div>
+<p>ou g est un graphique créé avec ggplot2</p>				
+				
+
+				</section>	
 									
 									
 
